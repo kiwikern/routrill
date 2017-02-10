@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AddressService} from '../address.service';
 
 @Component({
   selector: 'app-address-selector',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddressSelectorComponent implements OnInit {
 
-  constructor() { }
+  constructor(private service: AddressService) {
+
+  }
 
   ngOnInit() {
   }

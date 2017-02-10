@@ -4,6 +4,8 @@ import { AddressSelectorComponent } from './address-selector/address-selector.co
 import {Routes, RouterModule} from '@angular/router';
 import {MaterialModule} from '@angular/material';
 import {AddressService} from './address.service';
+import {APP_CONFIG} from '../app.config';
+import {APP_CONFIG_IMPL} from '../app.config.impl';
 
 const routes: Routes = [
   {
@@ -21,8 +23,9 @@ const routes: Routes = [
   declarations: [
     AddressSelectorComponent
   ],
-  provide: [
-    AddressService
+  providers: [
+    AddressService,
+    {provide: APP_CONFIG, useValue: APP_CONFIG_IMPL}
   ]
 })
 export class MapsModule { }
