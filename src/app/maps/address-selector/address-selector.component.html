@@ -1,7 +1,7 @@
 <div class="flex-container" fxLayout="column" fxLayoutAlign="center center">
   <div class="flex-item" fxFlex="40">
     <md-input-container>
-      <input md-input placeholder="Address">
+      <input md-input placeholder="Address" #address (keyup)="getSuggestions(address.value)">
     </md-input-container>
   </div>
   <div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
@@ -11,5 +11,7 @@
       </button>
     </div>
   </div>
-  {{text}}
+  {{ placeSearchStream | async }}
+  <br>
+  <p *ngFor="let sugg of suggestions | async">{{ sugg.name }}</p>
 </div>

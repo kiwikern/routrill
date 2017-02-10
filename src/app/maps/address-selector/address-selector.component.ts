@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {AddressService} from '../address.service';
+import {Component, OnInit} from '@angular/core';
+import {AddressService, Place} from '../address.service';
+import {Subject, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-address-selector',
@@ -8,11 +9,22 @@ import {AddressService} from '../address.service';
 })
 export class AddressSelectorComponent implements OnInit {
 
-  constructor(private service: AddressService) {
+  private placeSearchStream: Subject<string> = new Subject<string>();
+  private suggestions: Observable<Place[]>;
 
+  constructor(private service: AddressService) {
+  }
+
+  getSuggestions(place: string) {
+    // console.log(place);
+    this.placeSearchStream.next(place);
   }
 
   ngOnInit() {
+    this.suggestions = this.placeSearchStream
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap((place: string) => this.service.getSuggestions(place));
   }
 
 }
