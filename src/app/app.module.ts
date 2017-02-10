@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import {MapsModule} from './maps/maps.module';
+import {MaterialModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import {MapsModule} from './maps/maps.module';
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    MapsModule
+    MapsModule,
+    MaterialModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
