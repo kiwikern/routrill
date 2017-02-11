@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {MapsModule} from './maps/maps.module';
 import {MaterialModule} from '@angular/material';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {MaterialModule} from '@angular/material';
     HttpModule,
     AppRoutingModule,
     MapsModule,
+    FlexLayoutModule.forRoot(),
     MaterialModule.forRoot()
   ],
   providers: [],

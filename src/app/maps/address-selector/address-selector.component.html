@@ -1,17 +1,52 @@
-<div class="flex-container" fxLayout="column" fxLayoutAlign="center center">
-  <div class="flex-item" fxFlex="40">
-    <md-input-container>
-      <input md-input placeholder="Address" #address (keyup)="getSuggestions(address.value)">
-    </md-input-container>
+<div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
+  <md-toolbar>
+    <div fxFlex="4"></div>
+  <md-icon class="flex-item">search</md-icon>
+    <div fxFlex="2"></div>
+    <md-input-container class="flex-item" fxFlex>
+    <input md-input placeholder="Location" #address (keyup)="getSuggestions(address.value)">
+  </md-input-container>
+  </md-toolbar>
+</div>
+<div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around start"
+     fxLayoutAlign.xs="center center">
+
+  <div class="flex-item" fxFlex="40%">
+    <md-card>
+      <md-card-title>Search Results</md-card-title>
+      <md-card-content>
+        <p *ngIf="!(suggestions | async)">Enter a search term for results...</p>
+        <md-list>
+          <md-list-item *ngFor="let location of suggestions | async">
+            <span md-line [mdTooltip]="location.name">{{ location.name }}</span>
+            <button md-icon-button (click)="addLocation(location)" mdTooltip="Add destination">
+              <md-icon>add_location</md-icon>
+            </button>
+          </md-list-item>
+        </md-list>
+      </md-card-content>
+    </md-card>
+    <br>
   </div>
-  <div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
-    <div class="flex-item" fxFlex>
-      <button md-fab type="submit">
-        <md-icon>done</md-icon>
-      </button>
-    </div>
+  <div class="flex-item" fxFlex="40%">
+    <md-card>
+      <md-card-title>Destinations</md-card-title>
+      <md-card-content>
+        <p *ngIf="locations.length == 0">You don't have any destinations...</p>
+        <md-list>
+          <md-list-item *ngFor="let location of locations">
+            <span md-line [mdTooltip]="location.name">{{ location.name }}</span>
+            <button md-icon-button (click)="removeLocation(location)" mdTooltip="Remove destination">
+              <md-icon>delete</md-icon>
+            </button>
+          </md-list-item>
+        </md-list>
+      </md-card-content>
+      <md-card-actions>
+        <button md-icon-button (click)="clearDestinations()" mdTooltip="Remove all destinations">
+          <md-icon>clear_all</md-icon>
+        </button>
+      </md-card-actions>
+    </md-card>
   </div>
-  {{ placeSearchStream | async }}
-  <br>
-  <p *ngFor="let sugg of suggestions | async">{{ sugg.name }}</p>
 </div>
