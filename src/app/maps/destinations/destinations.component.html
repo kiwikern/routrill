@@ -1,0 +1,41 @@
+<div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around start">
+  <div class="flex-item" fxFlex="80%">
+    <md-card>
+      <md-card-title>Destinations</md-card-title>
+      <md-card-content>
+        <p *ngIf="locations.length == 0">You don't have any destinations...</p>
+        <md-list>
+          <md-list-item *ngFor="let location of locations">
+
+            <md-input-container class="flex-item" fxFlex>
+              <input mdInput placeholder="Location" #address (keyup)="getSuggestions(address.value)"
+                     [mdAutocomplete]="locationAutocomplete">
+            </md-input-container>
+
+            <md-autocomplete #locationAutocomplete [displayWith]="displayLocation">
+              <md-option *ngFor="let location of suggestions | async" [value]="location">
+                {{ location.name }}
+              </md-option>
+            </md-autocomplete>
+            <!--<span md-line [mdTooltip]="location.name">{{ location.name }}</span>-->
+            <button md-icon-button (click)="removeLocation(location)" mdTooltip="Remove destination"
+                    mdTooltipShowDelay="300">
+              <md-icon>delete</md-icon>
+            </button>
+          </md-list-item>
+        </md-list>
+      </md-card-content>
+      <md-card-actions>
+        <button md-icon-button (click)="addEmptyLocation()" mdTooltip="Add destination" mdTooltipShowDelay="300">
+          <md-icon>add_location</md-icon>
+        </button>
+        <button md-icon-button (click)="clearDestinations()" mdTooltip="Remove all destinations"
+                mdTooltipShowDelay="300">
+          <md-icon>clear_all</md-icon>
+        </button>
+      </md-card-actions>
+    </md-card>
+  </div>
+</div>
+
+{{ distance | async }}

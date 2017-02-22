@@ -6,9 +6,9 @@ import {MdSnackBar} from '@angular/material';
 import {DistanceService} from '../distance.service';
 
 @Component({
-  selector: 'app-address-selector',
-  templateUrl: './address-selector.component.html',
-  styleUrls: ['./address-selector.component.css']
+  selector: 'app-destinations',
+  templateUrl: './destinations.component.html',
+  styleUrls: ['./destinations.component.css']
 })
 export class AddressSelectorComponent implements OnInit {
 
@@ -37,6 +37,10 @@ export class AddressSelectorComponent implements OnInit {
     if (this.locations.length >= 2) {
       this.distance = this.distanceService.getDistance(this.locations[0], this.locations[1]);
     }
+  }
+
+  addEmptyLocation() {
+    this.locations.push(null);
   }
 
   removeLocation(location: Place) {

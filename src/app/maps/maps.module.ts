@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AddressSelectorComponent } from './address-selector/address-selector.component';
+import { AddressSelectorComponent } from './destinations/destinations.component';
 import {Routes, RouterModule} from '@angular/router';
 import {MaterialModule} from '@angular/material';
 import {AddressService} from './address.service';
@@ -11,7 +11,7 @@ import {DistanceService} from './distance.service';
 
 const routes: Routes = [
   {
-    path: 'select-address',
+    path: 'destinations',
     component: AddressSelectorComponent
   }
 ];
