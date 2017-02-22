@@ -3,6 +3,7 @@ import {AddressService, Place} from '../address.service';
 import {Subject, Observable} from 'rxjs';
 import 'rxjs/add/operator/isEmpty'
 import {MdSnackBar} from '@angular/material';
+import {DistanceService} from '../distance.service';
 
 @Component({
   selector: 'app-address-selector',
@@ -14,9 +15,11 @@ export class AddressSelectorComponent implements OnInit {
   private placeSearchStream: Subject<string> = new Subject<string>();
   private suggestions: Observable<Place[]>;
   private locations: Place[] = [];
+  private distance: Observable<number>;
 
   constructor(private service: AddressService,
-  private snackBar: MdSnackBar) {
+              private snackBar: MdSnackBar,
+              private distanceService: DistanceService) {
   }
 
   getSuggestions(place: string) {
@@ -30,6 +33,9 @@ export class AddressSelectorComponent implements OnInit {
       this.showSnackbar('The maximum of 10 destinations has been reached.');
     } else {
       this.locations.push(location);
+    }
+    if (this.locations.length >= 2) {
+      this.distance = this.distanceService.getDistance(this.locations[0], this.locations[1]);
     }
   }
 
@@ -49,6 +55,14 @@ export class AddressSelectorComponent implements OnInit {
   showSnackbar(message: string) {
     let config: any = {duration: 1000};
     this.snackBar.open(message, '', config);
+  }
+
+  displayLocation(location: Place): any {
+    if (location) {
+      return location.name;
+    } else {
+      return location;
+    }
   }
 
   ngOnInit() {

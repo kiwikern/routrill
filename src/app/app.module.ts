@@ -19,8 +19,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     HttpModule,
     AppRoutingModule,
     MapsModule,
-    FlexLayoutModule.forRoot(),
-    MaterialModule.forRoot()
+    FlexLayoutModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
