@@ -1,3 +1,7 @@
-<p>
-  route works!
-</p>
+<md-list>
+  <md-list-item *ngFor="let entry of entries">
+    <app-route-section md-line [section]="getSection(entry)"></app-route-section>
+  </md-list-item>
+</md-list>
+
+{{ distance | async | json }}

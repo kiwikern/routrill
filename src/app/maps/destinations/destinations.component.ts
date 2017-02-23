@@ -13,13 +13,11 @@ import {DistanceMatrix} from '../distance-matrix';
 export class DestinationsComponent implements OnInit {
 
   private locations: Place[] = [];
-  private distance: Observable<DistanceMatrix>;
   private suggestions: Observable<Place[]>;
   private placeSearchStream: Subject<string> = new Subject<string>();
 
   constructor(private snackBar: MdSnackBar,
-              private service: AddressService,
-              private distanceService: DistanceService) {
+              private service: AddressService,) {
   }
 
 
@@ -74,7 +72,6 @@ export class DestinationsComponent implements OnInit {
   saveDestinationsLocally() {
     if (this.locations) {
       localStorage.setItem('tsp.destinations', JSON.stringify(this.locations));
-      this.distance = this.distanceService.getDistance(this.locations);
       this.showSnackbar("Your destinations have been saved locally.");
     }
   }
