@@ -17,7 +17,6 @@ export class AddressService {
     console.log(place);
     let autoCompleat : any = Observable.bindCallback(this.autocompleteService.getPlacePredictions.bind(this.autocompleteService), res => res);
     let result : any = autoCompleat({input: place});
-    console.dir(result);
     return result.map(resp => this.extractData(resp));
   }
 

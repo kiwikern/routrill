@@ -1,23 +1,22 @@
-<div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around start">
+<br><br>
+<div class="flex-container" fxLayout="column" fxLayoutAlign="space-around center">
   <div class="flex-item" fxFlex="80%">
-    <md-card>
-      <md-card-title>Destinations</md-card-title>
+    <h1>Destinations</h1>
+    <md-card style="min-width: 350px">
+      <!--<md-card-title>Destinations</md-card-title>-->
+      <md-card-subtitle>
+        <div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
+          <div fxFlex="4"></div>
+          <md-icon class="flex-item">search</md-icon>
+          <div fxFlex="2"></div>
+          <app-address-selector class="flex-item" fxFlex (locationUpdate)="addLocation($event)"></app-address-selector>
+        </div>
+      </md-card-subtitle>
       <md-card-content>
-        <p *ngIf="locations.length == 0">You don't have any destinations...</p>
+        <p *ngIf="locations.length == 0">No destinations...</p>
         <md-list>
           <md-list-item *ngFor="let location of locations">
-
-            <md-input-container class="flex-item" fxFlex>
-              <input mdInput placeholder="Location" #address (keyup)="getSuggestions(address.value)"
-                     [mdAutocomplete]="locationAutocomplete">
-            </md-input-container>
-
-            <md-autocomplete #locationAutocomplete [displayWith]="displayLocation">
-              <md-option *ngFor="let location of suggestions | async" [value]="location">
-                {{ location.name }}
-              </md-option>
-            </md-autocomplete>
-            <!--<span md-line [mdTooltip]="location.name">{{ location.name }}</span>-->
+            <span md-line>{{ location?.name }}</span>
             <button md-icon-button (click)="removeLocation(location)" mdTooltip="Remove destination"
                     mdTooltipShowDelay="300">
               <md-icon>delete</md-icon>
@@ -26,9 +25,9 @@
         </md-list>
       </md-card-content>
       <md-card-actions>
-        <button md-icon-button (click)="addEmptyLocation()" mdTooltip="Add destination" mdTooltipShowDelay="300">
-          <md-icon>add_location</md-icon>
-        </button>
+        <!--<button md-icon-button (click)="addEmptyLocation()" mdTooltip="Add destination" mdTooltipShowDelay="300">-->
+          <!--<md-icon>add_location</md-icon>-->
+        <!--</button>-->
         <button md-icon-button (click)="clearDestinations()" mdTooltip="Remove all destinations"
                 mdTooltipShowDelay="300">
           <md-icon>clear_all</md-icon>
@@ -37,5 +36,5 @@
     </md-card>
   </div>
 </div>
-
+{{ locations | json }}
 {{ distance | async }}

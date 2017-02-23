@@ -12,9 +12,9 @@ export class DistanceService {
       this.distanceService = new google.maps.DistanceMatrixService();
   }
 
-  getDistance(locationA: Place, locationB: Place) {
+  getDistance(origin: Place[], destination: Place[]) {
   let getDistance: any = Observable.bindCallback(this.distanceService.getDistanceMatrix.bind(this.distanceService), res => res);
-    let result: any = getDistance({origins: [locationA.name], destinations: [locationB.name], travelMode: 'DRIVING'});
+    let result: any = getDistance({origins: origin.map(o => o.name), destinations: destination.map(d => d.name), travelMode: 'DRIVING'});
     console.dir(result);
     result.subscribe(res => console.log(res));
     return result.map(res => res.rows[0].elements[0].distance.value);
