@@ -1,34 +1,21 @@
 import {Component, OnInit, EventEmitter} from '@angular/core';
-import {Subject, Observable} from 'rxjs';
-import {Place, AddressService} from '../../address.service';
-import {Output} from '@angular/core/src/metadata/directives';
+import {Observable} from 'rxjs';
+import {Place} from '../../address.service';
+import {Output, Input} from '@angular/core/src/metadata/directives';
 
 @Component({
   selector: 'app-address-selector',
   templateUrl: './address-selector.component.html',
   styleUrls: ['./address-selector.component.css']
 })
-export class AddressSelectorComponent implements OnInit {
+export class AddressSelectorComponent {
   @Output() locationUpdate = new EventEmitter<Place>();
+  @Output() searchTerm = new EventEmitter<string>();
+  @Input() suggestions: Observable<Place[]>;
   location: Place = null;
-  private suggestions: Observable<Place[]>;
-  private placeSearchStream: Subject<string> = new Subject<string>();
 
-  constructor(private service: AddressService) {
+  constructor() {
   }
-
-  ngOnInit() {
-    this.suggestions = this.placeSearchStream
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .switchMap((place: string) => place ? this.service.getSuggestions(place) : Observable.of<Place[]>([]))
-      .catch(error => {
-        console.log(error);
-        return Observable.of<Place[]>([]);
-      });
-
-  }
-
 
   updateValue(value: string | Place) {
     if (typeof value === "object" && value.name) {
@@ -38,7 +25,7 @@ export class AddressSelectorComponent implements OnInit {
   }
 
   getSuggestions(place: string) {
-    this.placeSearchStream.next(place);
+    this.searchTerm.emit(place);
   }
 
   displayLocation(location: Place): any {

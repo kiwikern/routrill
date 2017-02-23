@@ -1,15 +1,20 @@
 <br><br>
 <div class="flex-container" fxLayout="column" fxLayoutAlign="space-around center">
   <div class="flex-item" fxFlex="80%">
-    <h1 class="flex-item">Destinations</h1>
+    <div class="flex-container" fxLayoutAlign="center center">
+      <h1 class="flex-item">Destinations</h1>
+    </div>
     <md-card style="min-width: 350px">
-      <!--<md-card-title>Destinations</md-card-title>-->
       <md-card-subtitle>
-
-          <app-address-selector class="flex-item" fxFlex (locationUpdate)="addLocation($event)"></app-address-selector>
+        <app-address-selector class="flex-item" fxFlex [suggestions]="suggestions"
+                              (locationUpdate)="addLocation($event)"
+                              (searchTerm)="getSuggestions($event)"></app-address-selector>
       </md-card-subtitle>
       <md-card-content>
-        <p *ngIf="locations.length == 0">No destinations...</p>
+        <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" *ngIf="locations.length == 0">
+          <md-icon>location_off</md-icon>
+          <p>no destinations</p>
+        </div>
         <md-list>
           <md-list-item *ngFor="let location of locations">
             <span md-line>{{ location?.name }}</span>
@@ -20,10 +25,11 @@
           </md-list-item>
         </md-list>
       </md-card-content>
-      <md-card-actions>
-        <!--<button md-icon-button (click)="addEmptyLocation()" mdTooltip="Add destination" mdTooltipShowDelay="300">-->
-          <!--<md-icon>add_location</md-icon>-->
-        <!--</button>-->
+      <md-card-actions align="center">
+        <button md-icon-button mdTooltip="Save destinations" (click)="saveDestinationsLocally()"
+                mdTooltipShowDelay="300" class="mat-accent">
+          <md-icon>done</md-icon>
+        </button>
         <button md-icon-button (click)="clearDestinations()" mdTooltip="Remove all destinations"
                 mdTooltipShowDelay="300">
           <md-icon>clear_all</md-icon>
@@ -32,5 +38,5 @@
     </md-card>
   </div>
 </div>
-{{ locations | json }}
-{{ distance | async }}
+<!--{{ locations | json }}-->
+<!--{{ distance | async }}-->

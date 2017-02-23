@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Place} from '../address.service';
-import {Observable} from 'rxjs';
+import {Place, AddressService} from '../address.service';
+import {Observable, Subject} from 'rxjs';
 import {MdSnackBar} from '@angular/material';
 import {DistanceService} from '../distance.service';
 
@@ -13,8 +13,11 @@ export class DestinationsComponent implements OnInit {
 
   private locations: Place[] = [];
   private distance: Observable<number>;
+  private suggestions: Observable<Place[]>;
+  private placeSearchStream: Subject<string> = new Subject<string>();
 
   constructor(private snackBar: MdSnackBar,
+              private service: AddressService,
               private distanceService: DistanceService) {
   }
 
@@ -27,10 +30,6 @@ export class DestinationsComponent implements OnInit {
     } else {
       this.locations.push(location);
     }
-    if (this.locations.length >= 2) {
-      this.distance = this.distanceService.getDistance(this.locations, this.locations);
-    }
-    this.saveDestinationsLocally();
   }
 
   removeLocation(location: Place) {
@@ -40,16 +39,14 @@ export class DestinationsComponent implements OnInit {
     } else {
       this.locations.splice(index, 1);
     }
-    this.saveDestinationsLocally();
   }
 
   clearDestinations() {
     this.locations = [];
-    this.saveDestinationsLocally();
   }
 
   showSnackbar(message: string) {
-    let config: any = {duration: 1000};
+    let config: any = {duration: 3000};
     this.snackBar.open(message, '', config);
   }
 
@@ -58,11 +55,26 @@ export class DestinationsComponent implements OnInit {
     if (destinations) {
       this.locations = destinations;
     }
+
+    this.suggestions = this.placeSearchStream
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap((place: string) => place ? this.service.getSuggestions(place) : Observable.of<Place[]>([]))
+      .catch(error => {
+        console.log(error);
+        return Observable.of<Place[]>([]);
+      });
+  }
+
+  getSuggestions(place: string) {
+    this.placeSearchStream.next(place);
   }
 
   saveDestinationsLocally() {
     if (this.locations) {
       localStorage.setItem('tsp.destinations', JSON.stringify(this.locations));
+      this.distance = this.distanceService.getDistance(this.locations, this.locations);
+      this.showSnackbar("Your destinations have been saved locally.");
     }
   }
 

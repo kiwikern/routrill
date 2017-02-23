@@ -7,24 +7,26 @@ import 'rxjs/add/observable/bindCallback';
 @Injectable()
 export class AddressService {
 
-  private autocompleteService;
+  private autocompleteService: any;
 
   constructor() {
-      this.autocompleteService = new google.maps.places.AutocompleteService();
+    //noinspection TypeScriptUnresolvedVariable
+    this.autocompleteService= new google.maps.places.AutocompleteService();
   }
 
   getSuggestions(place: string): Observable<Place[]> {
-    console.log(place);
-    let autoCompleat : any = Observable.bindCallback(this.autocompleteService.getPlacePredictions.bind(this.autocompleteService), res => res);
-    let result : any = autoCompleat({input: place});
+    let autoCompleat: any = Observable.bindCallback(this.autocompleteService.getPlacePredictions.bind(this.autocompleteService), res => res);
+    let result: Observable<any> = autoCompleat({input: place});
+    console.dir(result);
     return result.map(resp => this.extractData(resp));
   }
 
   private extractData(response: any) {
+    console.dir(response);
     let suggestions = [];
-    if(response) {
+    if (response) {
       suggestions = response.map((prediction) => {
-        return {name: prediction.description, id: prediction.id}
+        return {name: prediction.description, id: prediction.place_id}
       });
     }
     return suggestions;
