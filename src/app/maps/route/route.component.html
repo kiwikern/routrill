@@ -1,7 +1,8 @@
 <md-list>
-  <md-list-item *ngFor="let entry of entries">
+  <md-list-item *ngFor="let entry of roundTrip">
     <app-route-section md-line [section]="getSection(entry)"></app-route-section>
   </md-list-item>
 </md-list>
 
-{{ distance | async | json }}
+<app-route-map [destinations]="getDestinations()"></app-route-map>
+Total distance: {{getTotalDistance()}} km

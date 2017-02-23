@@ -9,6 +9,6 @@ export class RouteSection {
   constructor(from:string, to:string, distance: number) {
     this.from = from;
     this.to = to;
-    this.distance = distance;
+    this.distance = Math.round(distance/1000);
   }
 }

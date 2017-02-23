@@ -6,27 +6,18 @@ const flatMap = (xs, f) => xs.map(f).reduce((x, y) => x.concat(y), []);
 
 export class DistanceMatrix {
   destinations: string[] = [];
-  distanceRows: DistanceEntry[] = [];
+  distanceEntries: DistanceEntry[] = [];
 
   constructor(matrix: any) {
     this.destinations = matrix.destinationAddresses;
-    this.distanceRows = flatMap(matrix.rows, (r, index) => this.getRows(index, r));
+    this.distanceEntries = flatMap(matrix.rows, (r, index) => this.getRows(index, r));
+    this.distanceEntries = this.distanceEntries.filter(e => e.fromIndex != e.toIndex);
   }
 
   private getRows(fromIndex: number, row: any) {
     return row.elements.map((e, toIndex) => new DistanceEntry(fromIndex, toIndex, e));
   }
 }
-
-// export class DistanceRow {
-//   fromIndex: number = 0;
-//   distanceEntries: DistanceEntry[] = [];
-//
-//   constructor(fromIndex: number, row: any) {
-//     this.fromIndex = fromIndex;
-//     this.distanceEntries = row.elements.map((e, toIndex) => new DistanceEntry(this.fromIndex, toIndex, e));
-//   }
-// }
 
 export class DistanceEntry {
   fromIndex: number = 0;

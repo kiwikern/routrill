@@ -12,6 +12,8 @@ import {AddressSelectorComponent} from './destinations/address-selector/address-
 import {FormsModule} from '@angular/forms';
 import { RouteComponent } from './route/route.component';
 import { RouteSectionComponent } from './route/route-section/route-section.component';
+import {RouteService} from './route/route.service';
+import { RouteMapComponent } from './route/route-map/route-map.component';
 
 const routes: Routes = [
   {
@@ -36,11 +38,13 @@ const routes: Routes = [
     DestinationsComponent,
     AddressSelectorComponent,
     RouteComponent,
-    RouteSectionComponent
+    RouteSectionComponent,
+    RouteMapComponent
   ],
   providers: [
     AddressService,
     DistanceService,
+    RouteService,
     {provide: APP_CONFIG, useValue: APP_CONFIG_IMPL}
   ]
 })
