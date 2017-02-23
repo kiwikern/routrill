@@ -10,11 +10,16 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {DistanceService} from './distance.service';
 import {AddressSelectorComponent} from './destinations/address-selector/address-selector.component';
 import {FormsModule} from '@angular/forms';
+import { RouteComponent } from './route/route.component';
 
 const routes: Routes = [
   {
     path: 'destinations',
     component: DestinationsComponent
+  },
+  {
+    path: 'route',
+    component: RouteComponent
   }
 ];
 
@@ -28,7 +33,8 @@ const routes: Routes = [
   ],
   declarations: [
     DestinationsComponent,
-    AddressSelectorComponent
+    AddressSelectorComponent,
+    RouteComponent
   ],
   providers: [
     AddressService,

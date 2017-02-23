@@ -3,21 +3,25 @@ import {Place} from './address.service';
 
 import {Observable} from 'rxjs';
 import 'rxjs/add/observable/bindCallback';
+import {DistanceMatrix} from './distance-matrix';
 @Injectable()
 export class DistanceService {
 
   private distanceService;
 
   constructor() {
-      this.distanceService = new google.maps.DistanceMatrixService();
+    //noinspection TypeScriptUnresolvedVariable
+    this.distanceService = new google.maps.DistanceMatrixService();
   }
 
-  getDistance(origin: Place[], destination: Place[]) {
+  getDistance(places: Place[]) : Observable<DistanceMatrix> {
   let getDistance: any = Observable.bindCallback(this.distanceService.getDistanceMatrix.bind(this.distanceService), res => res);
-    let result: any = getDistance({origins: origin.map(o => o.name), destinations: destination.map(d => d.name), travelMode: 'DRIVING'});
+    let names = places.map(o => o.name);
+    let result: any = getDistance({origins: names, destinations: names, travelMode: 'DRIVING'});
     console.dir(result);
     result.subscribe(res => console.log(res));
-    return result.map(res => res.rows[0].elements[0].distance.value);
+    return result.map(res => new DistanceMatrix(res));
   }
+
 
 }

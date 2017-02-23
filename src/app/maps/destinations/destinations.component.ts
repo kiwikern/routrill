@@ -3,6 +3,7 @@ import {Place, AddressService} from '../address.service';
 import {Observable, Subject} from 'rxjs';
 import {MdSnackBar} from '@angular/material';
 import {DistanceService} from '../distance.service';
+import {DistanceMatrix} from '../distance-matrix';
 
 @Component({
   selector: 'app-destinations',
@@ -12,7 +13,7 @@ import {DistanceService} from '../distance.service';
 export class DestinationsComponent implements OnInit {
 
   private locations: Place[] = [];
-  private distance: Observable<number>;
+  private distance: Observable<DistanceMatrix>;
   private suggestions: Observable<Place[]>;
   private placeSearchStream: Subject<string> = new Subject<string>();
 
@@ -73,7 +74,7 @@ export class DestinationsComponent implements OnInit {
   saveDestinationsLocally() {
     if (this.locations) {
       localStorage.setItem('tsp.destinations', JSON.stringify(this.locations));
-      this.distance = this.distanceService.getDistance(this.locations, this.locations);
+      this.distance = this.distanceService.getDistance(this.locations);
       this.showSnackbar("Your destinations have been saved locally.");
     }
   }
