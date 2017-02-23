@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AddressService, Place} from '../address.service';
-import {Subject, Observable} from 'rxjs';
-import 'rxjs/add/operator/isEmpty'
+import {Place} from '../address.service';
+import {Observable} from 'rxjs';
 import {MdSnackBar} from '@angular/material';
 import {DistanceService} from '../distance.service';
 
@@ -31,6 +30,7 @@ export class DestinationsComponent implements OnInit {
     if (this.locations.length >= 2) {
       this.distance = this.distanceService.getDistance(this.locations, this.locations);
     }
+    this.saveDestinationsLocally();
   }
 
   removeLocation(location: Place) {
@@ -40,10 +40,12 @@ export class DestinationsComponent implements OnInit {
     } else {
       this.locations.splice(index, 1);
     }
+    this.saveDestinationsLocally();
   }
 
   clearDestinations() {
     this.locations = [];
+    this.saveDestinationsLocally();
   }
 
   showSnackbar(message: string) {
@@ -52,6 +54,16 @@ export class DestinationsComponent implements OnInit {
   }
 
   ngOnInit() {
+    let destinations = JSON.parse(localStorage.getItem('tsp.destinations'));
+    if (destinations) {
+      this.locations = destinations;
+    }
+  }
+
+  saveDestinationsLocally() {
+    if (this.locations) {
+      localStorage.setItem('tsp.destinations', JSON.stringify(this.locations));
+    }
   }
 
 }

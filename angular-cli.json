@@ -18,7 +18,8 @@
       "tsconfig": "tsconfig.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "tsp-dark-theme.scss"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

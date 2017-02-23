@@ -1,16 +1,12 @@
 <br><br>
 <div class="flex-container" fxLayout="column" fxLayoutAlign="space-around center">
   <div class="flex-item" fxFlex="80%">
-    <h1>Destinations</h1>
+    <h1 class="flex-item">Destinations</h1>
     <md-card style="min-width: 350px">
       <!--<md-card-title>Destinations</md-card-title>-->
       <md-card-subtitle>
-        <div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
-          <div fxFlex="4"></div>
-          <md-icon class="flex-item">search</md-icon>
-          <div fxFlex="2"></div>
+
           <app-address-selector class="flex-item" fxFlex (locationUpdate)="addLocation($event)"></app-address-selector>
-        </div>
       </md-card-subtitle>
       <md-card-content>
         <p *ngIf="locations.length == 0">No destinations...</p>

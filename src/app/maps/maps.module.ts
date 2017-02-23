@@ -24,7 +24,7 @@ const routes: Routes = [
     MaterialModule,
     RouterModule.forChild(routes),
     FlexLayoutModule,
-    FormsModule
+    FormsModule,
   ],
   declarations: [
     DestinationsComponent,

@@ -21,19 +21,11 @@ export class AddressSelectorComponent implements OnInit {
     this.suggestions = this.placeSearchStream
       .debounceTime(300)
       .distinctUntilChanged()
-      .switchMap((place: string) => {
-        if (place) {
-          let sugg = this.service.getSuggestions(place);
-          console.dir(sugg);
-          return sugg;
-        } else {
-          return Observable.of<Place[]>([]);
-        }
-      } )
+      .switchMap((place: string) => place ? this.service.getSuggestions(place) : Observable.of<Place[]>([]))
       .catch(error => {
         console.log(error);
         return Observable.of<Place[]>([]);
-      } );
+      });
 
   }
 

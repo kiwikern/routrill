@@ -1,8 +1,12 @@
-<div>
-  <md-input-container class="flex-item" fxFlex>
+<div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
+  <md-icon class="flex-item">search</md-icon>
+  <div fxFlex="2"></div>
+  <md-input-container class="flex-item" fxFlex="100">
     <input mdInput placeholder="Add a destination..." #address [ngModel]="location"  (ngModelChange)="updateValue($event)" (keyup)="getSuggestions(address.value)"
            [mdAutocomplete]="locationAutocomplete">
   </md-input-container>
+  <div fxFlex="1"></div>
+
 
   <md-autocomplete #locationAutocomplete [displayWith]="displayLocation">
     <md-option *ngFor="let locationSugg of suggestions | async" [value]="locationSugg">
