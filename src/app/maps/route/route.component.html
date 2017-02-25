@@ -1,9 +1,17 @@
 <br><br>
 <div fxLayoutAlign="center center">
-  <button md-button (click)="getNearestNeighborRoute()">Nearest Neighbor</button>
+  <md-button-toggle-group>
+    <md-button-toggle (click)="getNearestNeighborRoute()">Nearest Neighbor</md-button-toggle>
+    <md-button-toggle (click)="getFurthestNeighborRoute()">Furthest Neighbor</md-button-toggle>
+    <md-button-toggle (click)="getFurthestNeighborRoute()">MST</md-button-toggle>
+    <md-button-toggle (click)="getFurthestNeighborRoute()">Bruteforce</md-button-toggle>
+  </md-button-toggle-group>
 </div>
 
+<br>
+
 <app-route-map [destinations]="stopsInOrder"></app-route-map>
+<br>
 <div class="flex-container" fxLayoutAlign="center center" *ngIf="totalDistance > 0">
   Total distance: {{totalDistance}} km
 </div>

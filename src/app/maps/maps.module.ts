@@ -12,7 +12,7 @@ import {AddressSelectorComponent} from './destinations/address-selector/address-
 import {FormsModule} from '@angular/forms';
 import { RouteComponent } from './route/route.component';
 import { RouteSectionComponent } from './route/route-section/route-section.component';
-import {RouteService} from './route/route.service';
+import {RouteNeighborService} from './route/route.service';
 import { RouteMapComponent } from './route/route-map/route-map.component';
 import {UtilModule} from '../util/util.module';
 import {ConfirmDialogComponent} from '../util/confirm-dialog/confirm-dialog.component';
@@ -47,7 +47,8 @@ const routes: Routes = [
   providers: [
     AddressService,
     DistanceService,
-    RouteService,
+    RouteNeighborService,
+    RouteMstService,
     {provide: APP_CONFIG, useValue: APP_CONFIG_IMPL}
   ],
   entryComponents: [ConfirmDialogComponent]

@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {DistanceService} from '../distance.service';
 import {MdDialog} from '@angular/material';
 import {RouteSection} from './route-section';
-import {RouteService} from './route.service';
+import {RouteNeighborService} from './route.service';
 import {ConfirmDialogComponent} from '../../util/confirm-dialog/confirm-dialog.component';
 
 @Component({
@@ -16,12 +16,14 @@ export class RouteComponent implements OnInit {
 
   private destinations: string[] = [];
   private roundTrip: DistanceEntry[] = [];
+  private roundTripNN: DistanceEntry[] = [];
+  private roundTripFN: DistanceEntry[] = [];
   private stopsInOrder: string[] = [];
   private totalDistance: number = 0;
 
 
   constructor(private dialog: MdDialog,
-              private routeService: RouteService,
+              private routeService: RouteNeighborService,
               private distanceService: DistanceService) {
   }
 
@@ -38,7 +40,18 @@ export class RouteComponent implements OnInit {
   }
 
   getNearestNeighborRoute() {
+    this.roundTrip = this.roundTripNN;
+    this.updateTable();
+      }
 
+  getFurthestNeighborRoute() {
+    this.roundTrip = this.roundTripFN;
+    this.updateTable();
+      }
+
+  updateTable() {
+    this.stopsInOrder = this.roundTrip.map(t => this.destinations[t.fromIndex]);
+    this.totalDistance = Math.round(this.roundTrip.reduce((first, snd) => first + snd.distance, 0) / 1000)
   }
 
   ngOnInit() {
@@ -47,8 +60,6 @@ export class RouteComponent implements OnInit {
       let distances: Observable<DistanceMatrix> = this.distanceService.getDistance(destinations);
       distances.subscribe(matrix => this.destinations = matrix.destinations);
       distances.subscribe(matrix => this.getRoundTrip(destinations, matrix));
-      distances.subscribe(() => this.stopsInOrder = this.roundTrip.map(t => this.destinations[t.fromIndex]));
-      distances.subscribe(() => this.totalDistance = Math.round(this.roundTrip.reduce((first, snd) => first + snd.distance, 0) / 1000));
     } else if (destinations && destinations.length == 1) {
       this.showDialog("Only one destination found.\nAdd at least one.");
     } else {
@@ -59,7 +70,8 @@ export class RouteComponent implements OnInit {
 
   private getRoundTrip(destinations, matrix) {
     if (matrix.hasRoute) {
-      this.roundTrip = this.routeService.getRoundTrip(matrix.distanceEntries)
+      this.roundTripNN = this.routeService.getRoundTrip(matrix.distanceEntries);
+      this.roundTripFN = this.routeService.getRoundTrip(matrix.distanceEntries, true);
     } else {
       let nonReachable: DistanceEntry[] = matrix.distanceEntries.filter(e => !e.isReachable);
       let destA: string = ' ';
@@ -68,7 +80,7 @@ export class RouteComponent implements OnInit {
         destA = destinations[nonReachable[0].fromIndex];
         destB = destinations[nonReachable[0].toIndex];
       }
-      this.showDialog(`No possible route between ${destA} and ${destB}.\nRemove one of them.`);
+      this.showDialog(`No possible route between "${destA}" and "${destB}".\nRemove one of them.`);
     }
   }
 

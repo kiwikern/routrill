@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {DistanceEntry} from '../distance-matrix';
 
 @Injectable()
-export class RouteService {
-  getRoundTrip(entries: DistanceEntry[]): DistanceEntry[] {
+export class RouteNeighborService {
+  getRoundTrip(entries: DistanceEntry[], furthest: boolean = false): DistanceEntry[] {
     let roundTrip: DistanceEntry[] = [];
     let fromIndex = 0;
     let abort: boolean = false;
@@ -12,7 +12,12 @@ export class RouteService {
       let size: number = unvisitedEntries.length;
       let fromEntries: DistanceEntry[] = this.getEntriesFrom(fromIndex, unvisitedEntries);
       if (fromEntries.length > 0) {
-        let nextEntry: DistanceEntry = this.getShortestDistance(fromEntries);
+        let nextEntry: DistanceEntry;
+        if (!furthest) {
+          nextEntry = this.getShortestDistance(fromEntries);
+        } else {
+          nextEntry = this.getFurthestDistance(fromEntries);
+        }
         roundTrip.push(nextEntry);
         unvisitedEntries = this.removeVisited(fromIndex, unvisitedEntries);
         fromIndex = nextEntry.toIndex;
@@ -37,6 +42,10 @@ export class RouteService {
 
   private getShortestDistance(entries: DistanceEntry[]): DistanceEntry {
     return entries.reduce((prev, curr) => prev.distance < curr.distance ? prev : curr);
+  }
+
+  private getFurthestDistance(entries: DistanceEntry[]): DistanceEntry {
+    return entries.reduce((prev, curr) => prev.distance > curr.distance ? prev : curr);
   }
 
   private removeVisited(fromIndex: number, entries: DistanceEntry[]) {
