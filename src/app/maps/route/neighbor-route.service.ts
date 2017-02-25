@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {DistanceEntry} from '../distance-matrix';
 
 @Injectable()
-export class RouteNeighborService {
+export class NeighborRouteService {
   getRoundTrip(entries: DistanceEntry[], furthest: boolean = false): DistanceEntry[] {
     let roundTrip: DistanceEntry[] = [];
     let fromIndex = 0;

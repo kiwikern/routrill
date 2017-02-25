@@ -4,8 +4,9 @@ import {Observable} from 'rxjs';
 import {DistanceService} from '../distance.service';
 import {MdDialog} from '@angular/material';
 import {RouteSection} from './route-section';
-import {RouteNeighborService} from './route.service';
+import {NeighborRouteService} from './neighbor-route.service';
 import {ConfirmDialogComponent} from '../../util/confirm-dialog/confirm-dialog.component';
+import {MstRouteService} from './mst-route.service';
 
 @Component({
   selector: 'app-route',
@@ -18,12 +19,14 @@ export class RouteComponent implements OnInit {
   private roundTrip: DistanceEntry[] = [];
   private roundTripNN: DistanceEntry[] = [];
   private roundTripFN: DistanceEntry[] = [];
+  private roundTripMST: DistanceEntry[] = [];
   private stopsInOrder: string[] = [];
   private totalDistance: number = 0;
 
 
   constructor(private dialog: MdDialog,
-              private routeService: RouteNeighborService,
+              private neighborRouteService: NeighborRouteService,
+              private mstRouteService: MstRouteService,
               private distanceService: DistanceService) {
   }
 
@@ -42,12 +45,17 @@ export class RouteComponent implements OnInit {
   getNearestNeighborRoute() {
     this.roundTrip = this.roundTripNN;
     this.updateTable();
-      }
+  }
 
   getFurthestNeighborRoute() {
     this.roundTrip = this.roundTripFN;
     this.updateTable();
-      }
+  }
+
+  getMstRoute() {
+    this.roundTrip = this.roundTripMST;
+    this.updateTable();
+  }
 
   updateTable() {
     this.stopsInOrder = this.roundTrip.map(t => this.destinations[t.fromIndex]);
@@ -70,8 +78,9 @@ export class RouteComponent implements OnInit {
 
   private getRoundTrip(destinations, matrix) {
     if (matrix.hasRoute) {
-      this.roundTripNN = this.routeService.getRoundTrip(matrix.distanceEntries);
-      this.roundTripFN = this.routeService.getRoundTrip(matrix.distanceEntries, true);
+      this.roundTripNN = this.neighborRouteService.getRoundTrip(matrix.distanceEntries);
+      this.roundTripFN = this.neighborRouteService.getRoundTrip(matrix.distanceEntries, true);
+      this.roundTripMST = this.mstRouteService.getRoundTrip(matrix.distanceEntries);
     } else {
       let nonReachable: DistanceEntry[] = matrix.distanceEntries.filter(e => !e.isReachable);
       let destA: string = ' ';
