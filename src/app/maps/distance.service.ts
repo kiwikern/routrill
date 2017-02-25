@@ -14,10 +14,9 @@ export class DistanceService {
     this.distanceService = new google.maps.DistanceMatrixService();
   }
 
-  getDistance(places: Place[]) : Observable<DistanceMatrix> {
+  getDistance(places: string[]) : Observable<DistanceMatrix> {
   let getDistance: any = Observable.bindCallback(this.distanceService.getDistanceMatrix.bind(this.distanceService), res => res);
-    let names = places.map(o => o.name);
-    let result: any = getDistance({origins: names, destinations: names, travelMode: 'DRIVING'});
+    let result: any = getDistance({origins: places, destinations: places, travelMode: 'DRIVING'});
     console.dir(result);
     result.subscribe(res => console.log(res));
     return result.map(res => new DistanceMatrix(res));

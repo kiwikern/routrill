@@ -7,11 +7,15 @@ const flatMap = (xs, f) => xs.map(f).reduce((x, y) => x.concat(y), []);
 export class DistanceMatrix {
   destinations: string[] = [];
   distanceEntries: DistanceEntry[] = [];
+  hasRoute: boolean = false;
 
   constructor(matrix: any) {
-    this.destinations = matrix.destinationAddresses;
-    this.distanceEntries = flatMap(matrix.rows, (r, index) => this.getRows(index, r));
-    this.distanceEntries = this.distanceEntries.filter(e => e.fromIndex != e.toIndex);
+    if (matrix.destinationAddresses) {
+      this.destinations = matrix.destinationAddresses;
+      this.distanceEntries = flatMap(matrix.rows, (r, index) => this.getRows(index, r));
+      this.distanceEntries = this.distanceEntries.filter(e => e.fromIndex != e.toIndex);
+      this.hasRoute = this.distanceEntries.reduce((hasRoute, el) => hasRoute && el.isReachable, true);
+    }
   }
 
   private getRows(fromIndex: number, row: any) {

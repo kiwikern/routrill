@@ -26,7 +26,7 @@ export class AddressService {
     let suggestions = [];
     if (response) {
       suggestions = response.map((prediction) => {
-        return {name: prediction.description, id: prediction.place_id}
+        return {name: prediction.description}
       });
     }
     return suggestions;

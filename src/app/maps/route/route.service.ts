@@ -10,16 +10,9 @@ export class RouteService {
     let unvisitedEntries: DistanceEntry[] = this.removeTripBack(entries);
     while(unvisitedEntries.length > 0 && !abort) {
       let size: number = unvisitedEntries.length;
-      // console.log("from unvisitedEntries: " + fromIndex);
-      // console.log("unvisitedEntries length: " + unvisitedEntries.length);
-      // console.dir(unvisitedEntries);
       let fromEntries: DistanceEntry[] = this.getEntriesFrom(fromIndex, unvisitedEntries);
-      // console.log("fromentries:");
-      // console.dir(fromEntries);
       if (fromEntries.length > 0) {
         let nextEntry: DistanceEntry = this.getShortestDistance(fromEntries);
-        // console.log("next Entry:");
-        // console.dir(nextEntry);
         roundTrip.push(nextEntry);
         unvisitedEntries = this.removeVisited(fromIndex, unvisitedEntries);
         fromIndex = nextEntry.toIndex;
@@ -50,5 +43,4 @@ export class RouteService {
     return entries.filter(el => el.fromIndex != fromIndex && el.toIndex != fromIndex);
   }
 
-  private
 }

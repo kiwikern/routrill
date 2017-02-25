@@ -14,6 +14,8 @@ import { RouteComponent } from './route/route.component';
 import { RouteSectionComponent } from './route/route-section/route-section.component';
 import {RouteService} from './route/route.service';
 import { RouteMapComponent } from './route/route-map/route-map.component';
+import {UtilModule} from '../util/util.module';
+import {ConfirmDialogComponent} from '../util/confirm-dialog/confirm-dialog.component';
 
 const routes: Routes = [
   {
@@ -33,6 +35,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     FlexLayoutModule,
     FormsModule,
+    UtilModule
   ],
   declarations: [
     DestinationsComponent,
@@ -46,7 +49,8 @@ const routes: Routes = [
     DistanceService,
     RouteService,
     {provide: APP_CONFIG, useValue: APP_CONFIG_IMPL}
-  ]
+  ],
+  entryComponents: [ConfirmDialogComponent]
 })
 export class MapsModule {
 }

@@ -1,0 +1,9 @@
+<div md-dialog-title>
+  Oops...
+</div>
+<div md-dialog-content>
+  <span class="preserve-newline">{{text}}</span>
+</div>
+<div md-dialog-actions>
+  <button md-button (click)="dialogRef.close()" [routerLink]="routePath">{{routeName}}</button>
+</div>

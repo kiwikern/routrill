@@ -1,8 +1,15 @@
+<br><br>
+<div fxLayoutAlign="center center">
+  <button md-button (click)="getNearestNeighborRoute()">Nearest Neighbor</button>
+</div>
+
+<app-route-map [destinations]="stopsInOrder"></app-route-map>
+<div class="flex-container" fxLayoutAlign="center center" *ngIf="totalDistance > 0">
+  Total distance: {{totalDistance}} km
+</div>
+
 <md-list>
   <md-list-item *ngFor="let entry of roundTrip">
     <app-route-section md-line [section]="getSection(entry)"></app-route-section>
   </md-list-item>
 </md-list>
-
-<app-route-map [destinations]="getDestinations()"></app-route-map>
-Total distance: {{getTotalDistance()}} km

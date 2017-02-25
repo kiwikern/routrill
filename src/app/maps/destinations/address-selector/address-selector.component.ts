@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter} from '@angular/core';
+import {Component, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Place} from '../../address.service';
 import {Output, Input} from '@angular/core/src/metadata/directives';
@@ -9,9 +9,9 @@ import {Output, Input} from '@angular/core/src/metadata/directives';
   styleUrls: ['./address-selector.component.css']
 })
 export class AddressSelectorComponent {
-  @Output() locationUpdate = new EventEmitter<Place>();
+  @Output() locationUpdate = new EventEmitter<string>();
   @Output() searchTerm = new EventEmitter<string>();
-  @Input() suggestions: Observable<Place[]>;
+  @Input() suggestions: Observable<string[]>;
   location: Place = null;
 
   constructor() {
@@ -19,7 +19,7 @@ export class AddressSelectorComponent {
 
   updateValue(value: string | Place) {
     if (typeof value === "object" && value.name) {
-      this.locationUpdate.emit(value);
+      this.locationUpdate.emit(value.name);
       this.location = null;
     }
   }
@@ -28,7 +28,7 @@ export class AddressSelectorComponent {
     this.searchTerm.emit(place);
   }
 
-  displayLocation(location: Place): any {
+  displayLocation(location: string): any {
     if (this.location && this.location.name) {
       return this.location.name;
     } else {

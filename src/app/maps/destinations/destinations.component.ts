@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Place, AddressService} from '../address.service';
+import {AddressService, Place} from '../address.service';
 import {Observable, Subject} from 'rxjs';
 import {MdSnackBar} from '@angular/material';
-import {DistanceService} from '../distance.service';
-import {DistanceMatrix} from '../distance-matrix';
 
 @Component({
   selector: 'app-destinations',
@@ -12,7 +10,7 @@ import {DistanceMatrix} from '../distance-matrix';
 })
 export class DestinationsComponent implements OnInit {
 
-  private locations: Place[] = [];
+  private locations: string[] = [];
   private suggestions: Observable<Place[]>;
   private placeSearchStream: Subject<string> = new Subject<string>();
 
@@ -21,27 +19,30 @@ export class DestinationsComponent implements OnInit {
   }
 
 
-  addLocation(location: Place) {
+  addLocation(location: string) {
     if (this.locations.indexOf(location) != -1) {
       this.showSnackbar('Destination has already been added.');
-    } else if (this.locations.length >= 10) {
-      this.showSnackbar('The maximum of 10 destinations has been reached.');
+    } else if (this.locations.length >= 11) {
+      this.showSnackbar('The maximum of 11 destinations has been reached.');
     } else {
       this.locations.push(location);
+      this.saveDestinationsLocally();
     }
   }
 
-  removeLocation(location: Place) {
+  removeLocation(location: string) {
     let index = this.locations.indexOf(location);
     if (index == -1) {
       this.showSnackbar('Destination has already been removed.');
     } else {
       this.locations.splice(index, 1);
+      this.saveDestinationsLocally();
     }
   }
 
   clearDestinations() {
     this.locations = [];
+    this.saveDestinationsLocally();
   }
 
   showSnackbar(message: string) {
@@ -72,7 +73,7 @@ export class DestinationsComponent implements OnInit {
   saveDestinationsLocally() {
     if (this.locations) {
       localStorage.setItem('tsp.destinations', JSON.stringify(this.locations));
-      this.showSnackbar("Your destinations have been saved locally.");
+      // this.showSnackbar("Your destinations have been saved locally.");
     }
   }
 

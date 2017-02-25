@@ -17,7 +17,7 @@
         </div>
         <md-list>
           <md-list-item *ngFor="let location of locations">
-            <span md-line>{{ location?.name }}</span>
+            <span md-line>{{ location }}</span>
             <button md-icon-button (click)="removeLocation(location)" mdTooltip="Remove destination"
                     mdTooltipShowDelay="300">
               <md-icon>delete</md-icon>
@@ -25,18 +25,13 @@
           </md-list-item>
         </md-list>
       </md-card-content>
-      <md-card-actions align="center">
-        <button md-icon-button mdTooltip="Save destinations" (click)="saveDestinationsLocally()"
-                mdTooltipShowDelay="300" class="mat-accent">
-          <md-icon>done</md-icon>
-        </button>
-        <button md-icon-button (click)="clearDestinations()" mdTooltip="Remove all destinations"
+      <md-card-actions align="start">
+        <button md-button (click)="clearDestinations()" mdTooltip="Remove all destinations"
                 mdTooltipShowDelay="300">
+          Clear
           <md-icon>clear_all</md-icon>
         </button>
       </md-card-actions>
     </md-card>
   </div>
 </div>
-<!--{{ locations | json }}-->
-<!--{{ distance | async | json }}-->
