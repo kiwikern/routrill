@@ -62,6 +62,7 @@ export class DestinationsComponent implements OnInit {
       .switchMap((place: string) => place ? this.service.getSuggestions(place) : Observable.of<Place[]>([]))
       .catch(error => {
         console.log(error);
+        this.showSnackbar("Something went wrong, sorry! Try again.");
         return Observable.of<Place[]>([]);
       });
   }
