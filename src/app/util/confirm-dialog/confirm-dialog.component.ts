@@ -8,7 +8,7 @@ import {MdDialogRef} from '@angular/material';
 })
 export class ConfirmDialogComponent {
 
-  text: string = "";
+  text = '';
   routePath: string;
   routeName: string;
 
@@ -18,7 +18,7 @@ export class ConfirmDialogComponent {
       this.routePath = dialogRef.config.data.routePath;
       this.routeName = dialogRef.config.data.routeName;
     } catch (e) {
-      console.log("No dialog data was provided. ");
+      console.log('No dialog data was provided. ');
     }
   }
 

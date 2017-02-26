@@ -7,13 +7,13 @@ const flatMap = (xs, f) => xs.map(f).reduce((x, y) => x.concat(y), []);
 export class DistanceMatrix {
   destinations: string[] = [];
   distanceEntries: DistanceEntry[] = [];
-  hasRoute: boolean = false;
+  hasRoute = false;
 
   constructor(matrix: any) {
     if (matrix && matrix.destinationAddresses) {
       this.destinations = matrix.destinationAddresses;
       this.distanceEntries = flatMap(matrix.rows, (r, index) => this.getRows(index, r));
-      this.distanceEntries = this.distanceEntries.filter(e => e.fromIndex != e.toIndex);
+      this.distanceEntries = this.distanceEntries.filter(e => e.fromIndex !== e.toIndex);
       if (this.distanceEntries.length > 0) {
         this.hasRoute = this.distanceEntries.reduce((hasRoute, el) => hasRoute && el.isReachable, true);
       }
@@ -26,15 +26,15 @@ export class DistanceMatrix {
 }
 
 export class DistanceEntry {
-  fromIndex: number = 0;
-  toIndex: number = 0;
-  isReachable: boolean = false;
-  distance: number = 0;
+  fromIndex = 0;
+  toIndex = 0;
+  isReachable = false;
+  distance = 0;
 
   constructor(fromIndex: number, toIndex: number, entry: any) {
     this.fromIndex = fromIndex;
     this.toIndex = toIndex;
-    this.isReachable = entry.status == 'OK';
+    this.isReachable = entry.status === 'OK';
     if (this.isReachable) {
       this.distance = entry.distance.value;
     }

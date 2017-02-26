@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DistanceMatrix, DistanceEntry} from '../services/distance-matrix';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {DistanceService} from '../services/distance.service';
 import {MdDialog} from '@angular/material';
 import {RouteSection} from '../route-section/route-section';
@@ -17,13 +17,13 @@ import {BruteRouteService} from '../services/brute-route.service';
 export class RouteComponent implements OnInit {
 
   private destinations: string[] = [];
-  private roundTrip: DistanceEntry[] = [];
+  public roundTrip: DistanceEntry[] = [];
   private roundTripNN: DistanceEntry[] = [];
   private roundTripFN: DistanceEntry[] = [];
   private roundTripMST: DistanceEntry[] = [];
   private roundTripBrute: DistanceEntry[] = [];
-  private stopsInOrder: string[] = [];
-  private totalDistance: number = 0;
+  public stopsInOrder: string[] = [];
+  public totalDistance = 0;
 
 
   constructor(private dialog: MdDialog,
@@ -34,14 +34,14 @@ export class RouteComponent implements OnInit {
   }
 
   showDialog(message: string) {
-    let config: any = {data: {text: message, routePath: '/destinations', routeName: 'Edit Destinations'}};
+    const config: any = {data: {text: message, routePath: '/destinations', routeName: 'Edit Destinations'}};
     this.dialog.open(ConfirmDialogComponent, config);
   }
 
   getSection(entry: DistanceEntry) {
-    let from = this.destinations[entry.fromIndex];
-    let to = this.destinations[entry.toIndex];
-    let distance = entry.distance;
+    const from = this.destinations[entry.fromIndex];
+    const to = this.destinations[entry.toIndex];
+    const distance = entry.distance;
     return new RouteSection(from, to, distance);
   }
 
@@ -67,11 +67,11 @@ export class RouteComponent implements OnInit {
 
   updateTable() {
     this.stopsInOrder = this.roundTrip.map(t => this.destinations[t.fromIndex]);
-    this.totalDistance = Math.round(this.roundTrip.reduce((first, snd) => first + snd.distance, 0) / 1000)
+    this.totalDistance = Math.round(this.roundTrip.reduce((first, snd) => first + snd.distance, 0) / 1000);
   }
 
   ngOnInit() {
-    let hasChanged: boolean = JSON.parse(localStorage.getItem('tsp.hasChanged')) != false;
+    const hasChanged: boolean = JSON.parse(localStorage.getItem('tsp.hasChanged')) != false;
     this.destinations = JSON.parse(localStorage.getItem('tsp.destinations'));
     if (!hasChanged) {
       this.loadFromLocalStorage();
@@ -89,13 +89,13 @@ export class RouteComponent implements OnInit {
 
   private getRoundTrips(destinations) {
     if (destinations && destinations.length > 1) {
-      let distances: Observable<DistanceMatrix> = this.distanceService.getDistance(destinations);
+      const distances: Observable<DistanceMatrix> = this.distanceService.getDistance(destinations);
       distances.subscribe(matrix => this.destinations = matrix.destinations);
       distances.subscribe(matrix => this.getRoundTrip(destinations, matrix));
-    } else if (destinations && destinations.length == 1) {
-      this.showDialog("Only one destination found.\nAdd at least one.");
+    } else if (destinations && destinations.length === 1) {
+      this.showDialog('Only one destination found.\nAdd at least one.');
     } else {
-      this.showDialog("No destinations found.\nAdd at least two.");
+      this.showDialog('No destinations found.\nAdd at least two.');
     }
   }
 
@@ -112,11 +112,11 @@ export class RouteComponent implements OnInit {
   }
 
   private sanityCheck(destinations, matrix) {
-    let nonReachable: DistanceEntry[] = matrix.distanceEntries.filter(e => !e.isReachable);
+    const nonReachable: DistanceEntry[] = matrix.distanceEntries.filter(e => !e.isReachable);
     if (nonReachable && nonReachable.length > 0) {
-      let destA = destinations[nonReachable[0].fromIndex];
-      let destB = destinations[nonReachable[0].toIndex];
-      this.showDialog(`No possible route between "${destA}" and "${destB}".\nRemove one of them.`);
+      const destA = destinations[nonReachable[0].fromIndex];
+      const destB = destinations[nonReachable[0].toIndex];
+      this.showDialog(`No possible route between '${destA}' and '${destB}'.\nRemove one of them.`);
     } else {
       this.showDialog('Routes could not be calulated.\nCheck Destinations.');
     }

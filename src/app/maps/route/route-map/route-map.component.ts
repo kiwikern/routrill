@@ -26,7 +26,7 @@ export class RouteMapComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     //noinspection TypeScriptUnresolvedVariable
-    let map = new google.maps.Map(document.getElementById('map'), {
+    const map = new google.maps.Map(document.getElementById('map'), {
       zoom: 6,
       center: {lat: 41.85, lng: -87.65}
     });
@@ -34,18 +34,18 @@ export class RouteMapComponent implements OnInit, OnChanges {
   }
 
   calculateAndDisplayRoute() {
-    let start = "";
-    let end = "";
+    let start = '';
+    let end = '';
     let waypoints = [];
     if (this.destinations.length >= 2) {
       start = this.destinations[0];
       end = this.destinations[0];
       waypoints = this.destinations.slice(1);
     } else {
-      this.showSnackbar("You need at least two destinations.");
+      this.showSnackbar('You need at least two destinations.');
       return;
     }
-    let waypts: any[] = waypoints.map(wp => ({location: wp, stopover: true}));
+    const waypts: any[] = waypoints.map(wp => ({location: wp, stopover: true}));
 
     //noinspection TypeScriptUnresolvedVariable
     this.directionsService.route({
@@ -59,14 +59,14 @@ export class RouteMapComponent implements OnInit, OnChanges {
       if (status === google.maps.DirectionsStatus.OK) {
         this.directionsDisplay.setDirections(response);
       } else {
-        this.showSnackbar("Directions request failed. Try again.");
-        console.log("Maps API call failed due to " + status);
+        this.showSnackbar('Directions request failed. Try again.');
+        console.log('Maps API call failed due to ' + status);
       }
     });
   }
 
   showSnackbar(message: string) {
-    let config: any = {duration: 3000};
+    const config: any = {duration: 3000};
     this.snackBar.open(message, '', config);
   }
 

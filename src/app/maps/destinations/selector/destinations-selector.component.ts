@@ -1,10 +1,10 @@
 import {Component, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {Place} from '../destination.service';
 import {Output, Input} from '@angular/core/src/metadata/directives';
 
 @Component({
-  selector: 'app-destinations-selector',
+  selector: 'tsp-destinations-selector',
   templateUrl: './destinations-selector.component.html',
   styleUrls: ['./destinations-selector.component.css']
 })
@@ -18,7 +18,7 @@ export class DestinationsSelectorComponent {
   }
 
   updateValue(value: string | Place) {
-    if (typeof value === "object" && value.name) {
+    if (typeof value === 'object' && value.name) {
       this.locationUpdate.emit(value.name);
       this.location = null;
     }

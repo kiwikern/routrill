@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Input} from '@angular/core/src/metadata/directives';
 import {RouteSection} from './route-section';
 
@@ -14,7 +14,8 @@ export class RouteSectionComponent implements OnInit {
 
   @Input() section: RouteSection;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

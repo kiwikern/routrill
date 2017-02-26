@@ -3,14 +3,14 @@ import {DistanceEntry} from './distance-matrix';
 
 @Injectable()
 export class NeighborRouteService {
-  getRoundTrip(entries: DistanceEntry[], furthest: boolean = false): DistanceEntry[] {
-    let roundTrip: DistanceEntry[] = [];
+  getRoundTrip(entries: DistanceEntry[], furthest = false): DistanceEntry[] {
+    const roundTrip: DistanceEntry[] = [];
     let fromIndex = 0;
-    let abort: boolean = false;
+    let abort = false;
     let unvisitedEntries: DistanceEntry[] = this.removeTripBack(entries);
-    while(unvisitedEntries.length > 0 && !abort) {
-      let size: number = unvisitedEntries.length;
-      let fromEntries: DistanceEntry[] = this.getEntriesFrom(fromIndex, unvisitedEntries);
+    while (unvisitedEntries.length > 0 && !abort) {
+      const size: number = unvisitedEntries.length;
+      const fromEntries: DistanceEntry[] = this.getEntriesFrom(fromIndex, unvisitedEntries);
       if (fromEntries.length > 0) {
         let nextEntry: DistanceEntry;
         if (!furthest) {
@@ -22,22 +22,22 @@ export class NeighborRouteService {
         unvisitedEntries = this.removeVisited(fromIndex, unvisitedEntries);
         fromIndex = nextEntry.toIndex;
       }
-      if (size == unvisitedEntries.length) {
+      if (size === unvisitedEntries.length) {
         abort = true;
       }
     }
     if (entries.length > 0) {
-      roundTrip.push(entries.filter(el => el.fromIndex == fromIndex && el.toIndex == 0)[0]);
+      roundTrip.push(entries.filter(el => el.fromIndex === fromIndex && el.toIndex === 0)[0]);
     }
     return roundTrip;
   }
 
   private removeTripBack(entries: DistanceEntry[]) {
-    return entries.filter(el => el.toIndex != 0);
+    return entries.filter(el => el.toIndex !== 0);
   }
 
   private getEntriesFrom(fromIndex: number, entries: DistanceEntry[]): DistanceEntry[] {
-    return entries.filter(el => el.fromIndex == fromIndex);
+    return entries.filter(el => el.fromIndex === fromIndex);
   }
 
   private getShortestDistance(entries: DistanceEntry[]): DistanceEntry {
@@ -49,7 +49,7 @@ export class NeighborRouteService {
   }
 
   private removeVisited(fromIndex: number, entries: DistanceEntry[]) {
-    return entries.filter(el => el.fromIndex != fromIndex && el.toIndex != fromIndex);
+    return entries.filter(el => el.fromIndex !== fromIndex && el.toIndex !== fromIndex);
   }
 
 }
