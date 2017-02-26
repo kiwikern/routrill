@@ -17,6 +17,7 @@ import { RouteMapComponent } from './route/route-map/route-map.component';
 import {UtilModule} from '../util/util.module';
 import {ConfirmDialogComponent} from '../util/confirm-dialog/confirm-dialog.component';
 import {MstRouteService} from './route/mst-route.service';
+import {BruteRouteService} from './route/brute-route.service';
 
 const routes: Routes = [
   {
@@ -50,6 +51,7 @@ const routes: Routes = [
     DistanceService,
     NeighborRouteService,
     MstRouteService,
+    BruteRouteService,
     {provide: APP_CONFIG, useValue: APP_CONFIG_IMPL}
   ],
   entryComponents: [ConfirmDialogComponent]

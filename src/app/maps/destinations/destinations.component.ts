@@ -22,8 +22,8 @@ export class DestinationsComponent implements OnInit {
   addLocation(location: string) {
     if (this.locations.indexOf(location) != -1) {
       this.showSnackbar('Destination has already been added.');
-    } else if (this.locations.length >= 11) {
-      this.showSnackbar('The maximum of 11 destinations has been reached.');
+    } else if (this.locations.length >= 10) {
+      this.showSnackbar('The maximum of 10 destinations has been reached.');
     } else {
       this.locations.push(location);
       this.saveDestinationsLocally();
@@ -73,7 +73,7 @@ export class DestinationsComponent implements OnInit {
   saveDestinationsLocally() {
     if (this.locations) {
       localStorage.setItem('tsp.destinations', JSON.stringify(this.locations));
-      // this.showSnackbar("Your destinations have been saved locally.");
+      localStorage.setItem('tsp.hasChanged', JSON.stringify(true));
     }
   }
 

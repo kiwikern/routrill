@@ -10,7 +10,7 @@ export class DistanceMatrix {
   hasRoute: boolean = false;
 
   constructor(matrix: any) {
-    if (matrix.destinationAddresses) {
+    if (matrix && matrix.destinationAddresses) {
       this.destinations = matrix.destinationAddresses;
       this.distanceEntries = flatMap(matrix.rows, (r, index) => this.getRows(index, r));
       this.distanceEntries = this.distanceEntries.filter(e => e.fromIndex != e.toIndex);
