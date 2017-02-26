@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Place} from './address.service';
 
 import {Observable} from 'rxjs';
 import 'rxjs/add/observable/bindCallback';
