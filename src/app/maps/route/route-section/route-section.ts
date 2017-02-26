@@ -1,6 +1,9 @@
 /**
  * Created by Kim on 23.02.2017.
  */
+/**
+ * A RouteSection has a start, a destination and a distance.
+ */
 export class RouteSection {
   from: string = "";
   to: string = "";

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Input} from '@angular/core/src/metadata/directives';
-import {RouteSection} from '../route-section';
+import {RouteSection} from './route-section';
 
+/**
+ * ViewComponent to display a RouteSection with start, goal and distance.
+ */
 @Component({
   selector: 'app-route-section',
   templateUrl: './route-section.component.html',

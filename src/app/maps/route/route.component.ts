@@ -3,7 +3,7 @@ import {DistanceMatrix, DistanceEntry} from '../distance-matrix';
 import {Observable} from 'rxjs';
 import {DistanceService} from '../distance.service';
 import {MdDialog} from '@angular/material';
-import {RouteSection} from './route-section';
+import {RouteSection} from './route-section/route-section';
 import {NeighborRouteService} from './neighbor-route.service';
 import {ConfirmDialogComponent} from '../../util/confirm-dialog/confirm-dialog.component';
 import {MstRouteService} from './mst-route.service';
