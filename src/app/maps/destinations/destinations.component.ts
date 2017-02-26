@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {AddressService, Place} from '../address.service';
 import {Observable, Subject} from 'rxjs';
 import {MdSnackBar} from '@angular/material';
@@ -15,7 +15,8 @@ export class DestinationsComponent implements OnInit {
   private placeSearchStream: Subject<string> = new Subject<string>();
 
   constructor(private snackBar: MdSnackBar,
-              private service: AddressService,) {
+              private service: AddressService,
+              private changeDetection: ChangeDetectorRef) {
   }
 
 
@@ -69,6 +70,7 @@ export class DestinationsComponent implements OnInit {
 
   getSuggestions(place: string) {
     this.placeSearchStream.next(place);
+    setTimeout(() => this.changeDetection.markForCheck(), 500);
   }
 
   saveDestinationsLocally() {
