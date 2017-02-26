@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {DistanceEntry} from '../distance-matrix';
+import {DistanceEntry} from '../../distance-matrix';
 
 @Injectable()
 export class NeighborRouteService {

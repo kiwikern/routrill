@@ -4,10 +4,10 @@ import {Observable} from 'rxjs';
 import {DistanceService} from '../distance.service';
 import {MdDialog} from '@angular/material';
 import {RouteSection} from './route-section/route-section';
-import {NeighborRouteService} from './neighbor-route.service';
+import {NeighborRouteService} from './services/neighbor-route.service';
 import {ConfirmDialogComponent} from '../../util/confirm-dialog/confirm-dialog.component';
-import {MstRouteService} from './mst-route.service';
-import {BruteRouteService} from './brute-route.service';
+import {MstRouteService} from './services/mst-route.service';
+import {BruteRouteService} from './services/brute-route.service';
 
 @Component({
   selector: 'app-route',

@@ -10,12 +10,12 @@ import {AddressSelectorComponent} from './destinations/address-selector/address-
 import {FormsModule} from '@angular/forms';
 import { RouteComponent } from './route/route.component';
 import { RouteSectionComponent } from './route/route-section/route-section.component';
-import {NeighborRouteService} from './route/neighbor-route.service';
+import {NeighborRouteService} from './route/services/neighbor-route.service';
 import { RouteMapComponent } from './route/route-map/route-map.component';
 import {UtilModule} from '../util/util.module';
 import {ConfirmDialogComponent} from '../util/confirm-dialog/confirm-dialog.component';
-import {MstRouteService} from './route/mst-route.service';
-import {BruteRouteService} from './route/brute-route.service';
+import {MstRouteService} from './route/services/mst-route.service';
+import {BruteRouteService} from './route/services/brute-route.service';
 
 const routes: Routes = [
   {
