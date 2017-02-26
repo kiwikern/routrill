@@ -4,7 +4,7 @@ import {Observable, Subject} from 'rxjs';
 import {MdSnackBar} from '@angular/material';
 
 @Component({
-  selector: 'app-destinations',
+  selector: 'tsp-destinations',
   templateUrl: './destinations.component.html',
   styleUrls: ['./destinations.component.css']
 })

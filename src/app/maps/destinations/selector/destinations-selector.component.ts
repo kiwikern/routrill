@@ -4,11 +4,11 @@ import {Place} from '../destination.service';
 import {Output, Input} from '@angular/core/src/metadata/directives';
 
 @Component({
-  selector: 'app-address-selector',
-  templateUrl: './address-selector.component.html',
-  styleUrls: ['./address-selector.component.css']
+  selector: 'app-destinations-selector',
+  templateUrl: './destinations-selector.component.html',
+  styleUrls: ['./destinations-selector.component.css']
 })
-export class AddressSelectorComponent {
+export class DestinationsSelectorComponent {
   @Output() locationUpdate = new EventEmitter<string>();
   @Output() searchTerm = new EventEmitter<string>();
   @Input() suggestions: Observable<string[]>;

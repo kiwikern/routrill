@@ -6,9 +6,9 @@
     </div>
     <md-card style="min-width: 350px">
       <md-card-subtitle>
-        <app-address-selector class="flex-item" fxFlex [suggestions]="suggestions"
-                              (locationUpdate)="addLocation($event)"
-                              (searchTerm)="getSuggestions($event)"></app-address-selector>
+        <app-destinations-selector class="flex-item" fxFlex [suggestions]="suggestions"
+                                   (locationUpdate)="addLocation($event)"
+                                   (searchTerm)="getSuggestions($event)"></app-destinations-selector>
       </md-card-subtitle>
       <md-card-content>
         <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" *ngIf="locations.length == 0">

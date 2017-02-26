@@ -6,6 +6,6 @@ export class TspPage {
   }
 
   getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+    return element(by.css('tsp-root h1')).getText();
   }
 }

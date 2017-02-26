@@ -10,7 +10,7 @@
 
 <br>
 
-<app-route-map [destinations]="stopsInOrder"></app-route-map>
+<tsp-route-map [destinations]="stopsInOrder"></tsp-route-map>
 <br>
 <div class="flex-container" fxLayoutAlign="center center" *ngIf="totalDistance > 0">
   Total distance: {{totalDistance}} km
@@ -20,7 +20,7 @@
 <md-list [class.route-overview]="roundTrip.length > 2">
   <h3 md-subheader *ngIf="roundTrip.length > 2">Route</h3>
   <md-list-item *ngFor="let entry of roundTrip">
-    <app-route-section md-line [section]="getSection(entry)"></app-route-section>
+    <tsp-route-section md-line [section]="getSection(entry)"></tsp-route-section>
   </md-list-item>
 </md-list>
 </div>

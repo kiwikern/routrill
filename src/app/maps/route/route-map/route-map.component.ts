@@ -3,7 +3,7 @@ import {Input} from '@angular/core/src/metadata/directives';
 import {MdSnackBar} from '@angular/material';
 
 @Component({
-  selector: 'app-route-map',
+  selector: 'tsp-route-map',
   templateUrl: './route-map.component.html',
   styleUrls: ['./route-map.component.css']
 })

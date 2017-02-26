@@ -6,7 +6,7 @@ import {RouteSection} from './route-section';
  * ViewComponent to display a RouteSection with start, goal and distance.
  */
 @Component({
-  selector: 'app-route-section',
+  selector: 'tsp-route-section',
   templateUrl: './route-section.component.html',
   styleUrls: ['./route-section.component.css']
 })

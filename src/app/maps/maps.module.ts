@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DestinationsComponent} from './destinations/destinations-main/destinations.component';
+import {DestinationsComponent} from './destinations/main/destinations.component';
 import {Routes, RouterModule} from '@angular/router';
 import {MaterialModule} from '@angular/material';
 import {AddressService} from './destinations/destination.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {DistanceService} from './route/services/distance.service';
-import {AddressSelectorComponent} from './destinations/address-selector/address-selector.component';
+import {DestinationsSelectorComponent} from './destinations/selector/destinations-selector.component';
 import {FormsModule} from '@angular/forms';
 import { RouteComponent } from './route/route-main/route.component';
 import { RouteSectionComponent } from './route/route-section/route-section.component';
@@ -39,7 +39,7 @@ const routes: Routes = [
   ],
   declarations: [
     DestinationsComponent,
-    AddressSelectorComponent,
+    DestinationsSelectorComponent,
     RouteComponent,
     RouteSectionComponent,
     RouteMapComponent

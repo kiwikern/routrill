@@ -10,7 +10,7 @@ import {MstRouteService} from '../services/mst-route.service';
 import {BruteRouteService} from '../services/brute-route.service';
 
 @Component({
-  selector: 'app-route',
+  selector: 'tsp-route',
   templateUrl: './route.component.html',
   styleUrls: ['./route.component.css']
 })
