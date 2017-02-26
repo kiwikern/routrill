@@ -1,5 +1,5 @@
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
-import {AddressService, Place} from '../address.service';
+import {AddressService, Place} from '../destination.service';
 import {Observable, Subject} from 'rxjs';
 import {MdSnackBar} from '@angular/material';
 

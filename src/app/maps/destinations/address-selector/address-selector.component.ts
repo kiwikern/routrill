@@ -1,6 +1,6 @@
 import {Component, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Place} from '../../address.service';
+import {Place} from '../destination.service';
 import {Output, Input} from '@angular/core/src/metadata/directives';
 
 @Component({
