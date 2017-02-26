@@ -21,3 +21,8 @@ body {
   background-color: darkgrey;
   outline: 1px solid slategrey;
 }
+
+a {
+  color: hotpink;
+  text-decoration: none;
+}
