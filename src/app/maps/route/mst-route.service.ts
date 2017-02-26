@@ -50,7 +50,10 @@ export class MstRouteService {
         visited.push(node.fromIndex);
       }
     }
-    trip.push(this.getEdge(fullGraph, lastTo, 0));
+    var edge = this.getEdge(fullGraph, lastTo, 0);
+    if (typeof edge != 'undefined') {
+      trip.push(edge);
+    }
     return trip;
   }
 

@@ -14,7 +14,9 @@ export class DistanceMatrix {
       this.destinations = matrix.destinationAddresses;
       this.distanceEntries = flatMap(matrix.rows, (r, index) => this.getRows(index, r));
       this.distanceEntries = this.distanceEntries.filter(e => e.fromIndex != e.toIndex);
-      this.hasRoute = this.distanceEntries.reduce((hasRoute, el) => hasRoute && el.isReachable, true);
+      if (this.distanceEntries.length > 0) {
+        this.hasRoute = this.distanceEntries.reduce((hasRoute, el) => hasRoute && el.isReachable, true);
+      }
     }
   }
 
