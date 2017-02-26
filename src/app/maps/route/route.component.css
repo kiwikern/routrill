@@ -1,3 +1,16 @@
 .mat-button-toggle-checked {
   background-color: #404040;
 }
+
+.route-overview {
+  overflow-y: auto;
+  height: 230px;
+  min-width: 600px;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  /*border-right-width: 0px;*/
+  /*border-bottom-width: 1px;*/
+  /*border-top-width: 1px;*/
+  /*border-left-width: 1px;*/
+  /*border-color: #282828;*/
+  /*border-style: solid;*/
+}

@@ -25,11 +25,16 @@
           </md-list-item>
         </md-list>
       </md-card-content>
-      <md-card-actions align="start">
+      <md-card-actions align="center">
+        <button md-button (click)="getSampleDestinations()" mdTooltip="Add sample locations"
+                mdTooltipShowDelay="300">
+          <md-icon>add_location</md-icon>
+          Samples
+        </button>
         <button md-button (click)="clearDestinations()" mdTooltip="Remove all destinations"
                 mdTooltipShowDelay="300">
-          Clear
           <md-icon>clear_all</md-icon>
+          Clear
         </button>
       </md-card-actions>
     </md-card>

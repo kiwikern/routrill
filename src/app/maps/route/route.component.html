@@ -1,8 +1,8 @@
 <br><br>
 <div fxLayoutAlign="center center">
   <md-button-toggle-group>
-    <md-button-toggle (click)="getNearestNeighborRoute()">Nearest Neighbor</md-button-toggle>
     <md-button-toggle (click)="getFurthestNeighborRoute()">Furthest Neighbor</md-button-toggle>
+    <md-button-toggle (click)="getNearestNeighborRoute()">Nearest Neighbor</md-button-toggle>
     <md-button-toggle (click)="getMstRoute()">MST</md-button-toggle>
     <md-button-toggle (click)="getBruteRoute()">Bruteforce</md-button-toggle>
   </md-button-toggle-group>
@@ -15,9 +15,12 @@
 <div class="flex-container" fxLayoutAlign="center center" *ngIf="totalDistance > 0">
   Total distance: {{totalDistance}} km
 </div>
-
-<md-list>
+<br>
+<div class="flex-container" fxLayoutAlign="center center">
+<md-list [class.route-overview]="roundTrip.length > 2">
+  <h3 md-subheader *ngIf="roundTrip.length > 2">Route</h3>
   <md-list-item *ngFor="let entry of roundTrip">
     <app-route-section md-line [section]="getSection(entry)"></app-route-section>
   </md-list-item>
 </md-list>
+</div>

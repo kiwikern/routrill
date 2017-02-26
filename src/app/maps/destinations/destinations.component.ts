@@ -77,4 +77,12 @@ export class DestinationsComponent implements OnInit {
     }
   }
 
+  getSampleDestinations() {
+    const exampleDestinations: string[] =  ["Berlin, Deutschland","Warschau, Polen",  "München, Deutschland",
+      "Pforzheim, Deutschland","Hamburg, Deutschland",  "Dresden, Deutschland",
+      "Göttingen, Deutschland","Bielefeld, Deutschland","Madrid, Spanien"];
+    this.locations = exampleDestinations;
+    this.saveDestinationsLocally();
+  }
+
 }
