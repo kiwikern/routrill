@@ -11,11 +11,9 @@ export class ConfirmDialogComponent {
   text: string = "";
   routePath: string;
   routeName: string;
-  dialogRef: MdDialogRef;
 
   constructor(public dialogRef: MdDialogRef<ConfirmDialogComponent>) {
     try {
-      this.dialogRef = dialogRef;
       this.text = dialogRef.config.data.text;
       this.routePath = dialogRef.config.data.routePath;
       this.routeName = dialogRef.config.data.routeName;
