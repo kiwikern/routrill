@@ -6,4 +6,5 @@
 
 .wrap {
   text-wrap: normal;
+  max-width: 800px;
 }
