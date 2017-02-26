@@ -1,35 +1,65 @@
 import {Injectable} from '@angular/core';
 import {DistanceEntry} from './distance-matrix';
 
+/**
+ * Calculates a round trip for given DistanceEntries using a nearest/farthest neighbors approach.
+ * @see https://en.wikipedia.org/wiki/Nearest_neighbor_graph
+ */
 @Injectable()
 export class NeighborRouteService {
-  getRoundTrip(entries: DistanceEntry[], furthest = false): DistanceEntry[] {
+
+  /**
+   * Given a distance matrix, returns a round trip calculated with the nearest neighbor heuristic.
+   * @param entries - distance matrix
+   * @returns {DistanceEntry[]}
+   */
+  getNNRoundTrip(entries: DistanceEntry[]) {
+    return this.getRoundTrip(entries, this.getShortestTrip);
+  }
+
+  /**
+   * Given a distance matrix, returns a round trip calculated with the farthest neighbor heuristic.
+   * @param entries - distance matrix
+   * @returns {DistanceEntry[]}
+   */
+  getFNRoundTrip(entries: DistanceEntry[]) {
+    return this.getRoundTrip(entries, this.getLongestTrip);
+  }
+
+  /**
+   * Given a distance matrix, returns a round trip calculated with a neighbor heuristic.
+   * @param entries - distance matrix
+   * @param nextEntryFn - function that returns next trip section
+   * @returns {DistanceEntry[]}
+   */
+  private getRoundTrip(entries: DistanceEntry[], nextEntryFn): DistanceEntry[] {
     const roundTrip: DistanceEntry[] = [];
     let fromIndex = 0;
-    let abort = false;
     let unvisitedEntries: DistanceEntry[] = this.removeTripBack(entries);
-    while (unvisitedEntries.length > 0 && !abort) {
-      const size: number = unvisitedEntries.length;
+    while (unvisitedEntries.length > 0) {
       const fromEntries: DistanceEntry[] = this.getEntriesFrom(fromIndex, unvisitedEntries);
       if (fromEntries.length > 0) {
         let nextEntry: DistanceEntry;
-        if (!furthest) {
-          nextEntry = this.getShortestDistance(fromEntries);
-        } else {
-          nextEntry = this.getFurthestDistance(fromEntries);
-        }
+        nextEntry = nextEntryFn(fromEntries);
         roundTrip.push(nextEntry);
         unvisitedEntries = this.removeVisited(fromIndex, unvisitedEntries);
         fromIndex = nextEntry.toIndex;
       }
-      if (size === unvisitedEntries.length) {
-        abort = true;
-      }
     }
     if (entries.length > 0) {
-      roundTrip.push(entries.filter(el => el.fromIndex === fromIndex && el.toIndex === 0)[0]);
+      roundTrip.push(this.getTripBackToStart(entries, fromIndex));
     }
     return roundTrip;
+  }
+
+  /**
+   * Given a distance matrix, returns the trip back to the start from a starting point.
+   * @param entries - distance matrix
+   * @param fromIndex - starting point
+   * @returns {DistanceEntry}
+   */
+  private getTripBackToStart(entries: DistanceEntry[], fromIndex: number) {
+    return entries.filter(el => el.fromIndex === fromIndex && el.toIndex === 0)[0];
   }
 
   private removeTripBack(entries: DistanceEntry[]) {
@@ -40,11 +70,11 @@ export class NeighborRouteService {
     return entries.filter(el => el.fromIndex === fromIndex);
   }
 
-  private getShortestDistance(entries: DistanceEntry[]): DistanceEntry {
+  private getShortestTrip(entries: DistanceEntry[]): DistanceEntry {
     return entries.reduce((prev, curr) => prev.distance < curr.distance ? prev : curr);
   }
 
-  private getFurthestDistance(entries: DistanceEntry[]): DistanceEntry {
+  private getLongestTrip(entries: DistanceEntry[]): DistanceEntry {
     return entries.reduce((prev, curr) => prev.distance > curr.distance ? prev : curr);
   }
 

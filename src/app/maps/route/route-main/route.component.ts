@@ -50,7 +50,7 @@ export class RouteComponent implements OnInit {
     this.updateTable();
   }
 
-  getFurthestNeighborRoute() {
+  getFarthestNeighborRoute() {
     this.roundTrip = this.roundTripFN;
     this.updateTable();
   }
@@ -101,8 +101,8 @@ export class RouteComponent implements OnInit {
 
   private getRoundTrip(destinations, matrix) {
     if (matrix.hasRoute) {
-      this.roundTripNN = this.neighborRouteService.getRoundTrip(matrix.distanceEntries);
-      this.roundTripFN = this.neighborRouteService.getRoundTrip(matrix.distanceEntries, true);
+      this.roundTripNN = this.neighborRouteService.getNNRoundTrip(matrix.distanceEntries);
+      this.roundTripFN = this.neighborRouteService.getFNRoundTrip(matrix.distanceEntries);
       this.roundTripMST = this.mstRouteService.getRoundTrip(matrix.distanceEntries);
       this.roundTripBrute = this.bruteRouteService.getRoundTrip(matrix.distanceEntries);
       this.saveToLocalStorage();
