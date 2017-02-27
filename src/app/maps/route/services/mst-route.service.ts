@@ -1,14 +1,30 @@
 import {Injectable} from '@angular/core';
 import {DistanceEntry} from './distance-matrix';
 
+/**
+ * Calculates a round trip for given DistanceEntries by building a minimum spanning tree (MST) and
+ * finding an Euler circle.
+ */
 @Injectable()
 export class MstRouteService {
+
+  /**
+   * Calculates a round trip using an MST and an Euler circle
+   * @param entries - distance matrix
+   * @returns {DistanceEntry[]}
+   */
   getRoundTrip(entries: DistanceEntry[]): DistanceEntry[] {
     const mst: DistanceEntry[] = this.getMST(entries);
     const euler: DistanceEntry[] = this.getEulerCircle(mst);
     return this.getTrip(euler, entries);
   }
 
+  /**
+   * Given a distance matrix, builds up a minimum spanning tree, such that all nodes are connected with a
+   * minimum total distance.
+   * @param entries - distance matrix
+   * @returns {DistanceEntry[]}
+   */
   private getMST(entries: DistanceEntry[]): DistanceEntry[] {
     let mst: DistanceEntry[] = [];
     let entriesToVisit = entries.slice(0);
@@ -22,22 +38,34 @@ export class MstRouteService {
     return mst;
   }
 
-  private getEulerCircle(graph: DistanceEntry[], from = 0): DistanceEntry[] {
+  /**
+   * Given an MST, calculates a possible Euler circle.
+   * @param mst
+   * @param from - starting point (used internally for recursion)
+   * @returns {DistanceEntry[]}
+   */
+  private getEulerCircle(mst: DistanceEntry[], from = 0): DistanceEntry[] {
     let eulerGraph: DistanceEntry[] = [];
-    for (const to of this.getReachableNodes(graph, from)) {
-      if (this.isBridge(graph, from, to) || this.hasNoBridges(graph, from)) {
-        const edge = this.getEdge(graph, from, to);
+    for (const to of this.getDirectlyReachableNodes(mst, from)) {
+      if (!this.isBridge(mst, from, to) || this.hasOnlyBridges(mst, from)) {
+        const edge = this.getEdge(mst, from, to);
         if (typeof edge !== 'undefined') {
           eulerGraph.push(edge);
         }
-        graph = this.removeEdge(graph, from, to);
-        eulerGraph = eulerGraph.concat(this.getEulerCircle(graph, to));
-        eulerGraph.forEach(e => graph = this.removeEdge(graph, e.fromIndex, e.toIndex));
+        mst = this.removeEdge(mst, from, to);
+        eulerGraph = eulerGraph.concat(this.getEulerCircle(mst, to));
+        eulerGraph.forEach(e => mst = this.removeEdge(mst, e.fromIndex, e.toIndex));
       }
     }
     return eulerGraph;
   }
 
+  /**
+   * Given an Euler circle and the full distance matrix, returns an approximation for the shortest round trip.
+   * @param euler - euler circle
+   * @param fullGraph - distance matrix
+   * @returns {DistanceEntry[]}
+   */
   private getTrip(euler: DistanceEntry[], fullGraph: DistanceEntry[]): DistanceEntry[] {
     const trip: DistanceEntry[] = [];
     const visited: number[] = [];
@@ -60,23 +88,43 @@ export class MstRouteService {
     return graph.filter(e => e.fromIndex === from && e.toIndex === to)[0];
   }
 
-  private hasNoBridges(graph: DistanceEntry[], from): boolean {
-    let hasBridge = false;
-    for (const to of this.getReachableNodes(graph, from)) {
-      hasBridge = hasBridge || this.isBridge(graph, from, to);
+  /**
+   * Given a graph and a starting point, returns true, if all adjacent nodes for the starting point in the graph
+   * are bridges, hence removing them would make another point unreachable.
+   * @param graph
+   * @param from - starting point
+   * @returns {boolean}
+   */
+  private hasOnlyBridges(graph: DistanceEntry[], from): boolean {
+    let hasBridge = true;
+    for (const to of this.getDirectlyReachableNodes(graph, from)) {
+      hasBridge = hasBridge && this.isBridge(graph, from, to);
     }
-    return !hasBridge;
+    return hasBridge;
   }
 
+  /**
+   * Returns true, if the edge (from -> to) is a bridge.
+   * @see #hasOnlyBridges
+   * @param graph
+   * @param from
+   * @param to
+   * @returns {boolean}
+   */
   private isBridge(graph: DistanceEntry[], from: number, to: number): boolean {
     const countWithEdge: number = this.countReachable(graph, from);
     if (countWithEdge === 1) {
       return true;
     }
     const countWithoutEdge: number = this.countReachable(this.removeEdge(graph, from, to), from);
-    return countWithEdge <= countWithoutEdge;
+    return countWithEdge > countWithoutEdge;
   }
 
+  /**
+   * Returns the edges with the shortest distance (both ways)
+   * @param entries
+   * @returns {DistanceEntry[]}
+   */
   private getShortestEdges(entries: DistanceEntry[]): DistanceEntry[] {
     const shortest: DistanceEntry = entries.reduce((prev, curr) => {
       if (prev.distance < curr.distance) {
@@ -89,14 +137,22 @@ export class MstRouteService {
     return [shortest, back];
   }
 
-  private removeVisited(entriesToVisit: DistanceEntry[], shortest: DistanceEntry[]): DistanceEntry[] {
-    return entriesToVisit.filter(e => shortest.indexOf(e) === -1);
+  private removeVisited(entriesToVisit: DistanceEntry[], visited: DistanceEntry[]): DistanceEntry[] {
+    return entriesToVisit.filter(e => visited.indexOf(e) === -1);
   }
 
   private removeEdge(graph: DistanceEntry[], from: number, to: number) {
     return graph.filter(e => e.fromIndex !== from || e.toIndex !== to);
   }
 
+  /**
+   * Returns true, if there is a cycle from the starting point in the graph.
+   * @param graph
+   * @param start starting point
+   * @param parent - used internally for recursion
+   * @param visited - used internally for recursion
+   * @returns {boolean}
+   */
   private formsCycle(graph: DistanceEntry[], start: number, parent = start, visited: number[] = []): boolean {
     const nodes: number[] = this.getNodes(graph);
     visited.push(start);
@@ -121,10 +177,17 @@ export class MstRouteService {
     return graph.reduce((isReachable, e) => isReachable || (e.fromIndex === from && e.toIndex === to), false);
   }
 
+  /**
+   * Returns number of nodes, that can be transitively reached from the starting point.
+   * @param graph
+   * @param from - starting point
+   * @param visited - used internally for recursion
+   * @returns {number}
+   */
   private countReachable(graph: DistanceEntry[], from: number, visited: number[] = []) {
     let count = 1;
     visited.push(from);
-    for (const node of this.getReachableNodes(graph, from)) {
+    for (const node of this.getDirectlyReachableNodes(graph, from)) {
       if (visited.indexOf(node) === -1) {
         count += this.countReachable(graph, node, visited);
       }
@@ -132,7 +195,7 @@ export class MstRouteService {
     return count;
   }
 
-  private getReachableNodes(graph: DistanceEntry[], node: number) {
+  private getDirectlyReachableNodes(graph: DistanceEntry[], node: number) {
     return graph.filter(e => e.fromIndex === node).map(e => e.toIndex);
   }
 }
