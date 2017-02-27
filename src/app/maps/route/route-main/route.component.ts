@@ -4,10 +4,8 @@ import {Observable} from 'rxjs/Observable';
 import {DistanceService} from '../services/distance.service';
 import {MdDialog} from '@angular/material';
 import {RouteSection} from '../route-section/route-section';
-import {NeighborRouteService} from '../services/neighbor-route.service';
 import {ConfirmDialogComponent} from '../../../util/confirm-dialog/confirm-dialog.component';
-import {MstRouteService} from '../services/mst-route.service';
-import {BruteRouteService} from '../services/brute-route.service';
+import {RouteService} from '../services/route.service';
 
 @Component({
   selector: 'tsp-route',
@@ -27,14 +25,17 @@ export class RouteComponent implements OnInit {
 
 
   constructor(private dialog: MdDialog,
-              private neighborRouteService: NeighborRouteService,
-              private mstRouteService: MstRouteService,
-              private bruteRouteService: BruteRouteService,
+              private routeService: RouteService,
               private distanceService: DistanceService) {
   }
 
-  showDialog(message: string) {
-    const config: any = {data: {text: message, routePath: '/destinations', routeName: 'Edit Destinations'}};
+  showDialog(message: string, showButtons = true) {
+    let config;
+    if (showButtons) {
+      config = {data: {title: 'Oops...', text: message, routePath: '/destinations', routeName: 'Edit Destinations'}};
+    } else {
+      config = {data: {title: 'Calculating...'}};
+    }
     this.dialog.open(ConfirmDialogComponent, config);
   }
 
@@ -87,7 +88,7 @@ export class RouteComponent implements OnInit {
     this.roundTripBrute = JSON.parse(localStorage.getItem('tsp.roundTripBrute'));
   }
 
-  private getRoundTrips(destinations) {
+  private getRoundTrips(destinations: string[]) {
     if (destinations && destinations.length > 1) {
       const distances: Observable<DistanceMatrix> = this.distanceService.getDistance(destinations);
       distances.subscribe(matrix => this.destinations = matrix.destinations);
@@ -99,19 +100,27 @@ export class RouteComponent implements OnInit {
     }
   }
 
-  private getRoundTrip(destinations, matrix) {
+  private getRoundTrip(destinations: string[], matrix: DistanceMatrix) {
     if (matrix.hasRoute) {
-      this.roundTripNN = this.neighborRouteService.getNNRoundTrip(matrix.distanceEntries);
-      this.roundTripFN = this.neighborRouteService.getFNRoundTrip(matrix.distanceEntries);
-      this.roundTripMST = this.mstRouteService.getRoundTrip(matrix.distanceEntries);
-      this.roundTripBrute = this.bruteRouteService.getRoundTrip(matrix.distanceEntries);
+      let timeout = 0;
+      if (matrix.destinations.length > 8) {
+        this.showDialog("Calculating...", false);
+        timeout = 800;
+      }
+      setTimeout(() => {
+        this.roundTripNN = this.routeService.getNearestNeighborRoundTrip(matrix.distanceEntries);
+        this.roundTripFN = this.routeService.getFarthestNeighborRoundTrip(matrix.distanceEntries);
+        this.roundTripMST = this.routeService.getMSTRoundTrip(matrix.distanceEntries);
+        this.roundTripBrute = this.routeService.getBruteRoundTrip(matrix.distanceEntries);
+        this.dialog.closeAll()
+      }, timeout);
       this.saveToLocalStorage();
     } else {
       this.sanityCheck(destinations, matrix);
     }
   }
 
-  private sanityCheck(destinations, matrix) {
+  private sanityCheck(destinations: string[], matrix: DistanceMatrix) {
     const nonReachable: DistanceEntry[] = matrix.distanceEntries.filter(e => !e.isReachable);
     if (nonReachable && nonReachable.length > 0) {
       const destA = destinations[nonReachable[0].fromIndex];

@@ -9,12 +9,14 @@ import {MdDialogRef} from '@angular/material';
 export class ConfirmDialogComponent {
 
   text = '';
+  title = '';
   routePath: string;
   routeName: string;
 
   constructor(public dialogRef: MdDialogRef<ConfirmDialogComponent>) {
     try {
       this.text = dialogRef.config.data.text;
+      this.title = dialogRef.config.data.title;
       this.routePath = dialogRef.config.data.routePath;
       this.routeName = dialogRef.config.data.routeName;
     } catch (e) {
