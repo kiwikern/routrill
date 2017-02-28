@@ -3,9 +3,14 @@
 
 body {
   margin: 0;
+  height: 100%;
   background-color: #303030;
   font-family: Roboto,"Helvetica Neue",sans-serif;
   color: white;
+}
+
+html {
+  height: 100%;
 }
 
 

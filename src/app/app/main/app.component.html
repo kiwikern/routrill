@@ -1,20 +1,12 @@
-<md-toolbar color="primary">
-  <a md-button routerLink="/home">
-    <md-icon>home</md-icon>
-    ROUTRILL
-  </a>
-  <a md-button routerLink="/destinations">
-    <md-icon>edit_location</md-icon>
-    DESTINATIONS
-  </a>
-  <a md-button routerLink="/route">
-    <md-icon>directions</md-icon>
-    ROUTE
-  </a>
-  <a md-button routerLink="/about">
-    <md-icon>person</md-icon>
-    ABOUT
-  </a>
-</md-toolbar>
-
-<router-outlet></router-outlet>
+<md-sidenav-container>
+  <md-sidenav #sidenav mode="over">
+    <tsp-navigation [layout]="'column'" (pageChosen)="sidenav.close()"></tsp-navigation>
+  </md-sidenav>
+  <md-toolbar color="primary">
+    <button md-icon-button (click)="sidenav.toggle()" fxShow.xs fxHide>
+      <md-icon>menu</md-icon>
+    </button>
+    <tsp-navigation [layout]="'row'" fxShow fxHide.xs></tsp-navigation>
+  </md-toolbar>
+  <router-outlet></router-outlet>
+</md-sidenav-container>

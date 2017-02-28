@@ -1,0 +1,19 @@
+<div class="flex-container" [fxLayout]="layout" fxLayoutAlign="start start" fxLayoutGap.xs="20px">
+  <div></div>
+  <a md-button routerLink="/home" (click)="pageChosen.emit()">
+    <md-icon>home</md-icon>
+    ROUTRILL
+  </a>
+  <a md-button routerLink="/destinations" (click)="pageChosen.emit()">
+    <md-icon>edit_location</md-icon>
+    DESTINATIONS
+  </a>
+  <a md-button routerLink="/route" (click)="pageChosen.emit()">
+    <md-icon>directions</md-icon>
+    ROUTE
+  </a>
+  <a md-button routerLink="/about" (click)="pageChosen.emit()">
+    <md-icon>person</md-icon>
+    ABOUT
+  </a>
+</div>

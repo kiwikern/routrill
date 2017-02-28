@@ -1,6 +1,6 @@
 <br><br>
 <div fxLayoutAlign="center center">
-  <md-button-toggle-group mdTooltip="Choose one of the heuristics to calculate a round trip.">
+  <md-button-toggle-group [vertical]="isXSLayout" mdTooltip="Choose one of the heuristics to calculate a round trip.">
     <md-button-toggle (click)="getFarthestNeighborRoute()">Farthest Neighbor</md-button-toggle>
     <md-button-toggle (click)="getNearestNeighborRoute()">Nearest Neighbor</md-button-toggle>
     <md-button-toggle (click)="getMstRoute()">MST</md-button-toggle>
@@ -17,7 +17,7 @@
 </div>
 <br>
 <div class="flex-container" fxLayoutAlign="center center">
-<md-list [class.route-overview]="roundTrip.length > 2">
+<md-list [class.route-overview]="roundTrip.length > 2" [style.xs]="{'min-width': 0}">
   <h3 md-subheader *ngIf="roundTrip.length > 2">Route</h3>
   <md-list-item *ngFor="let entry of roundTrip">
     <tsp-route-section md-line [section]="getSection(entry)"></tsp-route-section>

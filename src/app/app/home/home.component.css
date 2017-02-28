@@ -8,3 +8,8 @@
   text-wrap: normal;
   max-width: 800px;
 }
+
+.margin {
+  margin-left: 20px;
+  margin-right: 20px;
+}

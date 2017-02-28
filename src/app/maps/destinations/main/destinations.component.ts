@@ -2,8 +2,8 @@ import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {AddressService, Place} from '../destination.service';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
-import "rxjs/add/operator/debounceTime";
-import "rxjs/add/operator/distinctUntilChanged";
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 import {MdSnackBar} from '@angular/material';
 
 @Component({

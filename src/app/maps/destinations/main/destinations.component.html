@@ -4,7 +4,7 @@
     <div class="flex-container" fxLayoutAlign="center center">
       <h1 class="flex-item">Destinations</h1>
     </div>
-    <md-card style="min-width: 350px">
+    <md-card style="min-width: 350px" [style.xs]="{'min-width': 0, 'max-width.px': 300}">
       <md-card-subtitle>
         <tsp-destinations-selector class="flex-item" fxFlex [suggestions]="suggestions"
                                    (locationUpdate)="addLocation($event)"

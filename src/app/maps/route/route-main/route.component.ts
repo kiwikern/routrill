@@ -6,6 +6,7 @@ import {MdDialog} from '@angular/material';
 import {RouteSection} from '../route-section/route-section';
 import {ConfirmDialogComponent} from '../../../util/confirm-dialog/confirm-dialog.component';
 import {RouteService} from '../services/route.service';
+import {ObservableMedia, MediaChange} from '@angular/flex-layout';
 
 @Component({
   selector: 'tsp-route',
@@ -14,19 +15,28 @@ import {RouteService} from '../services/route.service';
 })
 export class RouteComponent implements OnInit {
 
-  private destinations: string[] = [];
   public roundTrip: DistanceEntry[] = [];
+  public stopsInOrder: string[] = [];
+  public totalDistance = 0;
+  public isXSLayout = false;
+  private destinations: string[] = [];
   private roundTripNN: DistanceEntry[] = [];
   private roundTripFN: DistanceEntry[] = [];
   private roundTripMST: DistanceEntry[] = [];
   private roundTripBrute: DistanceEntry[] = [];
-  public stopsInOrder: string[] = [];
-  public totalDistance = 0;
 
 
   constructor(private dialog: MdDialog,
               private routeService: RouteService,
-              private distanceService: DistanceService) {
+              private distanceService: DistanceService,
+              private media: ObservableMedia) {
+    media.asObservable()
+      .filter((change: MediaChange) => change.mqAlias === 'xs')
+      .subscribe(() => this.isXSLayout = true );
+
+    media.asObservable()
+      .filter((change: MediaChange) => change.mqAlias !== 'xs')
+      .subscribe(() => this.isXSLayout = false );
   }
 
   showDialog(message: string, showButtons = true) {
@@ -104,7 +114,7 @@ export class RouteComponent implements OnInit {
     if (matrix.hasRoute) {
       let timeout = 0;
       if (matrix.destinations.length > 8) {
-        this.showDialog("Calculating...", false);
+        this.showDialog('Calculating...', false);
         timeout = 900;
       }
       setTimeout(() => {
