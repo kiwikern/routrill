@@ -105,16 +105,16 @@ export class RouteComponent implements OnInit {
       let timeout = 0;
       if (matrix.destinations.length > 8) {
         this.showDialog("Calculating...", false);
-        timeout = 800;
+        timeout = 900;
       }
       setTimeout(() => {
         this.roundTripNN = this.routeService.getNearestNeighborRoundTrip(matrix.distanceEntries);
         this.roundTripFN = this.routeService.getFarthestNeighborRoundTrip(matrix.distanceEntries);
         this.roundTripMST = this.routeService.getMSTRoundTrip(matrix.distanceEntries);
         this.roundTripBrute = this.routeService.getBruteRoundTrip(matrix.distanceEntries);
-        this.dialog.closeAll()
+        this.saveToLocalStorage();
+        this.dialog.closeAll();
       }, timeout);
-      this.saveToLocalStorage();
     } else {
       this.sanityCheck(destinations, matrix);
     }
