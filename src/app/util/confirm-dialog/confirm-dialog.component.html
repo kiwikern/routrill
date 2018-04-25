@@ -1,9 +1,9 @@
-<div md-dialog-title>
+<div mat-dialog-title>
   {{title}}
 </div>
-<div md-dialog-content>
+<mat-dialog-content>
   <span class="preserve-newline">{{text}}</span>
-</div>
-<div md-dialog-actions>
-  <button md-button (click)="dialogRef.close()" [routerLink]="routePath">{{routeName}}</button>
-</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close [routerLink]="routePath">{{routeName}}</button>
+</mat-dialog-actions>

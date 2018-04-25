@@ -1,11 +1,11 @@
 <br><br>
 <div fxLayoutAlign="center center">
-  <md-button-toggle-group [vertical]="isXSLayout" mdTooltip="Choose one of the heuristics to calculate a round trip.">
-    <md-button-toggle (click)="getFarthestNeighborRoute()">Farthest Neighbor</md-button-toggle>
-    <md-button-toggle (click)="getNearestNeighborRoute()">Nearest Neighbor</md-button-toggle>
-    <md-button-toggle (click)="getMstRoute()">MST</md-button-toggle>
-    <md-button-toggle (click)="getBruteRoute()">Bruteforce</md-button-toggle>
-  </md-button-toggle-group>
+  <mat-button-toggle-group [vertical]="isXSLayout" matTooltip="Choose one of the heuristics to calculate a round trip.">
+    <mat-button-toggle (click)="getFarthestNeighborRoute()">Farthest Neighbor</mat-button-toggle>
+    <mat-button-toggle (click)="getNearestNeighborRoute()">Nearest Neighbor</mat-button-toggle>
+    <mat-button-toggle (click)="getMstRoute()">MST</mat-button-toggle>
+    <mat-button-toggle (click)="getBruteRoute()">Bruteforce</mat-button-toggle>
+  </mat-button-toggle-group>
 </div>
 
 <br>
@@ -17,10 +17,10 @@
 </div>
 <br>
 <div class="flex-container" fxLayoutAlign="center center">
-<md-list [class.route-overview]="roundTrip.length > 2" [style.xs]="{'min-width': 0}">
-  <h3 md-subheader *ngIf="roundTrip.length > 2">Route</h3>
-  <md-list-item *ngFor="let entry of roundTrip">
-    <tsp-route-section md-line [section]="getSection(entry)"></tsp-route-section>
-  </md-list-item>
-</md-list>
+<mat-list [class.route-overview]="roundTrip.length > 2" [style.xs]="{'min-width': 0}">
+  <h3 matSubheader *ngIf="roundTrip.length > 2">Route</h3>
+  <mat-list-item *ngFor="let entry of roundTrip">
+    <tsp-route-section matLine [section]="getSection(entry)"></tsp-route-section>
+  </mat-list-item>
+</mat-list>
 </div>

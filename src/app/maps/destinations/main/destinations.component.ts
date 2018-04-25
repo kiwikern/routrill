@@ -1,10 +1,12 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {AddressService, Place} from '../destination.service';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
+import {catchError, debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
+import {of} from 'rxjs/observable/of';
 
 @Component({
   selector: 'tsp-destinations',
@@ -17,7 +19,7 @@ export class DestinationsComponent implements OnInit {
   public suggestions: Observable<Place[]>;
   private placeSearchStream: Subject<string> = new Subject<string>();
 
-  constructor(private snackBar: MdSnackBar,
+  constructor(private snackBar: MatSnackBar,
               private service: AddressService,
               private changeDetection: ChangeDetectorRef) {
   }
@@ -60,15 +62,15 @@ export class DestinationsComponent implements OnInit {
       this.locations = destinations;
     }
 
-    this.suggestions = this.placeSearchStream
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .switchMap((place: string) => place ? this.service.getSuggestions(place) : Observable.of<Place[]>([]))
-      .catch(error => {
+    this.suggestions = this.placeSearchStream.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((place: string) => place ? this.service.getSuggestions(place) : of<Place[]>([])),
+      catchError(error => {
         console.log(error);
         this.showSnackbar('Something went wrong, sorry! Try again.');
-        return Observable.of<Place[]>([]);
-      });
+        return of<Place[]>([]);
+      }));
   }
 
   getSuggestions(place: string) {

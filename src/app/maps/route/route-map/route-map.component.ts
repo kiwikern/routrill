@@ -1,6 +1,5 @@
-import {Component, OnInit, OnChanges, SimpleChanges} from '@angular/core';
-import {Input} from '@angular/core/src/metadata/directives';
-import {MdSnackBar} from '@angular/material';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'tsp-route-map',
@@ -9,13 +8,11 @@ import {MdSnackBar} from '@angular/material';
 })
 export class RouteMapComponent implements OnInit, OnChanges {
   @Input() destinations: string[] = [];
-  //noinspection TypeScriptUnresolvedVariable
   private directionsService = new google.maps.DirectionsService;
-  //noinspection TypeScriptUnresolvedVariable
   private directionsDisplay = new google.maps.DirectionsRenderer;
 
 
-  constructor(private snackBar: MdSnackBar) {
+  constructor(private snackBar: MatSnackBar) {
   }
 
   ngOnChanges() {
@@ -25,7 +22,6 @@ export class RouteMapComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    //noinspection TypeScriptUnresolvedVariable
     const map = new google.maps.Map(document.getElementById('map'), {
       zoom: 6,
       center: {lat: 41.85, lng: -87.65}
@@ -47,7 +43,6 @@ export class RouteMapComponent implements OnInit, OnChanges {
     }
     const waypts: any[] = waypoints.map(wp => ({location: wp, stopover: true}));
 
-    //noinspection TypeScriptUnresolvedVariable
     this.directionsService.route({
       origin: start,
       destination: end,
@@ -55,7 +50,6 @@ export class RouteMapComponent implements OnInit, OnChanges {
       optimizeWaypoints: false,
       travelMode: google.maps.TravelMode.DRIVING
     }, (response, status) => {
-      //noinspection TypeScriptUnresolvedVariable
       if (status === google.maps.DirectionsStatus.OK) {
         this.directionsDisplay.setDirections(response);
       } else {

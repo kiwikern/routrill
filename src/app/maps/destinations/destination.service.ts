@@ -3,6 +3,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/bindCallback';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class AddressService {
@@ -18,7 +19,7 @@ export class AddressService {
     const autoCompleat: any = Observable.bindCallback(this.autocompleteService.getPlacePredictions.bind(this.autocompleteService), res => res);
     const result: Observable<any> = autoCompleat({input: place});
     console.dir(result);
-    return result.map(resp => this.extractData(resp));
+    return result.pipe(map(resp => this.extractData(resp)));
   }
 
   private extractData(response: any) {

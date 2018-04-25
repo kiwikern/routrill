@@ -4,39 +4,39 @@
     <div class="flex-container" fxLayoutAlign="center center">
       <h1 class="flex-item">Destinations</h1>
     </div>
-    <md-card style="min-width: 350px" [style.xs]="{'min-width': 0, 'max-width.px': 300}">
-      <md-card-subtitle>
+    <mat-card style="min-width: 350px" [style.xs]="{'min-width': 0, 'max-width.px': 300}">
+      <mat-card-subtitle>
         <tsp-destinations-selector class="flex-item" fxFlex [suggestions]="suggestions"
                                    (locationUpdate)="addLocation($event)"
                                    (searchTerm)="getSuggestions($event)"></tsp-destinations-selector>
-      </md-card-subtitle>
-      <md-card-content>
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" *ngIf="locations.length == 0">
-          <md-icon>location_off</md-icon>
+          <mat-icon>location_off</mat-icon>
           <p>no destinations</p>
         </div>
-        <md-list>
-          <md-list-item *ngFor="let location of locations">
-            <span md-line>{{ location }}</span>
-            <button md-icon-button (click)="removeLocation(location)" mdTooltip="Remove destination"
-                    mdTooltipShowDelay="300">
-              <md-icon>delete</md-icon>
+        <mat-list>
+          <mat-list-item *ngFor="let location of locations">
+            <span matLine>{{ location }}</span>
+            <button mat-icon-button (click)="removeLocation(location)" matTooltip="Remove destination"
+                    matTooltipShowDelay="300">
+              <mat-icon>delete</mat-icon>
             </button>
-          </md-list-item>
-        </md-list>
-      </md-card-content>
-      <md-card-actions align="center">
-        <button md-button (click)="getSampleDestinations()" mdTooltip="Add sample locations"
-                mdTooltipShowDelay="300">
-          <md-icon>add_location</md-icon>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions align="center">
+        <button mat-button (click)="getSampleDestinations()" matTooltip="Add sample locations"
+                matTooltipShowDelay="300">
+          <mat-icon>add_location</mat-icon>
           Samples
         </button>
-        <button md-button (click)="clearDestinations()" mdTooltip="Remove all destinations"
-                mdTooltipShowDelay="300">
-          <md-icon>clear_all</md-icon>
+        <button mat-button (click)="clearDestinations()" matTooltip="Remove all destinations"
+                matTooltipShowDelay="300">
+          <mat-icon>clear_all</mat-icon>
           Clear
         </button>
-      </md-card-actions>
-    </md-card>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </div>

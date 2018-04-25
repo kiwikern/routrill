@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {DistanceMatrix, DistanceEntry} from '../services/distance-matrix';
+import {DistanceEntry, DistanceMatrix} from '../services/distance-matrix';
 import {Observable} from 'rxjs/Observable';
 import {DistanceService} from '../services/distance.service';
-import {MdDialog} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {RouteSection} from '../route-section/route-section';
 import {ConfirmDialogComponent} from '../../../util/confirm-dialog/confirm-dialog.component';
 import {RouteService} from '../services/route.service';
-import {ObservableMedia, MediaChange} from '@angular/flex-layout';
+import {MediaChange, ObservableMedia} from '@angular/flex-layout';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'tsp-route',
@@ -26,16 +27,14 @@ export class RouteComponent implements OnInit {
   private roundTripBrute: DistanceEntry[] = [];
 
 
-  constructor(private dialog: MdDialog,
+  constructor(private dialog: MatDialog,
               private routeService: RouteService,
               private distanceService: DistanceService,
               private media: ObservableMedia) {
-    media.asObservable()
-      .filter((change: MediaChange) => change.mqAlias === 'xs')
+    media.asObservable().pipe(filter((change: MediaChange) => change.mqAlias === 'xs'))
       .subscribe(() => this.isXSLayout = true );
 
-    media.asObservable()
-      .filter((change: MediaChange) => change.mqAlias !== 'xs')
+    media.asObservable().pipe(filter((change: MediaChange) => change.mqAlias !== 'xs'))
       .subscribe(() => this.isXSLayout = false );
   }
 

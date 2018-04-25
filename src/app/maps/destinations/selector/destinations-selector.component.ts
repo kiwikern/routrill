@@ -1,7 +1,6 @@
-import {Component, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Place} from '../destination.service';
-import {Output, Input} from '@angular/core/src/metadata/directives';
 
 @Component({
   selector: 'tsp-destinations-selector',
@@ -9,9 +8,9 @@ import {Output, Input} from '@angular/core/src/metadata/directives';
   styleUrls: ['./destinations-selector.component.css']
 })
 export class DestinationsSelectorComponent {
+  @Input() suggestions: Observable<{name: string}[]>;
   @Output() locationUpdate = new EventEmitter<string>();
   @Output() searchTerm = new EventEmitter<string>();
-  @Input() suggestions: Observable<string[]>;
   location: Place = null;
 
   constructor() {

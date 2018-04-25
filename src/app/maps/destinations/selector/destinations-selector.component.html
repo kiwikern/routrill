@@ -1,16 +1,16 @@
 <div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
-  <md-icon class="flex-item">search</md-icon>
+  <mat-icon class="flex-item">search</mat-icon>
   <div fxFlex="2"></div>
-  <md-input-container class="flex-item" fxFlex="100">
-    <input mdInput placeholder="Add a destination..." #address [ngModel]="location"  (ngModelChange)="updateValue($event)" (keyup)="getSuggestions(address.value)"
-           [mdAutocomplete]="locationAutocomplete">
-  </md-input-container>
+  <mat-form-field class="flex-item" fxFlex="100">
+    <input matInput placeholder="Add a destination..." #address [ngModel]="location"  (ngModelChange)="updateValue($event)" (keyup)="getSuggestions(address.value)"
+           [matAutocomplete]="locationAutocomplete">
+  </mat-form-field>
   <div fxFlex="1"></div>
 
 
-  <md-autocomplete #locationAutocomplete [displayWith]="displayLocation">
-    <md-option *ngFor="let locationSugg of suggestions | async" [value]="locationSugg">
-      {{ locationSugg.name }}
-    </md-option>
-  </md-autocomplete>
+  <mat-autocomplete #locationAutocomplete [displayWith]="displayLocation">
+    <mat-option *ngFor="let locationSugg of suggestions | async" [value]="locationSugg">
+      {{ locationSugg?.name }}
+    </mat-option>
+  </mat-autocomplete>
 </div>

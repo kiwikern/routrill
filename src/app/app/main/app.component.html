@@ -1,13 +1,13 @@
-<md-sidenav-container>
-  <md-sidenav #sidenav mode="over">
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="over">
     <tsp-navigation [layout]="'column'" (pageChosen)="sidenav.close()"></tsp-navigation>
-  </md-sidenav>
-  <md-toolbar color="primary">
-    <button md-icon-button (click)="sidenav.toggle()" fxShow.xs fxHide>
-      <md-icon>menu</md-icon>
+  </mat-sidenav>
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="sidenav.toggle()" fxShow.xs fxHide>
+      <mat-icon>menu</mat-icon>
     </button>
     <p fxShow.xs fxHide>Routrill</p>
     <tsp-navigation [layout]="'row'" fxShow fxHide.xs></tsp-navigation>
-  </md-toolbar>
+  </mat-toolbar>
   <router-outlet></router-outlet>
-</md-sidenav-container>
+</mat-sidenav-container>
