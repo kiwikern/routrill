@@ -1,29 +1,19 @@
 <br><br>
-<div fxLayoutAlign="center center">
+<div fxLayoutAlign="center center" *ngIf="roundTripNN">
   <mat-button-toggle-group [vertical]="isXSLayout" matTooltip="Choose one of the heuristics to calculate a round trip.">
-    <mat-button-toggle (click)="getFarthestNeighborRoute()">Farthest Neighbor</mat-button-toggle>
-    <mat-button-toggle (click)="getNearestNeighborRoute()">Nearest Neighbor</mat-button-toggle>
-    <mat-button-toggle (click)="getMstRoute()">MST</mat-button-toggle>
-    <mat-button-toggle (click)="getBruteRoute()" [disabled]="roundTripBrute.length === 0">
+    <mat-button-toggle (click)="roundTrip = roundTripFN">Farthest Neighbor</mat-button-toggle>
+    <mat-button-toggle (click)="roundTrip = roundTripNN">Nearest Neighbor</mat-button-toggle>
+    <mat-button-toggle (click)="roundTrip = roundTripMST">MST</mat-button-toggle>
+    <mat-button-toggle (click)="roundTrip = roundTripBrute" [disabled]="!(roundTripBrute | async)">
       Bruteforce
-      <mat-spinner *ngIf="roundTripBrute.length === 0"></mat-spinner>
+      <mat-spinner *ngIf="!(roundTripBrute | async)"></mat-spinner>
     </mat-button-toggle>
   </mat-button-toggle-group>
 </div>
 
 <br>
 
-<tsp-route-map [destinations]="stopsInOrder"></tsp-route-map>
-<br>
-<div class="flex-container" fxLayoutAlign="center center" *ngIf="totalDistance > 0">
-  Total distance: {{totalDistance}} km
-</div>
-<br>
-<div class="flex-container" fxLayoutAlign="center center">
-  <mat-list [class.route-overview]="roundTrip.length > 2" [style.xs]="{'min-width': 0}">
-    <h3 matSubheader *ngIf="roundTrip.length > 2">Route</h3>
-    <mat-list-item *ngFor="let entry of roundTrip">
-      <tsp-route-section matLine [section]="getSection(entry)"></tsp-route-section>
-    </mat-list-item>
-  </mat-list>
-</div>
+{{ (roundTrip | async) | json}}
+{{ (roundTripFN | async) | json}}
+
+<tsp-route-result *ngIf="roundTrip" [roundTrip]="roundTrip" [destinations]="destinations"></tsp-route-result>

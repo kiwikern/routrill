@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {DistanceEntry, DistanceMatrix} from '../../../../worker/distance-matrix';
-import {Observable} from 'rxjs/Observable';
-import {DistanceService} from '../services/distance.service';
-import {MatDialog} from '@angular/material';
-import {RouteSection} from '../route-section/route-section';
-import {ConfirmDialogComponent} from '../../../util/confirm-dialog/confirm-dialog.component';
-import {RouteService} from '../services/route.service';
-import {MediaChange, ObservableMedia} from '@angular/flex-layout';
-import { filter, tap } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { DistanceEntry, DistanceMatrix } from '../../../../worker/distance-matrix';
+import { Observable } from 'rxjs/Observable';
+import { DistanceService } from '../services/distance.service';
+import { MatDialog } from '@angular/material';
+import { ConfirmDialogComponent } from '../../../util/confirm-dialog/confirm-dialog.component';
+import { RouteService } from '../services/route.service';
+import { MediaChange, ObservableMedia } from '@angular/flex-layout';
+import { filter } from 'rxjs/operators';
+import 'rxjs/add/operator/share';
 
 @Component({
   selector: 'tsp-route',
@@ -16,26 +16,24 @@ import { filter, tap } from 'rxjs/operators';
 })
 export class RouteComponent implements OnInit {
 
-  public roundTrip: any = [];
-  public stopsInOrder: string[] = [];
-  public totalDistance = 0;
+  public roundTrip: Observable<DistanceEntry[]>;
   public isXSLayout = false;
-  private destinations: string[] = [];
-  private roundTripNN: DistanceEntry[] = [];
-  private roundTripFN: DistanceEntry[] = [];
-  private roundTripMST: DistanceEntry[] = [];
-  public roundTripBrute: DistanceEntry[] = [];
+  public destinations: string[] = [];
+  public roundTripNN: Observable<DistanceEntry[]>;
+  public roundTripFN: Observable<DistanceEntry[]>;
+  public roundTripMST: Observable<DistanceEntry[]>;
+  public roundTripBrute: Observable<DistanceEntry[]>;
 
 
   constructor(private dialog: MatDialog,
               private routeService: RouteService,
               private distanceService: DistanceService,
               private media: ObservableMedia) {
-    media.asObservable().pipe(filter((change: MediaChange) => change.mqAlias === 'xs'))
-      .subscribe(() => this.isXSLayout = true );
+    this.media.asObservable().pipe(filter((change: MediaChange) => change.mqAlias === 'xs'))
+      .subscribe(() => this.isXSLayout = true);
 
-    media.asObservable().pipe(filter((change: MediaChange) => change.mqAlias !== 'xs'))
-      .subscribe(() => this.isXSLayout = false );
+    this.media.asObservable().pipe(filter((change: MediaChange) => change.mqAlias !== 'xs'))
+      .subscribe(() => this.isXSLayout = false);
   }
 
   showDialog(message: string, showButtons = true) {
@@ -48,45 +46,13 @@ export class RouteComponent implements OnInit {
     this.dialog.open(ConfirmDialogComponent, config);
   }
 
-  getSection(entry: DistanceEntry) {
-    const from = this.destinations[entry.fromIndex];
-    const to = this.destinations[entry.toIndex];
-    const distance = entry.distance;
-    return new RouteSection(from, to, distance);
-  }
-
-  getNearestNeighborRoute() {
-    this.roundTrip = this.roundTripNN;
-    this.updateTable();
-  }
-
-  getFarthestNeighborRoute() {
-    this.roundTrip = this.roundTripFN;
-    this.updateTable();
-  }
-
-  getMstRoute() {
-    this.roundTrip = this.roundTripMST;
-    this.updateTable();
-  }
-
-  getBruteRoute() {
-    this.roundTrip = this.roundTripBrute;
-    this.updateTable();
-  }
-
-  updateTable() {
-    this.stopsInOrder = this.roundTrip.map(t => this.destinations[t.fromIndex]);
-    this.totalDistance = Math.round(this.roundTrip.reduce((first, snd) => first + snd.distance, 0) / 1000);
-  }
-
   ngOnInit() {
     const hasChanged: boolean = JSON.parse(localStorage.getItem('tsp.hasChanged')) !== false;
     this.destinations = JSON.parse(localStorage.getItem('tsp.destinations'));
     // if (!hasChanged) {
     //   this.loadFromLocalStorage();
     // } else {
-      this.getRoundTrips(this.destinations);
+    this.getRoundTrips(this.destinations);
     // }
   }
 
@@ -100,8 +66,10 @@ export class RouteComponent implements OnInit {
   private getRoundTrips(destinations: string[]) {
     if (destinations && destinations.length > 1) {
       const distances: Observable<DistanceMatrix> = this.distanceService.getDistance(destinations);
-      distances.subscribe(matrix => this.destinations = matrix.destinations);
-      distances.subscribe(matrix => this.getRoundTrip(destinations, matrix));
+      distances.subscribe(matrix => {
+        this.destinations = matrix.destinations;
+        this.getRoundTrip(destinations, matrix)
+      });
     } else if (destinations && destinations.length === 1) {
       this.showDialog('Only one destination found.\nAdd at least one.');
     } else {
@@ -111,19 +79,13 @@ export class RouteComponent implements OnInit {
 
   private getRoundTrip(destinations: string[], matrix: DistanceMatrix) {
     if (matrix.hasRoute) {
-      if (matrix.destinations.length > 8) {
-        // this.showDialog('Calculating...', false);
-      }
-        this.routeService.getNearestNeighborRoundTrip(matrix.distanceEntries)
-          .subscribe(d => this.roundTripNN = d);
-        this.routeService.getFarthestNeighborRoundTrip(matrix.distanceEntries)
-          .subscribe(d => this.roundTripFN = d);
-        this.routeService.getMSTRoundTrip(matrix.distanceEntries)
-          .subscribe(d => this.roundTripMST = d);
-        this.routeService.getBruteRoundTrip(matrix.distanceEntries)
-          .subscribe(d => this.roundTripBrute = d);
-        this.saveToLocalStorage();
-        this.dialog.closeAll();
+      this.roundTripNN = this.routeService.getNearestNeighborRoundTrip(matrix.distanceEntries).share();
+      this.roundTripFN = this.routeService.getFarthestNeighborRoundTrip(matrix.distanceEntries).share();
+      this.roundTripMST = this.routeService.getMSTRoundTrip(matrix.distanceEntries).share();
+      this.roundTripBrute = this.routeService.getBruteRoundTrip(matrix.distanceEntries).share();
+      this.roundTripFN.subscribe(console.log);
+      this.saveToLocalStorage();
+      this.dialog.closeAll();
     } else {
       this.sanityCheck(destinations, matrix);
     }
