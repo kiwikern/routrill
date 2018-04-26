@@ -20,15 +20,19 @@ export class RouteService {
   nearestNeighborResult: Subject<DistanceEntry[]> = new ReplaySubject(1);
   mstWorker: Worker;
   mstResult: Subject<DistanceEntry[]> = new ReplaySubject(1);
+  isBruteWorkerRunning = false;
 
-  constructor(ngZone: NgZone) {
+  constructor(private ngZone: NgZone) {
     this.bruteforceWorker = new Worker('worker/bruteforce-worker.js');
     this.farthestNeighborWorker = new Worker('worker/neighbor-worker.js');
     this.nearestNeighborWorker = new Worker('worker/neighbor-worker.js');
     this.mstWorker = new Worker('worker/mst-worker.js');
 
     // Populate Observables within zone for ChangeDetection to run
-    this.bruteforceWorker.onmessage = message => ngZone.run(() => this.bruteforceResult.next(message.data));
+    this.bruteforceWorker.onmessage = message => {
+      this.isBruteWorkerRunning = false;
+      return ngZone.run(() => this.bruteforceResult.next(message.data));
+    };
     this.farthestNeighborWorker.onmessage = message => ngZone.run(() => this.farthestNeighborResult.next(message.data));
     this.nearestNeighborWorker.onmessage = message => ngZone.run(() => this.nearestNeighborResult.next(message.data));
     this.mstWorker.onmessage = message => ngZone.run(() => this.mstResult.next(message.data));
@@ -41,6 +45,10 @@ export class RouteService {
     this.nearestNeighborResult.next(null);
     this.farthestNeighborResult.next(null);
 
+    if (this.isBruteWorkerRunning) {
+      this.recreateBruteWorker();
+    }
+    this.isBruteWorkerRunning = true;
     this.bruteforceWorker.postMessage({distanceMatrix});
     this.farthestNeighborWorker.postMessage({distanceMatrix, type: 'FN'});
     this.nearestNeighborWorker.postMessage({distanceMatrix, type: 'NN'});
@@ -61,5 +69,14 @@ export class RouteService {
 
   public getBruteRoundTrip(): Observable<DistanceEntry[]> {
     return this.bruteforceResult;
+  }
+
+  /**
+   * If BruteWorker is still running with an old request, it has to be terminated and recreated.
+   */
+  private recreateBruteWorker() {
+    this.bruteforceWorker.terminate();
+    this.bruteforceWorker = new Worker('worker/bruteforce-worker.js');
+    this.bruteforceWorker.onmessage = message => this.ngZone.run(() => this.bruteforceResult.next(message.data));
   }
 }
