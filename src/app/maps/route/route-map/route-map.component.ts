@@ -1,5 +1,5 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'tsp-route-map',
@@ -54,7 +54,7 @@ export class RouteMapComponent implements OnInit, OnChanges {
         this.directionsDisplay.setDirections(response);
       } else {
         this.showSnackbar('Directions request failed. Try again.');
-        console.log('Maps API call failed due to ' + status);
+        console.error('Maps API call failed due to ', status);
       }
     });
   }

@@ -1,12 +1,12 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {AddressService, Place} from '../destination.service';
-import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AddressService, Place } from '../destination.service';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
-import {MatSnackBar} from '@angular/material';
-import {catchError, debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import {of} from 'rxjs/observable/of';
+import { MatSnackBar } from '@angular/material';
+import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 @Component({
   selector: 'tsp-destinations',
@@ -67,7 +67,7 @@ export class DestinationsComponent implements OnInit {
       distinctUntilChanged(),
       switchMap((place: string) => place ? this.service.getSuggestions(place) : of<Place[]>([])),
       catchError(error => {
-        console.log(error);
+        console.error(error);
         this.showSnackbar('Something went wrong, sorry! Try again.');
         return of<Place[]>([]);
       }));

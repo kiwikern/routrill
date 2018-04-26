@@ -1,9 +1,7 @@
-/// <reference path="../../../../node_modules/@types/google-maps/index.d.ts" />
-
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/bindCallback';
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AddressService {
@@ -11,19 +9,16 @@ export class AddressService {
   private autocompleteService: any;
 
   constructor() {
-    //noinspection TypeScriptUnresolvedVariable
     this.autocompleteService = new google.maps.places.AutocompleteService();
   }
 
   getSuggestions(place: string): Observable<Place[]> {
     const autoCompleat: any = Observable.bindCallback(this.autocompleteService.getPlacePredictions.bind(this.autocompleteService), res => res);
     const result: Observable<any> = autoCompleat({input: place});
-    console.dir(result);
     return result.pipe(map(resp => this.extractData(resp)));
   }
 
   private extractData(response: any) {
-    console.dir(response);
     let suggestions = [];
     if (response) {
       suggestions = response.map((prediction) => {
