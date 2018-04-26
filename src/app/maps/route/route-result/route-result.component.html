@@ -5,9 +5,9 @@
 </div>
 <br>
 <div class="flex-container" fxLayoutAlign="center center">
-  <mat-list [class.route-overview]="(roundTrip | async)?.length > 2" [style.xs]="{'min-width': 0}">
-    <h3 matSubheader *ngIf="(roundTrip | async)?.length > 2">Route</h3>
-    <mat-list-item *ngFor="let entry of roundTrip | async">
+  <mat-list [class.route-overview]="roundTrip.length > 2" [ngStyle.xs]="{'min-width': 0}">
+    <h3 matSubheader *ngIf="roundTrip.length > 2">Route</h3>
+    <mat-list-item *ngFor="let entry of roundTrip">
       <tsp-route-section matLine [section]="getSection(entry)"></tsp-route-section>
     </mat-list-item>
   </mat-list>
