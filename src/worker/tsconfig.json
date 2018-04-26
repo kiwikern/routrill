@@ -1,21 +1,21 @@
 {
   "compilerOptions": {
-    "baseUrl": "",
+    "baseUrl": "tsconfig",
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es6", "dom"],
-    "mapRoot": "./",
+    "lib": ["webworker", "es6", "scripthost"],
     "module": "es6",
     "moduleResolution": "node",
-    "outDir": "../dist/out-tsc",
-    "sourceMap": true,
+    "outDir": "./",
+    "sourceMap": false,
     "target": "es5",
     "typeRoots": [
-      "../node_modules/@types"
     ]
   },
-  "exclude": [
-    "worker"
+  "files": [
+    "bruteforce-worker.ts",
+    "mst-worker.ts",
+    "neighbor-worker.ts",
   ]
 }

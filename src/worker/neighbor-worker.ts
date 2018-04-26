@@ -1,12 +1,18 @@
-import {Injectable} from '@angular/core';
-import {DistanceEntry} from './distance-matrix';
+import { DistanceEntry } from './distance-matrix';
 
-/**
- * Calculates a round trip for given DistanceEntries using a nearest/farthest neighbors approach.
- * @see https://en.wikipedia.org/wiki/Nearest_neighbor_graph
- */
-@Injectable()
-export class NeighborRouteService {
+onmessage = function (e) {
+  console.log('Received a message');
+  const service = new NeighborRouteService();
+  let result;
+  if (e.data.type === 'FN') {
+    result = service.getFNRoundTrip(e.data.distanceMatrix);
+  } else {
+    result = service.getNNRoundTrip(e.data.distanceMatrix);
+  }
+  postMessage(result);
+};
+
+class NeighborRouteService {
 
   /**
    * Given a distance matrix, returns a round trip calculated with the nearest neighbor heuristic.
@@ -81,5 +87,4 @@ export class NeighborRouteService {
   private removeVisited(fromIndex: number, entries: DistanceEntry[]) {
     return entries.filter(el => el.fromIndex !== fromIndex && el.toIndex !== fromIndex);
   }
-
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DistanceEntry, DistanceMatrix} from '../services/distance-matrix';
+import {DistanceEntry, DistanceMatrix} from '../../../../worker/distance-matrix';
 import {Observable} from 'rxjs/Observable';
 import {DistanceService} from '../services/distance.service';
 import {MatDialog} from '@angular/material';
@@ -7,7 +7,7 @@ import {RouteSection} from '../route-section/route-section';
 import {ConfirmDialogComponent} from '../../../util/confirm-dialog/confirm-dialog.component';
 import {RouteService} from '../services/route.service';
 import {MediaChange, ObservableMedia} from '@angular/flex-layout';
-import {filter} from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'tsp-route',
@@ -16,7 +16,7 @@ import {filter} from 'rxjs/operators';
 })
 export class RouteComponent implements OnInit {
 
-  public roundTrip: DistanceEntry[] = [];
+  public roundTrip: any = [];
   public stopsInOrder: string[] = [];
   public totalDistance = 0;
   public isXSLayout = false;
@@ -24,7 +24,7 @@ export class RouteComponent implements OnInit {
   private roundTripNN: DistanceEntry[] = [];
   private roundTripFN: DistanceEntry[] = [];
   private roundTripMST: DistanceEntry[] = [];
-  private roundTripBrute: DistanceEntry[] = [];
+  public roundTripBrute: DistanceEntry[] = [];
 
 
   constructor(private dialog: MatDialog,
@@ -81,13 +81,13 @@ export class RouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    const hasChanged: boolean = JSON.parse(localStorage.getItem('tsp.hasChanged')) != false;
+    const hasChanged: boolean = JSON.parse(localStorage.getItem('tsp.hasChanged')) !== false;
     this.destinations = JSON.parse(localStorage.getItem('tsp.destinations'));
-    if (!hasChanged) {
-      this.loadFromLocalStorage();
-    } else {
+    // if (!hasChanged) {
+    //   this.loadFromLocalStorage();
+    // } else {
       this.getRoundTrips(this.destinations);
-    }
+    // }
   }
 
   private loadFromLocalStorage() {
@@ -111,19 +111,19 @@ export class RouteComponent implements OnInit {
 
   private getRoundTrip(destinations: string[], matrix: DistanceMatrix) {
     if (matrix.hasRoute) {
-      let timeout = 0;
       if (matrix.destinations.length > 8) {
-        this.showDialog('Calculating...', false);
-        timeout = 900;
+        // this.showDialog('Calculating...', false);
       }
-      setTimeout(() => {
-        this.roundTripNN = this.routeService.getNearestNeighborRoundTrip(matrix.distanceEntries);
-        this.roundTripFN = this.routeService.getFarthestNeighborRoundTrip(matrix.distanceEntries);
-        this.roundTripMST = this.routeService.getMSTRoundTrip(matrix.distanceEntries);
-        this.roundTripBrute = this.routeService.getBruteRoundTrip(matrix.distanceEntries);
+        this.routeService.getNearestNeighborRoundTrip(matrix.distanceEntries)
+          .subscribe(d => this.roundTripNN = d);
+        this.routeService.getFarthestNeighborRoundTrip(matrix.distanceEntries)
+          .subscribe(d => this.roundTripFN = d);
+        this.routeService.getMSTRoundTrip(matrix.distanceEntries)
+          .subscribe(d => this.roundTripMST = d);
+        this.routeService.getBruteRoundTrip(matrix.distanceEntries)
+          .subscribe(d => this.roundTripBrute = d);
         this.saveToLocalStorage();
         this.dialog.closeAll();
-      }, timeout);
     } else {
       this.sanityCheck(destinations, matrix);
     }

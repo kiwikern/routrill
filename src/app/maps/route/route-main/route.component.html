@@ -4,7 +4,10 @@
     <mat-button-toggle (click)="getFarthestNeighborRoute()">Farthest Neighbor</mat-button-toggle>
     <mat-button-toggle (click)="getNearestNeighborRoute()">Nearest Neighbor</mat-button-toggle>
     <mat-button-toggle (click)="getMstRoute()">MST</mat-button-toggle>
-    <mat-button-toggle (click)="getBruteRoute()">Bruteforce</mat-button-toggle>
+    <mat-button-toggle (click)="getBruteRoute()" [disabled]="roundTripBrute.length === 0">
+      Bruteforce
+      <mat-spinner *ngIf="roundTripBrute.length === 0"></mat-spinner>
+    </mat-button-toggle>
   </mat-button-toggle-group>
 </div>
 
@@ -17,10 +20,10 @@
 </div>
 <br>
 <div class="flex-container" fxLayoutAlign="center center">
-<mat-list [class.route-overview]="roundTrip.length > 2" [style.xs]="{'min-width': 0}">
-  <h3 matSubheader *ngIf="roundTrip.length > 2">Route</h3>
-  <mat-list-item *ngFor="let entry of roundTrip">
-    <tsp-route-section matLine [section]="getSection(entry)"></tsp-route-section>
-  </mat-list-item>
-</mat-list>
+  <mat-list [class.route-overview]="roundTrip.length > 2" [style.xs]="{'min-width': 0}">
+    <h3 matSubheader *ngIf="roundTrip.length > 2">Route</h3>
+    <mat-list-item *ngFor="let entry of roundTrip">
+      <tsp-route-section matLine [section]="getSection(entry)"></tsp-route-section>
+    </mat-list-item>
+  </mat-list>
 </div>

@@ -3,6 +3,7 @@
 # compiled output
 /dist
 /tmp
+/src/worker/*js
 
 # dependencies
 /node_modules

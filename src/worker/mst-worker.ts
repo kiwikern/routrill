@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {DistanceEntry} from './distance-matrix';
+import { DistanceEntry } from './distance-matrix';
 
-/**
- * Calculates a round trip for given DistanceEntries by building a minimum spanning tree (MST) and
- * finding an Euler circle.
- */
-@Injectable()
-export class MstRouteService {
+onmessage = function (e) {
+  console.log('Received a message');
+  const service = new MstRouteService();
+  postMessage(service.getRoundTrip(e.data.distanceMatrix));
+};
+
+class MstRouteService {
 
   /**
    * Calculates a round trip using an MST and an Euler circle
