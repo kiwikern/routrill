@@ -1,20 +1,62 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ConfirmDialogComponent} from './confirm-dialog/confirm-dialog.component';
-import {RouterModule} from '@angular/router';
-import {MatDialogModule} from '@angular/material';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { RouterModule } from '@angular/router';
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatProgressSpinnerModule,
+  MatSidenavModule,
+  MatSnackBarModule,
+  MatToolbarModule,
+  MatTooltipModule
+} from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
-    MatDialogModule
+    MatIconModule,
+    MatCardModule,
+    MatListModule,
+    MatButtonModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonToggleModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatSidenavModule,
+    MatToolbarModule
   ],
   declarations: [
     ConfirmDialogComponent
   ],
   exports: [
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    MatIconModule,
+    MatCardModule,
+    MatListModule,
+    MatButtonModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonToggleModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatSidenavModule,
+    MatToolbarModule
   ]
 })
 export class UtilModule {

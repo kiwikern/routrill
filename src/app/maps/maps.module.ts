@@ -2,18 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DestinationsComponent } from './destinations/main/destinations.component';
 import { RouterModule, Routes } from '@angular/router';
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatProgressSpinnerModule,
-  MatSnackBarModule
-} from '@angular/material';
 import { AddressService } from './destinations/destination.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DistanceService } from './route/services/distance.service';
@@ -34,6 +22,9 @@ const routes: Routes = [
   },
   {
     path: 'route',
+    resolve: {
+      distanceMatrix: DistanceService
+    },
     component: RouteComponent
   }
 ];
@@ -44,17 +35,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     FlexLayoutModule,
     FormsModule,
-    UtilModule,
-    MatIconModule,
-    MatCardModule,
-    MatListModule,
-    MatButtonModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatButtonToggleModule,
-    MatSnackBarModule,
-    MatProgressSpinnerModule
+    UtilModule
   ],
   declarations: [
     DestinationsComponent,
