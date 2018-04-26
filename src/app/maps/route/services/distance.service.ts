@@ -8,6 +8,7 @@ import { BoundCallbackObservable } from 'rxjs/observable/BoundCallbackObservable
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ConfirmDialogComponent } from '../../../util/confirm-dialog/confirm-dialog.component';
+import { DestinationService } from '../../destinations/destination.service';
 
 @Injectable()
 export class DistanceService implements Resolve<DistanceMatrix> {
@@ -16,20 +17,20 @@ export class DistanceService implements Resolve<DistanceMatrix> {
 
   constructor(private snackBar: MatSnackBar,
               private dialog: MatDialog,
+              private destinationService: DestinationService,
               private router: Router) {
     this.distanceService = new google.maps.DistanceMatrixService();
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<DistanceMatrix> | DistanceMatrix {
-    // TODO: Move to destinationsService
-    const destinations = JSON.parse(localStorage.getItem('tsp.destinations'));
+    const destinations = this.destinationService.getDestinations();
     if (this.hasEnoughDestinations(destinations)) {
-
       const matrix$ = this.getDistance(destinations);
       matrix$.subscribe(m => !m.hasRoute ? this.showError(m) : null);
       return matrix$;
+    } else {
+      this.router.navigate(['destinations']);
     }
-    this.router.navigate(['destinations']);
   }
 
   getDistance(places: string[]): Observable<DistanceMatrix> {
@@ -39,7 +40,7 @@ export class DistanceService implements Resolve<DistanceMatrix> {
   }
 
   private showError(matrix: DistanceMatrix) {
-    const destinations = JSON.parse(localStorage.getItem('tsp.destinations'));
+    const destinations = this.destinationService.getDestinations();
     const nonReachable: DistanceEntry[] = matrix.distanceEntries.filter(e => !e.isReachable);
     this.router.navigate(['destinations']);
     if (nonReachable && nonReachable.length > 0) {

@@ -5,6 +5,7 @@ import { RouteService } from '../services/route.service';
 import { MediaChange, ObservableMedia } from '@angular/flex-layout';
 import { filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { DestinationService } from '../../destinations/destination.service';
 
 @Component({
   selector: 'tsp-route',
@@ -25,6 +26,7 @@ export class RouteComponent implements OnInit {
 
   constructor(private routeService: RouteService,
               private route: ActivatedRoute,
+              private destinationService: DestinationService,
               private media: ObservableMedia) {
     this.media.asObservable().pipe(filter((change: MediaChange) => change.mqAlias === 'xs'))
       .subscribe(() => this.isXSLayout = true);
@@ -38,7 +40,7 @@ export class RouteComponent implements OnInit {
     this.roundTripFN$ = this.routeService.getFarthestNeighborRoundTrip();
     this.roundTripMST$ = this.routeService.getMSTRoundTrip();
     this.roundTripBrute$ = this.routeService.getBruteRoundTrip();
-    this.destinations = JSON.parse(localStorage.getItem('tsp.destinations'));
+    this.destinations = this.destinationService.getDestinations();
     this.route.data.subscribe(data => this.getRoundTrip(data.distanceMatrix));
   }
 

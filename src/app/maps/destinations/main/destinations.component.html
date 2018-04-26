@@ -11,12 +11,12 @@
                                    (searchTerm)="getSuggestions($event)"></tsp-destinations-selector>
       </mat-card-subtitle>
       <mat-card-content>
-        <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" *ngIf="locations.length == 0">
+        <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" *ngIf="destinations.length == 0">
           <mat-icon>location_off</mat-icon>
           <p>no destinations</p>
         </div>
         <mat-list>
-          <mat-list-item *ngFor="let location of locations">
+          <mat-list-item *ngFor="let location of destinations">
             <span matLine>{{ location }}</span>
             <button mat-icon-button (click)="removeLocation(location)" matTooltip="Remove destination"
                     matTooltipShowDelay="300">

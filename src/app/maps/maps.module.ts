@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DestinationsComponent } from './destinations/main/destinations.component';
 import { RouterModule, Routes } from '@angular/router';
-import { AddressService } from './destinations/destination.service';
+import { DestinationService } from './destinations/destination.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DistanceService } from './route/services/distance.service';
 import { DestinationsSelectorComponent } from './destinations/selector/destinations-selector.component';
@@ -46,7 +46,7 @@ const routes: Routes = [
     RouteResultComponent
   ],
   providers: [
-    AddressService,
+    DestinationService,
     DistanceService,
     RouteService
   ],
