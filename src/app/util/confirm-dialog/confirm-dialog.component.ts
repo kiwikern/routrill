@@ -1,5 +1,5 @@
-import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import { Component, Inject, NgZone } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 @Component({
   selector: 'tsp-confirm-dialog',
@@ -13,15 +13,21 @@ export class ConfirmDialogComponent {
   routePath: string;
   routeName: string;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private matDialog: MatDialog,
+              private ngZone: NgZone,
+              @Inject(MAT_DIALOG_DATA) private data: any) {
     try {
       this.text = data.text;
       this.title = data.title;
       this.routePath = data.routePath;
       this.routeName = data.routeName;
     } catch (e) {
-      console.log('No dialog data was provided. ');
+      console.error('No dialog data was provided. ');
     }
+  }
+
+  close() {
+    this.ngZone.run(() => this.matDialog.closeAll());
   }
 
 }

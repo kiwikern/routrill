@@ -1,48 +1,65 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { DistanceEntry } from '../../../../worker/distance-matrix';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Injectable()
 /**
  * Calculates round trips for given DistanceEntries using different heuristics.
+ * With #calculateRoutes() you can start the calculation of all heuristics.
+ * You can subscribe to the results of the calculations with #get<Heuristic>RoundTrip().
  */
 export class RouteService {
 
   bruteforceWorker: Worker;
+  bruteforceResult: Subject<DistanceEntry[]> = new ReplaySubject(1);
   farthestNeighborWorker: Worker;
+  farthestNeighborResult: Subject<DistanceEntry[]> = new ReplaySubject(1);
   nearestNeighborWorker: Worker;
+  nearestNeighborResult: Subject<DistanceEntry[]> = new ReplaySubject(1);
   mstWorker: Worker;
+  mstResult: Subject<DistanceEntry[]> = new ReplaySubject(1);
 
-  constructor() {
+  constructor(ngZone: NgZone) {
     this.bruteforceWorker = new Worker('worker/bruteforce-worker.js');
     this.farthestNeighborWorker = new Worker('worker/neighbor-worker.js');
     this.nearestNeighborWorker = new Worker('worker/neighbor-worker.js');
     this.mstWorker = new Worker('worker/mst-worker.js');
+
+    // Populate Observables within zone for ChangeDetection to run
+    this.bruteforceWorker.onmessage = message => ngZone.run(() => this.bruteforceResult.next(message.data));
+    this.farthestNeighborWorker.onmessage = message => ngZone.run(() => this.farthestNeighborResult.next(message.data));
+    this.nearestNeighborWorker.onmessage = message => ngZone.run(() => this.nearestNeighborResult.next(message.data));
+    this.mstWorker.onmessage = message => ngZone.run(() => this.mstResult.next(message.data));
   }
 
+  public calculateRoutes(distanceMatrix: DistanceEntry[]) {
+    // Initialize with null to prune old results
+    this.bruteforceResult.next(null);
+    this.mstResult.next(null);
+    this.nearestNeighborResult.next(null);
+    this.farthestNeighborResult.next(null);
 
-  public getFarthestNeighborRoundTrip(entries: DistanceEntry[]): Observable<DistanceEntry[]> {
-    return this.getWorkerResult(this.farthestNeighborWorker, entries, 'FN');
+    this.bruteforceWorker.postMessage({distanceMatrix});
+    this.farthestNeighborWorker.postMessage({distanceMatrix, type: 'FN'});
+    this.nearestNeighborWorker.postMessage({distanceMatrix, type: 'NN'});
+    this.mstWorker.postMessage({distanceMatrix});
   }
 
-  public getNearestNeighborRoundTrip(entries: DistanceEntry[]): Observable<DistanceEntry[]> {
-    return this.getWorkerResult(this.nearestNeighborWorker, entries, 'NN');
+  public getFarthestNeighborRoundTrip(): Observable<DistanceEntry[]> {
+    return this.farthestNeighborResult;
   }
 
-  public getMSTRoundTrip(entries: DistanceEntry[]): Observable<DistanceEntry[]> {
-    return this.getWorkerResult(this.mstWorker, entries);
+  public getNearestNeighborRoundTrip(): Observable<DistanceEntry[]> {
+    return this.nearestNeighborResult;
   }
 
-  public getBruteRoundTrip(entries: DistanceEntry[]): Observable<DistanceEntry[]> {
-    return this.getWorkerResult(this.bruteforceWorker, entries);
+  public getMSTRoundTrip(): Observable<DistanceEntry[]> {
+    return this.mstResult;
   }
 
-
-  private getWorkerResult(worker: Worker, entries: DistanceEntry[], type?: string): Observable<DistanceEntry[]> {
-    worker.postMessage({distanceMatrix: entries, type});
-    const result: Subject<DistanceEntry[]> = new Subject();
-    worker.onmessage = message => result.next(message.data);
-    return result;
+  public getBruteRoundTrip(): Observable<DistanceEntry[]> {
+    return this.bruteforceResult;
   }
 }

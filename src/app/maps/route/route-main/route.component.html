@@ -1,19 +1,20 @@
 <br><br>
-<div fxLayoutAlign="center center" *ngIf="roundTripNN">
+<div fxLayoutAlign="center center" *ngIf="roundTripNN$">
   <mat-button-toggle-group [vertical]="isXSLayout" matTooltip="Choose one of the heuristics to calculate a round trip.">
-    <mat-button-toggle (click)="roundTrip = roundTripFN">Farthest Neighbor</mat-button-toggle>
-    <mat-button-toggle (click)="roundTrip = roundTripNN">Nearest Neighbor</mat-button-toggle>
-    <mat-button-toggle (click)="roundTrip = roundTripMST">MST</mat-button-toggle>
-    <mat-button-toggle (click)="roundTrip = roundTripBrute" [disabled]="!(roundTripBrute | async)">
-      Bruteforce
-      <mat-spinner *ngIf="!(roundTripBrute | async)"></mat-spinner>
+    <mat-button-toggle (click)="roundTrip$ = roundTripFN$">Farthest Neighbor</mat-button-toggle>
+    <mat-button-toggle (click)="roundTrip$ = roundTripNN$">Nearest Neighbor</mat-button-toggle>
+    <mat-button-toggle (click)="roundTrip$ = roundTripMST$" [disabled]="!(roundTripMST$ | async)">
+      MST
+    </mat-button-toggle>
+    <mat-button-toggle (click)="roundTrip$ = roundTripBrute$" [disabled]="!(roundTripBrute$ | async)">
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <span>Bruteforce</span>
+        <mat-spinner *ngIf="!(roundTripBrute$ | async)" [diameter]="20"></mat-spinner>
+      </div>
     </mat-button-toggle>
   </mat-button-toggle-group>
 </div>
 
 <br>
 
-{{ (roundTrip | async) | json}}
-{{ (roundTripFN | async) | json}}
-
-<tsp-route-result *ngIf="roundTrip" [roundTrip]="roundTrip" [destinations]="destinations"></tsp-route-result>
+<tsp-route-result *ngIf="roundTrip$" [roundTrip]="roundTrip$ | async" [destinations]="destinations"></tsp-route-result>

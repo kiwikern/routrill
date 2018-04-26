@@ -4,6 +4,6 @@
 <mat-dialog-content>
   <span class="preserve-newline">{{text}}</span>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button mat-dialog-close [routerLink]="routePath">{{routeName}}</button>
+<mat-dialog-actions align="center">
+  <button mat-button mat-dialog-close (click)="close()">{{routeName}}</button>
 </mat-dialog-actions>
