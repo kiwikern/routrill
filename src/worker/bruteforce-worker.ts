@@ -1,7 +1,6 @@
 import { DistanceEntry } from './distance-matrix';
 
 onmessage = function (e) {
-  console.log('Received a message');
   const service = new BruteRouteService();
   postMessage(service.getRoundTrip(e.data.distanceMatrix));
 };

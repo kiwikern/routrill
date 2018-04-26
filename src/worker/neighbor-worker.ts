@@ -1,7 +1,7 @@
 import { DistanceEntry } from './distance-matrix';
 
 onmessage = function (e) {
-  console.log('Received a message');
+  console.log(e.data.type);
   const service = new NeighborRouteService();
   let result;
   if (e.data.type === 'FN') {
