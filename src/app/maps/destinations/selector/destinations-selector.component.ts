@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Place} from '../destination.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Place } from '../destination.service';
 
 @Component({
   selector: 'tsp-destinations-selector',
@@ -9,7 +9,7 @@ import {Place} from '../destination.service';
 })
 export class DestinationsSelectorComponent {
   @Input() suggestions: Observable<{name: string}[]>;
-  @Output() locationUpdate = new EventEmitter<string>();
+  @Output() locationUpdate = new EventEmitter<Place>();
   @Output() searchTerm = new EventEmitter<string>();
   location: Place = null;
 
@@ -18,7 +18,7 @@ export class DestinationsSelectorComponent {
 
   updateValue(value: string | Place) {
     if (typeof value === 'object' && value.name) {
-      this.locationUpdate.emit(value.name);
+      this.locationUpdate.emit(value);
       this.location = null;
     }
   }

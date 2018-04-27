@@ -1,16 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { bindCallback } from 'rxjs/observable/bindCallback';
+import { of } from 'rxjs/observable/of';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { ElevationService } from '../route/services/elevation.service';
 
 @Injectable()
 export class DestinationService {
 
-  private readonly autocompleteService: any;
-  private destinations: string[] = [];
+  private readonly autocompleteService;
+  private readonly placesService;
+  private destinations: Place[] = [];
 
-  constructor() {
+  constructor(private elevationService: ElevationService) {
     this.autocompleteService = new google.maps.places.AutocompleteService();
+    const div = document.createElement('div');
+    this.placesService = new google.maps.places.PlacesService(div);
     const destinations = localStorage.getItem('tsp.destinations');
     if (destinations) {
       this.destinations = JSON.parse(destinations);
@@ -23,27 +29,52 @@ export class DestinationService {
     return result.pipe(map(resp => this.extractData(resp)));
   }
 
-  getDestinations(): string[] {
+  getDestinations(): Place[] {
     return this.destinations;
   }
 
-  setDestinations(destinations: string[]) {
-    this.destinations = destinations;
-    localStorage.setItem('tsp.destinations', JSON.stringify(destinations));
+  getDestinationNames(): string[] {
+    return this.destinations.map(d => d.name);
   }
 
-  private extractData(response: any) {
+  setDestinations(destinations: Place[]) {
+    forkJoin(destinations.map(p => this.addLatLng(p)))
+      .pipe(mergeMap(d => this.elevationService.addElevations(d)))
+      .subscribe(des => {
+        this.destinations = des;
+        localStorage.setItem('tsp.destinations', JSON.stringify(des));
+      });
+  }
+
+  private extractData(response): Place[] {
     let suggestions = [];
     if (response) {
       suggestions = response.map((prediction) => {
-        return {name: prediction.description};
+        return {name: prediction.description, id: prediction.place_id};
       });
     }
     return suggestions;
+  }
+
+  private addLatLng(place: Place): Observable<Place> {
+    if (place.location) {
+      return of(place);
+    }
+    const getDetails: any = bindCallback(this.placesService.getDetails.bind(this.placesService), res => res);
+    return getDetails({placeId: place.id}).pipe(map((response: any) => {
+      const lat = response.geometry.location.lat();
+      const lng = response.geometry.location.lng();
+      return {name: place.name, id: place.id, location: {lat, lng}};
+    }));
   }
 }
 
 export interface Place {
   name: string;
   id: string;
+  elevation?: number;
+  location?: {
+    lat: number;
+    lng: number;
+  };
 }

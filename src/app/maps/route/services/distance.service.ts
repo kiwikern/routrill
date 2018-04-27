@@ -23,7 +23,7 @@ export class DistanceService implements Resolve<DistanceMatrix> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<DistanceMatrix> | DistanceMatrix {
-    const destinations = this.destinationService.getDestinations();
+    const destinations = this.destinationService.getDestinationNames();
     if (this.hasEnoughDestinations(destinations)) {
       const matrix$ = this.getDistance(destinations);
       matrix$.subscribe(m => !m.hasRoute ? this.showError(m) : null);
@@ -34,13 +34,14 @@ export class DistanceService implements Resolve<DistanceMatrix> {
   }
 
   getDistance(places: string[]): Observable<DistanceMatrix> {
+    const destinations = this.destinationService.getDestinations();
     const getDistance: any = bindCallback(this.distanceService.getDistanceMatrix.bind(this.distanceService), res => res);
     const result: BoundCallbackObservable<any> = getDistance({origins: places, destinations: places, travelMode: 'DRIVING'});
-    return result.pipe(map(res => new DistanceMatrix(res)));
+    return result.pipe(map(res => new DistanceMatrix(res, destinations)));
   }
 
   private showError(matrix: DistanceMatrix) {
-    const destinations = this.destinationService.getDestinations();
+    const destinations = this.destinationService.getDestinationNames();
     const nonReachable: DistanceEntry[] = matrix.distanceEntries.filter(e => !e.isReachable);
     this.router.navigate(['destinations']);
     if (nonReachable && nonReachable.length > 0) {

@@ -17,7 +17,7 @@
         </div>
         <mat-list>
           <mat-list-item *ngFor="let location of destinations">
-            <span matLine>{{ location }}</span>
+            <span matLine>{{ location.name }}</span>
             <button mat-icon-button (click)="removeLocation(location)" matTooltip="Remove destination"
                     matTooltipShowDelay="300">
               <mat-icon>delete</mat-icon>

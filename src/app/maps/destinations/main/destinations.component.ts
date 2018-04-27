@@ -15,7 +15,7 @@ import { of } from 'rxjs/observable/of';
 })
 export class DestinationsComponent implements OnInit {
 
-  public destinations: string[] = [];
+  public destinations: Place[] = [];
   public suggestions: Observable<Place[]>;
   private placeSearchStream: Subject<string> = new Subject<string>();
 
@@ -26,8 +26,8 @@ export class DestinationsComponent implements OnInit {
   }
 
 
-  addLocation(location: string) {
-    if (this.destinations.indexOf(location) !== -1) {
+  addLocation(location: Place) {
+    if (this.destinations.findIndex(p => p.id === location.id) !== -1) {
       this.showSnackbar('Destination has already been added.');
     } else if (this.destinations.length >= 10) {
       this.showSnackbar('The maximum of 10 destinations has been reached.');
@@ -37,8 +37,8 @@ export class DestinationsComponent implements OnInit {
     }
   }
 
-  removeLocation(location: string) {
-    const index = this.destinations.indexOf(location);
+  removeLocation(location: Place) {
+    const index = this.destinations.findIndex(p => p.id === location.id);
     if (index === -1) {
       this.showSnackbar('Destination has already been removed.');
     } else {
@@ -86,7 +86,7 @@ export class DestinationsComponent implements OnInit {
     const exampleDestinations: string[] = ['Berlin, Deutschland', 'Warschau, Polen', 'München, Deutschland',
       'Pforzheim, Deutschland', 'Hamburg, Deutschland', 'Dresden, Deutschland',
       'Göttingen, Deutschland', 'Bielefeld, Deutschland', 'Madrid, Spanien'];
-    this.destinations = exampleDestinations;
+    // this.destinations = exampleDestinations; TODO SampleDestinations as Location
     this.saveDestinationsLocally();
   }
 

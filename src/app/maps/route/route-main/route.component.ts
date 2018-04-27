@@ -40,7 +40,7 @@ export class RouteComponent implements OnInit {
     this.roundTripFN$ = this.routeService.getFarthestNeighborRoundTrip();
     this.roundTripMST$ = this.routeService.getMSTRoundTrip();
     this.roundTripBrute$ = this.routeService.getBruteRoundTrip();
-    this.destinations = this.destinationService.getDestinations();
+    this.destinations = this.destinationService.getDestinationNames();
     this.route.data.subscribe(data => this.getRoundTrip(data.distanceMatrix));
   }
 

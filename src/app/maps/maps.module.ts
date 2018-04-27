@@ -14,6 +14,7 @@ import { UtilModule } from '../util/util.module';
 import { ConfirmDialogComponent } from '../util/confirm-dialog/confirm-dialog.component';
 import { RouteService } from './route/services/route.service';
 import { RouteResultComponent } from './route/route-result/route-result.component';
+import { ElevationService } from './route/services/elevation.service';
 
 const routes: Routes = [
   {
@@ -48,7 +49,8 @@ const routes: Routes = [
   providers: [
     DestinationService,
     DistanceService,
-    RouteService
+    RouteService,
+    ElevationService
   ],
   entryComponents: [ConfirmDialogComponent]
 })
