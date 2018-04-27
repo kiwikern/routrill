@@ -7,7 +7,7 @@
 </div>
 <div class="flex-container" fxLayoutAlign="center center">
   <div class="route-overview">
-    <h3 matSubheader *ngIf=" roundTrip.length> 2">Route</h3>
+    <h3>Route</h3>
     <div class=" table" [ngStyle.xs]="{'min-width': 0}">
       <ng-container *ngFor="let entry of roundTrip">
         <span>{{destinations[entry.fromIndex]}}</span>
