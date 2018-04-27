@@ -26,7 +26,7 @@ export class RouteResultComponent implements OnChanges {
     const from = this.destinations[entry.fromIndex];
     const to = this.destinations[entry.toIndex];
     const distance = entry.distance;
-    return new RouteSection(from, to, distance);
+    return new RouteSection(from, to, distance, entry.elevationPercentage);
   }
 
 

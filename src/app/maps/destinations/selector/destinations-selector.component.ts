@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Place } from '../destination.service';
+import { Place } from '../../../../worker/place.interface';
 
 @Component({
   selector: 'tsp-destinations-selector',

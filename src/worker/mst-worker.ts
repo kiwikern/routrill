@@ -126,7 +126,7 @@ class MstRouteService {
    */
   private getShortestEdges(entries: DistanceEntry[]): DistanceEntry[] {
     const shortest: DistanceEntry = entries.reduce((prev, curr) => {
-      if (prev.distance < curr.distance) {
+      if (this.getDistance(prev) < this.getDistance(curr)) {
         return prev;
       } else {
         return curr;
@@ -134,6 +134,21 @@ class MstRouteService {
     });
     const back: DistanceEntry = entries.filter(e => e.fromIndex === shortest.toIndex && e.toIndex === shortest.fromIndex)[0];
     return [shortest, back];
+  }
+
+  /**
+   * Depending on the elevation, the distance weight can be increased or decreased.
+   * @param {DistanceEntry} entry
+   * @returns {number}
+   */
+  private getDistance(entry: DistanceEntry): number {
+    if (entry.elevationPercentage >= 3) {
+      return 1.2 * entry.distance;
+    } else if (entry.elevationPercentage <= -3) {
+      return 0.9 * entry.distance;
+    } else {
+      return entry.distance;
+    }
   }
 
   private removeVisited(entriesToVisit: DistanceEntry[], visited: DistanceEntry[]): DistanceEntry[] {

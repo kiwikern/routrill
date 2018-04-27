@@ -1,5 +1,9 @@
-  <div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
-    <span>{{section.from}}</span>
-    <span>{{section.to}}:
-    {{section.distance}} km</span>
-  </div>
+<div class="grid">
+  <span>{{section.from}}</span>
+  <span>{{section.to}}:</span>
+  <span>{{section.distance}} km</span>
+  <span
+    [ngClass]="{elevationPenalty: section.elevationPercentage > 3,
+                elevationBonus: section.elevationPercentage < -3}">
+      {{section.elevationPercentage | number:'1.2-2'}} %</span>
+</div>

@@ -19,7 +19,7 @@ class NeighborRouteService {
    * @returns {DistanceEntry[]}
    */
   getNNRoundTrip(entries: DistanceEntry[]) {
-    return this.getRoundTrip(entries, this.getShortestTrip);
+    return this.getRoundTrip(entries, route => this.getShortestTrip(route));
   }
 
   /**
@@ -28,7 +28,7 @@ class NeighborRouteService {
    * @returns {DistanceEntry[]}
    */
   getFNRoundTrip(entries: DistanceEntry[]) {
-    return this.getRoundTrip(entries, this.getLongestTrip);
+    return this.getRoundTrip(entries, route => this.getLongestTrip(route));
   }
 
   /**
@@ -76,11 +76,26 @@ class NeighborRouteService {
   }
 
   private getShortestTrip(entries: DistanceEntry[]): DistanceEntry {
-    return entries.reduce((prev, curr) => prev.distance < curr.distance ? prev : curr);
+    return entries.reduce((prev, curr) => this.getDistance(prev) < this.getDistance(curr) ? prev : curr);
   }
 
   private getLongestTrip(entries: DistanceEntry[]): DistanceEntry {
-    return entries.reduce((prev, curr) => prev.distance > curr.distance ? prev : curr);
+    return entries.reduce((prev, curr) => this.getDistance(prev) > this.getDistance(curr) ? prev : curr);
+  }
+
+  /**
+   * Depending on the elevation, the distance weight can be increased or decreased.
+   * @param {DistanceEntry} entry
+   * @returns {number}
+   */
+  private getDistance(entry: DistanceEntry): number {
+    if (entry.elevationPercentage >= 3) {
+      return 1.2 * entry.distance;
+    } else if (entry.elevationPercentage <= -3) {
+      return 0.9 * entry.distance;
+    } else {
+      return entry.distance;
+    }
   }
 
   private removeVisited(fromIndex: number, entries: DistanceEntry[]) {

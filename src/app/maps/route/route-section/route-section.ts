@@ -8,10 +8,12 @@ export class RouteSection {
   from = '';
   to = '';
   distance = 0;
+  elevationPercentage = 0;
 
-  constructor(from: string, to: string, distance: number) {
+  constructor(from: string, to: string, distance: number, elevationPercentage: number) {
     this.from = from;
     this.to = to;
     this.distance = Math.round(distance / 1000);
+    this.elevationPercentage = elevationPercentage;
   }
 }

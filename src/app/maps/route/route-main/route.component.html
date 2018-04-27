@@ -1,8 +1,12 @@
 <br><br>
 <div fxLayoutAlign="center center" *ngIf="roundTripNN$">
   <mat-button-toggle-group [vertical]="isXSLayout" matTooltip="Choose one of the heuristics to calculate a round trip.">
-    <mat-button-toggle (click)="roundTrip$ = roundTripFN$">Farthest Neighbor</mat-button-toggle>
-    <mat-button-toggle (click)="roundTrip$ = roundTripNN$">Nearest Neighbor</mat-button-toggle>
+    <mat-button-toggle (click)="roundTrip$ = roundTripFN$" [disabled]="!(roundTripFN$ | async)">
+      Farthest Neighbor
+    </mat-button-toggle>
+    <mat-button-toggle (click)="roundTrip$ = roundTripNN$" [disabled]="!(roundTripNN$ | async)">
+      Nearest Neighbor
+    </mat-button-toggle>
     <mat-button-toggle (click)="roundTrip$ = roundTripMST$" [disabled]="!(roundTripMST$ | async)">
       MST
     </mat-button-toggle>

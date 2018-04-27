@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { DestinationService, Place } from '../destination.service';
+import { DestinationService } from '../destination.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
@@ -7,6 +7,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { MatSnackBar } from '@angular/material';
 import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
+import { Place } from '../../../../worker/place.interface';
 
 @Component({
   selector: 'tsp-destinations',

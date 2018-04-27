@@ -19,11 +19,13 @@ class BruteRouteService {
     const results = [];
     for (const permutation of allRoundTrips) {
       const trip = this.getTrip(graph, permutation);
-      const distance = this.getDistance(trip);
+      const distance = this.getTotalDistance(trip);
       results.push({permutation: permutation, distance: distance});
     }
     const minimum = results.reduce((min, result) => min.distance < result.distance ? min : result);
-    return this.getTrip(graph, minimum.permutation);
+    const bestTrip = this.getTrip(graph, minimum.permutation);
+    console.log(this.getTotalDistance(bestTrip));
+    return bestTrip;
   }
 
   /**
@@ -79,8 +81,23 @@ class BruteRouteService {
    * @param trip
    * @returns {number}
    */
-  private getDistance(trip: DistanceEntry[]) {
-    return trip.reduce((distance, entry) => distance + entry.distance, 0);
+  private getTotalDistance(trip: DistanceEntry[]) {
+    return trip.reduce((distance, entry) => distance + this.getDistance(entry), 0);
+  }
+
+  /**
+   * Depending on the elevation, the distance weight can be increased or decreased.
+   * @param {DistanceEntry} entry
+   * @returns {number}
+   */
+  private getDistance(entry: DistanceEntry): number {
+    if (entry.elevationPercentage >= 3) {
+      return 1.2 * entry.distance;
+    } else if (entry.elevationPercentage <= -3) {
+      return 0.9 * entry.distance;
+    } else {
+      return entry.distance;
+    }
   }
 
   /**

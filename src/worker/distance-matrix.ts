@@ -1,7 +1,7 @@
 /**
  * Created by Kim on 23.02.2017.
  */
-import { Place } from '../app/maps/destinations/destination.service';
+import { Place } from './place.interface';
 
 const flatMap = (xs, f) => xs.map(f).reduce((x, y) => x.concat(y), []);
 
