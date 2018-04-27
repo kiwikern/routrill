@@ -1,17 +1,21 @@
 <tsp-route-map [destinations]="stopsInOrder"></tsp-route-map>
-<div class="distance" *ngIf="totalDistance > 0">
-  Total distance: {{totalDistance}} km
+<div>
+  <div class="distance" *ngIf="totalDistance > 0">
+    <span>Total distance:</span> <span>{{totalDistance}} km</span>
+    <span>Total consumption:</span> <span>{{totalConsumption}} kw/h</span>
+  </div>
 </div>
 <div class="flex-container" fxLayoutAlign="center center">
   <div class="route-overview">
-  <h3 matSubheader *ngIf=" roundTrip.length> 2">Route</h3>
+    <h3 matSubheader *ngIf=" roundTrip.length> 2">Route</h3>
     <div class=" table" [ngStyle.xs]="{'min-width': 0}">
       <ng-container *ngFor="let entry of roundTrip">
         <span>{{destinations[entry.fromIndex]}}</span>
         <span>{{destinations[entry.toIndex]}}</span>
         <span class="align-end">{{entry.distance / 1000 | number:'1.0-0'}} km</span>
+        <span class="align-end">{{entry.consumption | number:'1.0-0'}} kw/h</span>
         <span class="align-end"
-          [ngClass]="{elevationPenalty: entry.elevationPercentage > 3,
+              [ngClass]="{elevationPenalty: entry.elevationPercentage > 3,
                 elevationBonus: entry.elevationPercentage < -3}">
       {{entry.elevationPercentage | number:'1.2-2'}} %</span>
       </ng-container>

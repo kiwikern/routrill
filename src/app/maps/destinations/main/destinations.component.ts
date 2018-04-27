@@ -84,10 +84,52 @@ export class DestinationsComponent implements OnInit {
   }
 
   getSampleDestinations() {
-    const exampleDestinations: string[] = ['Berlin, Deutschland', 'Warschau, Polen', 'München, Deutschland',
-      'Pforzheim, Deutschland', 'Hamburg, Deutschland', 'Dresden, Deutschland',
-      'Göttingen, Deutschland', 'Bielefeld, Deutschland', 'Madrid, Spanien'];
-    // this.destinations = exampleDestinations; TODO SampleDestinations as Location
+    this.destinations = [{
+      'name': 'Berlin, Deutschland',
+      'id': 'ChIJAVkDPzdOqEcRcDteW0YgIQQ',
+      'location': {'lat': 52.52000659999999, 'lng': 13.404953999999975},
+      'elevation': 36.18620300292969
+    }, {
+      'name': 'Warschau, Polen',
+      'id': 'ChIJAZ-GmmbMHkcR_NPqiCq-8HI',
+      'location': {'lat': 52.2296756, 'lng': 21.012228700000037},
+      'elevation': 112.8618621826172
+    }, {
+      'name': 'München, Deutschland',
+      'id': 'ChIJ2V-Mo_l1nkcRfZixfUq4DAE',
+      'location': {'lat': 48.1351253, 'lng': 11.581980499999986},
+      'elevation': 514.8603515625
+    }, {
+      'name': 'Pforzheim, Deutschland',
+      'id': 'ChIJd6YPj-Jxl0cRQFMJjTz9HwQ',
+      'location': {'lat': 48.8921862, 'lng': 8.694628599999987},
+      'elevation': 261.7003784179688
+    }, {
+      'name': 'Hamburg, Deutschland',
+      'id': 'ChIJuRMYfoNhsUcRoDrWe_I9JgQ',
+      'location': {'lat': 53.5510846, 'lng': 9.993681899999956},
+      'elevation': 5.680583000183105
+    }, {
+      'name': 'Dresden, Deutschland',
+      'id': 'ChIJqdYaECnPCUcRsP6IQsuxIQQ',
+      'location': {'lat': 51.05040880000001, 'lng': 13.737262099999953},
+      'elevation': 112.8321151733398
+    }, {
+      'name': 'Göttingen, Deutschland',
+      'id': 'ChIJx8qYb7jUpEcRMD6slG2sJQQ',
+      'location': {'lat': 51.54128040000001, 'lng': 9.915803500000038},
+      'elevation': 147.2899932861328
+    }, {
+      'name': 'Bielefeld, Deutschland',
+      'id': 'ChIJ8xmb4RE9ukcRzsfHbHK1P0w',
+      'location': {'lat': 52.0302285, 'lng': 8.532470800000056},
+      'elevation': 119.2644577026367
+    }, {
+      'name': 'Madrid, Spanien',
+      'id': 'ChIJgTwKgJcpQg0RaSKMYcHeNsQ',
+      'location': {'lat': 40.4167754, 'lng': -3.7037901999999576},
+      'elevation': 647.6755981445312
+    }];
     this.saveDestinationsLocally();
   }
 

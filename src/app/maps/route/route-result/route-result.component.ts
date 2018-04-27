@@ -12,6 +12,7 @@ export class RouteResultComponent implements OnChanges {
   @Input() roundTrip: DistanceEntry[];
   @Input() destinations;
   totalDistance = 0;
+  totalConsumption = 0;
   stopsInOrder = [];
 
   constructor() {
@@ -20,6 +21,7 @@ export class RouteResultComponent implements OnChanges {
   ngOnChanges() {
     this.stopsInOrder = this.roundTrip.map(t => this.destinations[t.fromIndex]);
     this.totalDistance = Math.round(this.roundTrip.reduce((first, snd) => first + snd.distance, 0) / 1000);
+    this.totalConsumption = Math.round(this.roundTrip.reduce((first, snd) => first + snd.consumption, 0));
   }
 
   getSection(entry: DistanceEntry) {

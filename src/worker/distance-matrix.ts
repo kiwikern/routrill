@@ -37,6 +37,8 @@ export class DistanceEntry {
   toIndex = 0;
   isReachable = false;
   distance = 0;
+  /**consumption in kw/h*/
+  consumption = 0;
   elevationPercentage = 0;
 
   constructor(fromIndex: number, toIndex: number, entry: any, elevationDiff: number) {
@@ -48,6 +50,23 @@ export class DistanceEntry {
     }
     if (this.distance > 0) {
       this.elevationPercentage = elevationDiff / (this.distance / (100 * 100));
+      this.consumption = this.getConsumption();
+    }
+  }
+
+  /**
+   * Depending on the elevation, the distance weight can be increased or decreased.
+   * @param {DistanceEntry} entry
+   * @returns {number}
+   */
+  private getConsumption(): number {
+    const consumption = this.distance / 1000; // 100kw/h per 100km
+    if (this.elevationPercentage >= 3) {
+      return 1.2 * consumption;
+    } else if (this.elevationPercentage <= -3) {
+      return 0.9 * consumption;
+    } else {
+      return consumption;
     }
   }
 }

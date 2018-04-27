@@ -76,26 +76,11 @@ class NeighborRouteService {
   }
 
   private getShortestTrip(entries: DistanceEntry[]): DistanceEntry {
-    return entries.reduce((prev, curr) => this.getDistance(prev) < this.getDistance(curr) ? prev : curr);
+    return entries.reduce((prev, curr) => prev.consumption < curr.consumption ? prev : curr);
   }
 
   private getLongestTrip(entries: DistanceEntry[]): DistanceEntry {
-    return entries.reduce((prev, curr) => this.getDistance(prev) > this.getDistance(curr) ? prev : curr);
-  }
-
-  /**
-   * Depending on the elevation, the distance weight can be increased or decreased.
-   * @param {DistanceEntry} entry
-   * @returns {number}
-   */
-  private getDistance(entry: DistanceEntry): number {
-    if (entry.elevationPercentage >= 3) {
-      return 1.2 * entry.distance;
-    } else if (entry.elevationPercentage <= -3) {
-      return 0.9 * entry.distance;
-    } else {
-      return entry.distance;
-    }
+    return entries.reduce((prev, curr) => prev.consumption > curr.consumption ? prev : curr);
   }
 
   private removeVisited(fromIndex: number, entries: DistanceEntry[]) {
