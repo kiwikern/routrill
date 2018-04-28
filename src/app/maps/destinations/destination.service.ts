@@ -56,6 +56,12 @@ export class DestinationService {
    * @param {Place[]} destinations
    */
   setDestinations(destinations: Place[]) {
+    if (Array.isArray(destinations) && destinations.length === 0) {
+      this.destinations = [];
+      localStorage.setItem('tsp.destinations', JSON.stringify([]));
+      return;
+    }
+
     forkJoin(destinations.map(p => this.addLatLng(p)))
       .pipe(mergeMap(d => this.elevationService.addElevations(d)))
       .subscribe(des => {
