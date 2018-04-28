@@ -1,22 +1,27 @@
 <br><br>
 <div fxLayoutAlign="center center" *ngIf="roundTripNN$">
-  <mat-button-toggle-group [vertical]="isXSLayout" matTooltip="Choose one of the heuristics to calculate a round trip.">
-    <mat-button-toggle (click)="roundTrip$ = roundTripFN$" [disabled]="!(roundTripFN$ | async)">
+  <mat-button-toggle-group [vertical]="isXSLayout"
+                           [(ngModel)]="roundTrip$">
+    <mat-button-toggle [value]="roundTripFN$" [disabled]="!(roundTripFN$ | async)">
       Farthest Neighbor
     </mat-button-toggle>
-    <mat-button-toggle (click)="roundTrip$ = roundTripNN$" [disabled]="!(roundTripNN$ | async)">
+    <mat-button-toggle [value]="roundTripNN$" [disabled]="!(roundTripNN$ | async)">
       Nearest Neighbor
     </mat-button-toggle>
-    <mat-button-toggle (click)="roundTrip$ = roundTripMST$" [disabled]="!(roundTripMST$ | async)">
+    <mat-button-toggle [value]="roundTripMST$" [disabled]="!(roundTripMST$ | async)">
       MST
     </mat-button-toggle>
-    <mat-button-toggle (click)="roundTrip$ = roundTripBrute$" [disabled]="!(roundTripBrute$ | async)">
+    <mat-button-toggle [value]="roundTripBrute$" [disabled]="!(roundTripBrute$ | async)">
       <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
         <span>Bruteforce</span>
         <mat-spinner *ngIf="!(roundTripBrute$ | async)" [diameter]="20"></mat-spinner>
       </div>
     </mat-button-toggle>
   </mat-button-toggle-group>
+</div>
+
+<div *ngIf="!roundTrip$">
+  Choose one of the heuristics to calculate a round trip.
 </div>
 
 <br>
