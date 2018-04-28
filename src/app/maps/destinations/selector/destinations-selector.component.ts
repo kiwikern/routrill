@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Place } from '../../../../worker/place.interface';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
   selector: 'tsp-destinations-selector',
@@ -8,31 +9,39 @@ import { Place } from '../../../../worker/place.interface';
   styleUrls: ['./destinations-selector.component.css']
 })
 export class DestinationsSelectorComponent {
-  @Input() suggestions: Observable<{name: string}[]>;
+  @Input() suggestions: Observable<{ name: string }[]>;
   @Output() locationUpdate = new EventEmitter<Place>();
   @Output() searchTerm = new EventEmitter<string>();
-  location: Place = null;
 
   constructor() {
   }
 
-  updateValue(value: string | Place) {
-    if (typeof value === 'object' && value.name) {
-      this.locationUpdate.emit(value);
-      this.location = null;
+  /**
+   * Emit an output event when a location is selected from the suggestions.
+   * @param {string | Place} value
+   */
+  emitOptionSelected(event: MatAutocompleteSelectedEvent) {
+    const location = event.option.value;
+    if (location && location.name) {
+      this.locationUpdate.emit(location);
     }
   }
 
+  /**
+   * Retrieve suggestions from the Google Place API.
+   * @param {string} place
+   */
   getSuggestions(place: string) {
     this.searchTerm.emit(place);
   }
 
-  displayLocation(location: string): any {
-    if (this.location && this.location.name) {
-      return this.location.name;
-    } else {
-      return null;
-    }
+  /**
+   * Clear out the input, so that a new location can be added.
+   * @param {string} location: unused
+   * @returns {any}
+   */
+  displayLocation(location: Place): any {
+    return null;
   }
 
 }
