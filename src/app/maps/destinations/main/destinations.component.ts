@@ -97,6 +97,11 @@ export class DestinationsComponent implements OnInit {
       'location': {'lat': 52.52000659999999, 'lng': 13.404953999999975},
       'elevation': 36.18620300292969
     }, {
+      'name': 'Köln, Deutschland',
+      'id': 'ChIJ5S-raZElv0cR8HcqSvxgJwQ',
+      'location': {'lat': 50.937531, 'lng': 6.960278600000038},
+      'elevation': 49.99673461914062
+    }, {
       'name': 'Warschau, Polen',
       'id': 'ChIJAZ-GmmbMHkcR_NPqiCq-8HI',
       'location': {'lat': 52.2296756, 'lng': 21.012228700000037},
@@ -121,11 +126,6 @@ export class DestinationsComponent implements OnInit {
       'id': 'ChIJqdYaECnPCUcRsP6IQsuxIQQ',
       'location': {'lat': 51.05040880000001, 'lng': 13.737262099999953},
       'elevation': 112.8321151733398
-    }, {
-      'name': 'Göttingen, Deutschland',
-      'id': 'ChIJx8qYb7jUpEcRMD6slG2sJQQ',
-      'location': {'lat': 51.54128040000001, 'lng': 9.915803500000038},
-      'elevation': 147.2899932861328
     }, {
       'name': 'Bielefeld, Deutschland',
       'id': 'ChIJ8xmb4RE9ukcRzsfHbHK1P0w',
