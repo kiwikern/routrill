@@ -8,7 +8,6 @@ import { DistanceService } from './route/services/distance.service';
 import { DestinationsSelectorComponent } from './destinations/selector/destinations-selector.component';
 import { FormsModule } from '@angular/forms';
 import { RouteComponent } from './route/route-main/route.component';
-import { RouteSectionComponent } from './route/route-section/route-section.component';
 import { RouteMapComponent } from './route/route-map/route-map.component';
 import { UtilModule } from '../util/util.module';
 import { ConfirmDialogComponent } from '../util/confirm-dialog/confirm-dialog.component';
@@ -42,7 +41,6 @@ const routes: Routes = [
     DestinationsComponent,
     DestinationsSelectorComponent,
     RouteComponent,
-    RouteSectionComponent,
     RouteMapComponent,
     RouteResultComponent
   ],

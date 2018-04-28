@@ -7,22 +7,24 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 @Injectable()
 /**
  * Calculates round trips for given DistanceEntries using different heuristics.
+ * Web workers are used for multi-threaded, non-blocking computations.
  * With #calculateRoutes() you can start the calculation of all heuristics.
  * You can subscribe to the results of the calculations with #get<Heuristic>RoundTrip().
  */
 export class RouteService {
 
   bruteforceWorker: Worker;
-  bruteforceResult: Subject<DistanceEntry[]> = new ReplaySubject(1);
   farthestNeighborWorker: Worker;
-  farthestNeighborResult: Subject<DistanceEntry[]> = new ReplaySubject(1);
   nearestNeighborWorker: Worker;
-  nearestNeighborResult: Subject<DistanceEntry[]> = new ReplaySubject(1);
   mstWorker: Worker;
-  mstResult: Subject<DistanceEntry[]> = new ReplaySubject(1);
+  bruteforceResult$: Subject<DistanceEntry[]> = new ReplaySubject(1);
+  farthestNeighborResult$: Subject<DistanceEntry[]> = new ReplaySubject(1);
+  nearestNeighborResult$: Subject<DistanceEntry[]> = new ReplaySubject(1);
+  mstResult$: Subject<DistanceEntry[]> = new ReplaySubject(1);
   isBruteWorkerRunning = false;
 
   constructor(private ngZone: NgZone) {
+    // Initialize the workers
     this.bruteforceWorker = new Worker('worker/bruteforce-worker.js');
     this.farthestNeighborWorker = new Worker('worker/neighbor-worker.js');
     this.nearestNeighborWorker = new Worker('worker/neighbor-worker.js');
@@ -31,19 +33,25 @@ export class RouteService {
     // Populate Observables within zone for ChangeDetection to run
     this.bruteforceWorker.onmessage = message => {
       this.isBruteWorkerRunning = false;
-      return ngZone.run(() => this.bruteforceResult.next(message.data));
+      return ngZone.run(() => this.bruteforceResult$.next(message.data));
     };
-    this.farthestNeighborWorker.onmessage = message => ngZone.run(() => this.farthestNeighborResult.next(message.data));
-    this.nearestNeighborWorker.onmessage = message => ngZone.run(() => this.nearestNeighborResult.next(message.data));
-    this.mstWorker.onmessage = message => ngZone.run(() => this.mstResult.next(message.data));
+    this.farthestNeighborWorker.onmessage = message => ngZone.run(() => this.farthestNeighborResult$.next(message.data));
+    this.nearestNeighborWorker.onmessage = message => ngZone.run(() => this.nearestNeighborResult$.next(message.data));
+    this.mstWorker.onmessage = message => ngZone.run(() => this.mstResult$.next(message.data));
   }
 
+  /**
+   * Calculate routes with all algorithms.
+   * The results can be retrieved with the getter functions, e. g. #getMSTRoundTrip()
+   * If an older bruteforce calculation is still running, it will be terminated first.
+   * @param {DistanceEntry[]} distanceMatrix
+   */
   public calculateRoutes(distanceMatrix: DistanceEntry[]) {
     // Initialize with null to prune old results
-    this.bruteforceResult.next(null);
-    this.mstResult.next(null);
-    this.nearestNeighborResult.next(null);
-    this.farthestNeighborResult.next(null);
+    this.bruteforceResult$.next(null);
+    this.mstResult$.next(null);
+    this.nearestNeighborResult$.next(null);
+    this.farthestNeighborResult$.next(null);
 
     if (this.isBruteWorkerRunning) {
       this.recreateBruteWorker();
@@ -56,19 +64,19 @@ export class RouteService {
   }
 
   public getFarthestNeighborRoundTrip(): Observable<DistanceEntry[]> {
-    return this.farthestNeighborResult;
+    return this.farthestNeighborResult$;
   }
 
   public getNearestNeighborRoundTrip(): Observable<DistanceEntry[]> {
-    return this.nearestNeighborResult;
+    return this.nearestNeighborResult$;
   }
 
   public getMSTRoundTrip(): Observable<DistanceEntry[]> {
-    return this.mstResult;
+    return this.mstResult$;
   }
 
   public getBruteRoundTrip(): Observable<DistanceEntry[]> {
-    return this.bruteforceResult;
+    return this.bruteforceResult$;
   }
 
   /**
@@ -77,6 +85,6 @@ export class RouteService {
   private recreateBruteWorker() {
     this.bruteforceWorker.terminate();
     this.bruteforceWorker = new Worker('worker/bruteforce-worker.js');
-    this.bruteforceWorker.onmessage = message => this.ngZone.run(() => this.bruteforceResult.next(message.data));
+    this.bruteforceWorker.onmessage = message => this.ngZone.run(() => this.bruteforceResult$.next(message.data));
   }
 }

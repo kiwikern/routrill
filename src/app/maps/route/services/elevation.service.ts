@@ -5,6 +5,9 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import ElevationResult = google.maps.ElevationResult;
 
+/**
+ * Service for querying the Google Elevation API.
+ */
 @Injectable()
 export class ElevationService {
 
@@ -14,6 +17,12 @@ export class ElevationService {
     this.elevationService = new google.maps.ElevationService();
   }
 
+  /**
+   * Add elevation information to a given list of places.
+   * It need latitude/longitude to query for elevation.
+   * @param {Place[]} destinations
+   * @returns {Observable<Place[]>}
+   */
   addElevations(destinations: Place[]): Observable<Place[]> {
     const getElevations: any = bindCallback(this.elevationService.getElevationForLocations.bind(this.elevationService), res => res);
     return getElevations({locations: destinations.map(d => d.location)})

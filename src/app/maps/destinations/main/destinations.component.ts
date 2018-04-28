@@ -9,6 +9,10 @@ import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/
 import { of } from 'rxjs/observable/of';
 import { Place } from '../../../../worker/place.interface';
 
+/**
+ * View and edit the destinations. The destinations will be stored in localStorage.
+ * A set of sample locations can be added.
+ */
 @Component({
   selector: 'tsp-destinations',
   templateUrl: './destinations.component.html',
@@ -26,7 +30,24 @@ export class DestinationsComponent implements OnInit {
               private changeDetection: ChangeDetectorRef) {
   }
 
+  ngOnInit() {
+    this.destinations = this.destinationService.getDestinations();
 
+    this.suggestions = this.placeSearchStream.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(place => place ? this.service.getPlaceSuggestions(place) : of([])),
+      catchError(error => {
+        console.error(error);
+        this.showSnackbar('Something went wrong, sorry! Try again.');
+        return of([]);
+      }));
+  }
+
+  /**
+   * A maximum of 10 destinations can be added.
+   * @param {Place} location
+   */
   addLocation(location: Place) {
     if (this.destinations.findIndex(p => p.id === location.id) !== -1) {
       this.showSnackbar('Destination has already been added.');
@@ -56,20 +77,6 @@ export class DestinationsComponent implements OnInit {
   showSnackbar(message: string) {
     const config: any = {duration: 3000};
     this.snackBar.open(message, '', config);
-  }
-
-  ngOnInit() {
-    this.destinations = this.destinationService.getDestinations();
-
-    this.suggestions = this.placeSearchStream.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap((place: string) => place ? this.service.getSuggestions(place) : of<Place[]>([])),
-      catchError(error => {
-        console.error(error);
-        this.showSnackbar('Something went wrong, sorry! Try again.');
-        return of<Place[]>([]);
-      }));
   }
 
   getSuggestions(place: string) {

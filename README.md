@@ -1,6 +1,6 @@
-# Tsp
+# Routrill
 
-This project was implemented for the [IT Talents Code Competition](https://www.it-talents.de/foerderung/code-competition/code-competition-02-2017) using [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.30.
+This project was implemented for the [IT Talents Code Competition](https://www.it-talents.de/foerderung/code-competition/code-competition-04-2018) using [angular-cli](https://github.com/angular/angular-cli).
 
 ## Try it out
 * Clone the git repository.

@@ -7,6 +7,9 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { ElevationService } from '../route/services/elevation.service';
 import { Place } from '../../../worker/place.interface';
 
+/**
+ * Used for querying the Google Place API and storing selected destinations locally.
+ */
 @Injectable()
 export class DestinationService {
 
@@ -24,12 +27,22 @@ export class DestinationService {
     }
   }
 
-  getSuggestions(place: string): Observable<Place[]> {
+  /**
+   * Query the Google Places API for locations.
+   * @param {string} place
+   * @returns {Observable<Place[]>}
+   */
+  getPlaceSuggestions(place: string): Observable<Place[]> {
     const autoCompleat: any = bindCallback(this.autocompleteService.getPlacePredictions.bind(this.autocompleteService), res => res);
     const result: Observable<any> = autoCompleat({input: place});
     return result.pipe(map(resp => this.extractData(resp)));
   }
 
+  /**
+   * Get all destinations.
+   * Destinations are stored in localStorage.
+   * @returns {Place[]}
+   */
   getDestinations(): Place[] {
     return this.destinations;
   }
@@ -38,6 +51,10 @@ export class DestinationService {
     return this.destinations.map(d => d.name);
   }
 
+  /**
+   * Destinations are stored in localStorage.
+   * @param {Place[]} destinations
+   */
   setDestinations(destinations: Place[]) {
     forkJoin(destinations.map(p => this.addLatLng(p)))
       .pipe(mergeMap(d => this.elevationService.addElevations(d)))
@@ -47,6 +64,11 @@ export class DestinationService {
       });
   }
 
+  /**
+   * Extract relevant data from API response.
+   * @param response Google Place API response
+   * @returns {Place[]}
+   */
   private extractData(response): Place[] {
     let suggestions = [];
     if (response) {
@@ -57,6 +79,12 @@ export class DestinationService {
     return suggestions;
   }
 
+  /**
+   * Add latitude and longitude to the place retrieved from Google.
+   * Comes from a different Google Place API.
+   * @param {Place} place
+   * @returns {Observable<Place>}
+   */
   private addLatLng(place: Place): Observable<Place> {
     if (place.location) {
       return of(place);

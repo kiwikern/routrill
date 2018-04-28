@@ -2,11 +2,15 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DistanceEntry, DistanceMatrix } from '../../../../worker/distance-matrix';
 import { Observable } from 'rxjs/Observable';
 import { RouteService } from '../services/route.service';
-import { MediaChange, ObservableMedia } from '@angular/flex-layout';
-import { filter } from 'rxjs/operators';
+import { ObservableMedia } from '@angular/flex-layout';
+import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { DestinationService } from '../../destinations/destination.service';
 
+/**
+ * Calculate routes with all algorithms.
+ * Let the user select which route to view.
+ */
 @Component({
   selector: 'tsp-route',
   templateUrl: './route.component.html',
@@ -28,11 +32,10 @@ export class RouteComponent implements OnInit {
               private route: ActivatedRoute,
               private destinationService: DestinationService,
               private media: ObservableMedia) {
-    this.media.asObservable().pipe(filter((change: MediaChange) => change.mqAlias === 'xs'))
-      .subscribe(() => this.isXSLayout = true);
+    this.media.asObservable()
+      .pipe(map(change => change.mqAlias === 'xs'))
+      .subscribe(isXs => this.isXSLayout = isXs);
 
-    this.media.asObservable().pipe(filter((change: MediaChange) => change.mqAlias !== 'xs'))
-      .subscribe(() => this.isXSLayout = false);
   }
 
   ngOnInit() {

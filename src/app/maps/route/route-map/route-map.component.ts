@@ -1,6 +1,9 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
+/**
+ * Display a map that shows a selected route (@Input destinations).
+ */
 @Component({
   selector: 'tsp-route-map',
   templateUrl: './route-map.component.html',
@@ -21,6 +24,9 @@ export class RouteMapComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Initialize Google Maps.
+   */
   ngOnInit() {
     const map = new google.maps.Map(document.getElementById('map'), {
       zoom: 6,
@@ -29,6 +35,9 @@ export class RouteMapComponent implements OnInit, OnChanges {
     this.directionsDisplay.setMap(map);
   }
 
+  /**
+   * Show a roundtrip between the destinations.
+   */
   calculateAndDisplayRoute() {
     let start = '';
     let end = '';
