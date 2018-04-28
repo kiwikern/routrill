@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { DistanceEntry } from '../../../../worker/distance-matrix';
+import { DistanceEntry } from '../../../route-algorithms/distance-matrix';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -25,10 +25,10 @@ export class RouteService {
 
   constructor(private ngZone: NgZone) {
     // Initialize the workers
-    this.bruteforceWorker = new Worker('worker/bruteforce-worker.js');
-    this.farthestNeighborWorker = new Worker('worker/neighbor-worker.js');
-    this.nearestNeighborWorker = new Worker('worker/neighbor-worker.js');
-    this.mstWorker = new Worker('worker/mst-worker.js');
+    this.bruteforceWorker = new Worker('app/route-algorithms/bruteforce-worker.js');
+    this.farthestNeighborWorker = new Worker('app/route-algorithms/neighbor-worker.js');
+    this.nearestNeighborWorker = new Worker('app/route-algorithms/neighbor-worker.js');
+    this.mstWorker = new Worker('app/route-algorithms/mst-worker.js');
 
     // Populate Observables within zone for ChangeDetection to run
     this.bruteforceWorker.onmessage = message => {
@@ -84,7 +84,7 @@ export class RouteService {
    */
   private recreateBruteWorker() {
     this.bruteforceWorker.terminate();
-    this.bruteforceWorker = new Worker('worker/bruteforce-worker.js');
+    this.bruteforceWorker = new Worker('route-algorithms/bruteforce-route-algorithms.js');
     this.bruteforceWorker.onmessage = message => this.ngZone.run(() => this.bruteforceResult$.next(message.data));
   }
 }

@@ -10,9 +10,9 @@
       "assets": [
         "assets",
         "favicon.ico",
-        "worker/bruteforce-worker.js",
-        "worker/mst-worker.js",
-        "worker/neighbor-worker.js"
+        "app/route-algorithms/bruteforce-worker.js",
+        "app/route-algorithms/mst-worker.js",
+        "app/route-algorithms/neighbor-worker.js"
       ],
       "index": "index.html",
       "main": "main.ts",

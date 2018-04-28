@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Place } from '../../../../worker/place.interface';
+import { Place } from '../../../route-algorithms/place.interface';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({

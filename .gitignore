@@ -3,7 +3,7 @@
 # compiled output
 /dist
 /tmp
-/src/worker/*js
+/src/app/route-algorithms/*js
 
 # dependencies
 /node_modules

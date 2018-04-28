@@ -16,6 +16,6 @@
     ]
   },
   "exclude": [
-    "worker"
+    "app/route-algorithms"
   ]
 }

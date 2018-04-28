@@ -5,7 +5,7 @@
   "angular-cli": {},
   "scripts": {
     "ng": "ng",
-    "prestart": "tsc -p src/worker/tsconfig.json",
+    "prestart": "tsc -p src/app/route-algorithms/tsconfig.json",
     "start": "ng serve --aot",
     "prebuild": "npm run prestart",
     "build": "ng build --prod",

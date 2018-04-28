@@ -16,6 +16,6 @@
   "files": [
     "bruteforce-worker.ts",
     "mst-worker.ts",
-    "neighbor-worker.ts",
+    "neighbor-worker.ts"
   ]
 }

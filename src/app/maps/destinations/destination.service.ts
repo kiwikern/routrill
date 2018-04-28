@@ -5,7 +5,7 @@ import { bindCallback } from 'rxjs/observable/bindCallback';
 import { of } from 'rxjs/observable/of';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { ElevationService } from '../route/services/elevation.service';
-import { Place } from '../../../worker/place.interface';
+import { Place } from '../../route-algorithms/place.interface';
 
 /**
  * Used for querying the Google Place API and storing selected destinations locally.

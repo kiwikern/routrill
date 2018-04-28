@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { DistanceEntry } from '../../../../worker/distance-matrix';
+import { DistanceEntry } from '../../../route-algorithms/distance-matrix';
 
 /**
  * Show a computed route as:

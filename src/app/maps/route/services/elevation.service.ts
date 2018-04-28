@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Place } from '../../../../worker/place.interface';
+import { Place } from '../../../route-algorithms/place.interface';
 import { bindCallback } from 'rxjs/observable/bindCallback';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';

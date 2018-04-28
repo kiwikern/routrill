@@ -7,7 +7,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { MatSnackBar } from '@angular/material';
 import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
-import { Place } from '../../../../worker/place.interface';
+import { Place } from '../../../route-algorithms/place.interface';
 
 /**
  * View and edit the destinations. The destinations will be stored in localStorage.

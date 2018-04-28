@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
-import { DistanceEntry, DistanceMatrix } from '../../../../worker/distance-matrix';
+import { DistanceEntry, DistanceMatrix } from '../../../route-algorithms/distance-matrix';
 import { bindCallback } from 'rxjs/observable/bindCallback';
 import { map } from 'rxjs/operators';
 import { BoundCallbackObservable } from 'rxjs/observable/BoundCallbackObservable';
