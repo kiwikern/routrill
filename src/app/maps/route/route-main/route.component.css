@@ -1,3 +1,33 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .mat-button-toggle-checked {
   background-color: #404040;
+}
+
+mat-button-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.route-buttons {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.huge {
+  font-size: 200px;
+  height: inherit;
+  width: inherit;
+}
+
+.no-algorithm-selected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }

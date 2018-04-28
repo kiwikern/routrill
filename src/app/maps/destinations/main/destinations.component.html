@@ -1,42 +1,46 @@
-<br><br>
-<div class="flex-container" fxLayout="column" fxLayoutAlign="space-around center">
-  <div class="flex-item" fxFlex="80%">
-    <div class="flex-container" fxLayoutAlign="center center">
-      <h1 class="flex-item">Destinations</h1>
+<h1>Destinations</h1>
+
+<mat-card>
+
+  <mat-card-subtitle>
+    <tsp-destinations-selector class="flex-item" fxFlex [suggestions]="suggestions"
+                               (locationUpdate)="addLocation($event)"
+                               (searchTerm)="getSuggestions($event)"></tsp-destinations-selector>
+  </mat-card-subtitle>
+
+  <mat-card-content>
+    <div class="centered" *ngIf="destinations.length == 0">
+      <mat-icon>location_off</mat-icon>
+      <p>no destinations</p>
     </div>
-    <mat-card style="min-width: 350px" [ngStyle.xs]="{'min-width': 0, 'max-width.px': 300}">
-      <mat-card-subtitle>
-        <tsp-destinations-selector class="flex-item" fxFlex [suggestions]="suggestions"
-                                   (locationUpdate)="addLocation($event)"
-                                   (searchTerm)="getSuggestions($event)"></tsp-destinations-selector>
-      </mat-card-subtitle>
-      <mat-card-content>
-        <div class="flex-container" fxLayout="column" fxLayoutAlign="center center" *ngIf="destinations.length == 0">
-          <mat-icon>location_off</mat-icon>
-          <p>no destinations</p>
-        </div>
-        <mat-list>
-          <mat-list-item *ngFor="let location of destinations">
-            <span matLine>{{ location.name }}</span>
-            <button mat-icon-button (click)="removeLocation(location)" matTooltip="Remove destination"
-                    matTooltipShowDelay="300">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-      <mat-card-actions align="center">
-        <button mat-button (click)="getSampleDestinations()" matTooltip="Add sample locations"
+
+    <mat-list>
+      <mat-list-item *ngFor="let location of destinations">
+        <span matLine>{{ location.name }}</span>
+        <button mat-icon-button (click)="removeLocation(location)"
+                matTooltip="Remove destination"
                 matTooltipShowDelay="300">
-          <mat-icon>add_location</mat-icon>
-          Samples
+          <mat-icon>delete</mat-icon>
         </button>
-        <button mat-button (click)="clearDestinations()" matTooltip="Remove all destinations"
-                matTooltipShowDelay="300">
-          <mat-icon>clear_all</mat-icon>
-          Clear
-        </button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
-</div>
+      </mat-list-item>
+    </mat-list>
+
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button (click)="getSampleDestinations()"
+            matTooltip="Add sample locations"
+            matTooltipShowDelay="300">
+      <mat-icon>add_location</mat-icon>
+      Samples
+    </button>
+
+    <button mat-button (click)="clearDestinations()"
+            matTooltip="Remove all destinations"
+            matTooltipShowDelay="300">
+      <mat-icon>clear_all</mat-icon>
+      Clear
+    </button>
+  </mat-card-actions>
+
+</mat-card>
