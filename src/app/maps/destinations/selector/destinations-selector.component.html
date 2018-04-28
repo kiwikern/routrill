@@ -3,6 +3,9 @@
   <input matInput placeholder="Add a destination..." #address
          (keyup)="getSuggestions(address.value)"
          [matAutocomplete]="locationAutocomplete">
+  <span matSuffix (click)="address.value = ''" *ngIf="address.value">
+    <button class="clear" mat-icon-button><mat-icon>cancel</mat-icon></button>
+  </span>
 </mat-form-field>
 
 <mat-autocomplete #locationAutocomplete
