@@ -24,10 +24,7 @@ export class DestinationService {
     this.autocompleteService = new google.maps.places.AutocompleteService();
     this.placesService = new google.maps.places.PlacesService(div);
 
-    const destinations = localStorage.getItem('tsp.destinations');
-    if (destinations) {
-      this.destinations = JSON.parse(destinations);
-    }
+    this.getDestinationsFromLocalStorage();
   }
 
   /**
@@ -104,6 +101,20 @@ export class DestinationService {
       const lng = response.geometry.location.lng();
       return {name: place.name, id: place.id, location: {lat, lng}};
     }));
+  }
+
+  /**
+   * Check if destinations are stored in localStorage and if they are valid.
+   */
+  private getDestinationsFromLocalStorage() {
+    try {
+      const destinations: Place[] = JSON.parse(localStorage.getItem('tsp.destinations'));
+      if (Array.isArray(destinations) && destinations.length > 0 && destinations[0].name) {
+        this.destinations = destinations;
+      }
+    } catch (e) {
+      console.error('Invalid state in local storage', e);
+    }
   }
 }
 
