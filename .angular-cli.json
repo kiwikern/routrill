@@ -10,6 +10,7 @@
       "assets": [
         "assets",
         "favicon.ico",
+        ".htaccess",
         "app/route-algorithms/bruteforce-worker.js",
         "app/route-algorithms/mst-worker.js",
         "app/route-algorithms/neighbor-worker.js"
