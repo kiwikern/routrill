@@ -25,7 +25,6 @@ export class DestinationsComponent implements OnInit {
   private placeSearchStream: Subject<string> = new Subject<string>();
 
   constructor(private snackBar: MatSnackBar,
-              private service: DestinationService,
               private destinationService: DestinationService,
               private changeDetection: ChangeDetectorRef) {
   }
@@ -36,7 +35,7 @@ export class DestinationsComponent implements OnInit {
     this.suggestions = this.placeSearchStream.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap(place => place ? this.service.getPlaceSuggestions(place) : of([])),
+      switchMap(place => place ? this.destinationService.getPlaceSuggestions(place) : of([])),
       catchError(error => {
         console.error(error);
         this.showSnackbar('Something went wrong, sorry! Try again.');

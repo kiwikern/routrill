@@ -7,8 +7,8 @@ describe('tsp App', function() {
     page = new TspPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Hello delivery driver!');
+    expect(page.getParagraphText()).toEqual('Hello delivery driver! 🚚');
   });
 });

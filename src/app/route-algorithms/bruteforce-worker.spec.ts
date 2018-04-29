@@ -1,9 +1,9 @@
-import './bruteforce-worker';
+ // import './bruteforce-worker';
 
 describe('BruteforceWorker', () => {
   let service;
   beforeEach(() => {
-    service = new Worker();
+    service = new BruteWorker();
   });
 
   it('should be created', () => {
@@ -72,7 +72,7 @@ describe('BruteforceWorker', () => {
   });
 });
 
-class Worker {
+class BruteWorker {
   getRoundTrip(input) {
     return input;
   }
