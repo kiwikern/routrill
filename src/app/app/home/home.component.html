@@ -1,15 +1,12 @@
-<br><br>
-<div class="flex-container" fxLayout="column" fxLayoutAlign="space-around center">
-  <div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around center">
-    <mat-icon class="huge">place</mat-icon>
-    <div ngClass="wrap" [class.xs]="['margin']">
-      <h1 fxLayoutAlign.xs="center center">Hello, fellow traveller!</h1>
-      <p>Routrill lets you find the best round trip for up to
-        10 destinations. Just head to <a routerLink="/destinations">destinations</a>
-        and add some stops to your tour. Then checkout your <a routerLink="/route">route</a>
-        options using different heuristics.</p>
-      <p>If you're just curious and you want a first impression, try the sample locations.</p>
-    </div>
-    <div fxFlex="20"></div>
+<div class="centered" [ngStyle.xs]="{'flex-direction': 'column'}">
+  <mat-icon class="huge">place</mat-icon>
+  <div class="wrap">
+    <h1>Hello delivery driver! 🚚</h1>
+    <p>Routrill lets you find the best round trip for up to
+      10 destinations.</p>
+    <p>First, head to <a routerLink="/destinations">destinations</a>
+      and add some stops to your tour.</p>
+    <p>Then, checkout your <a routerLink="/route">route</a>
+      options comparing different heuristics.</p>
   </div>
 </div>
