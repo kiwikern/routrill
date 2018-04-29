@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RouteResultComponent } from './route-result.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('RouteResultComponent', () => {
   let component: RouteResultComponent;
@@ -8,7 +9,8 @@ describe('RouteResultComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RouteResultComponent ]
+      declarations: [ RouteResultComponent ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map, mergeMap } from 'rxjs/operators';
 import { bindCallback } from 'rxjs/observable/bindCallback';
 import { of } from 'rxjs/observable/of';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { ElevationService } from '../route/services/elevation.service';
+import { ElevationService } from './elevation.service';
 import { Place } from '../../route-algorithms/place.interface';
+import { GOOGLE } from '../maps.module';
 
 /**
  * Used for querying the Google Place API and storing selected destinations locally.
@@ -17,10 +18,12 @@ export class DestinationService {
   private readonly placesService;
   private destinations: Place[] = [];
 
-  constructor(private elevationService: ElevationService) {
-    this.autocompleteService = new google.maps.places.AutocompleteService();
+  constructor(private elevationService: ElevationService,
+              @Inject(GOOGLE) google) {
     const div = document.createElement('div');
+    this.autocompleteService = new google.maps.places.AutocompleteService();
     this.placesService = new google.maps.places.PlacesService(div);
+
     const destinations = localStorage.getItem('tsp.destinations');
     if (destinations) {
       this.destinations = JSON.parse(destinations);

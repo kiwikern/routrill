@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
-import { DistanceEntry, DistanceMatrix } from '../../../route-algorithms/distance-matrix';
+import { DistanceEntry, DistanceMatrix } from '../../route-algorithms/distance-matrix';
 import { bindCallback } from 'rxjs/observable/bindCallback';
 import { map } from 'rxjs/operators';
 import { BoundCallbackObservable } from 'rxjs/observable/BoundCallbackObservable';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { ConfirmDialogComponent } from '../../../util/confirm-dialog/confirm-dialog.component';
-import { DestinationService } from '../../destinations/destination.service';
+import { ConfirmDialogComponent } from '../../util/confirm-dialog/confirm-dialog.component';
+import { DestinationService } from './destination.service';
+import { GOOGLE } from '../maps.module';
 
 /**
  * Calculates the distance of given destinations by pairs.
@@ -22,6 +23,7 @@ export class DistanceService implements Resolve<DistanceMatrix> {
   constructor(private snackBar: MatSnackBar,
               private dialog: MatDialog,
               private destinationService: DestinationService,
+              @Inject(GOOGLE) google,
               private router: Router) {
     this.distanceService = new google.maps.DistanceMatrixService();
   }

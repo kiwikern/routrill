@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { DistanceEntry } from '../../../route-algorithms/distance-matrix';
+import { DistanceEntry } from '../../route-algorithms/distance-matrix';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -84,7 +84,7 @@ export class RouteService {
    */
   private recreateBruteWorker() {
     this.bruteforceWorker.terminate();
-    this.bruteforceWorker = new Worker('route-algorithms/bruteforce-route-algorithms.js');
+    this.bruteforceWorker = new Worker('route-algorithms/bruteforce-worker.js');
     this.bruteforceWorker.onmessage = message => this.ngZone.run(() => this.bruteforceResult$.next(message.data));
   }
 }

@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
+import { GOOGLE } from '../../maps.module';
 
 /**
  * Display a map that shows a selected route (@Input destinations).
@@ -11,11 +12,20 @@ import { MatSnackBar } from '@angular/material';
 })
 export class RouteMapComponent implements OnInit, OnChanges {
   @Input() destinations: string[] = [];
-  private directionsService = new google.maps.DirectionsService;
-  private directionsDisplay = new google.maps.DirectionsRenderer;
+  private directionsService;
+  private directionsDisplay;
+  private Map;
+  private readonly TRAVEL_MODE_CAR;
+  private readonly DIRECTION_STATUS_OK;
 
 
-  constructor(private snackBar: MatSnackBar) {
+  constructor(private snackBar: MatSnackBar,
+              @Inject(GOOGLE) google) {
+    this.directionsService = new google.maps.DirectionsService();
+    this.directionsDisplay = new google.maps.DirectionsRenderer();
+    this.Map = google.maps.Map;
+    this.TRAVEL_MODE_CAR = google.maps.TravelMode.DRIVING;
+    this.DIRECTION_STATUS_OK = google.maps.DirectionsStatus.OK;
   }
 
   ngOnChanges() {
@@ -28,12 +38,13 @@ export class RouteMapComponent implements OnInit, OnChanges {
    * Initialize Google Maps.
    */
   ngOnInit() {
-    const map = new google.maps.Map(document.getElementById('map'), {
+    const map = new this.Map(document.getElementById('map'), {
       zoom: 6,
       center: {lat: 41.85, lng: -87.65}
     });
     this.directionsDisplay.setMap(map);
   }
+
 
   /**
    * Show a roundtrip between the destinations.
@@ -57,9 +68,9 @@ export class RouteMapComponent implements OnInit, OnChanges {
       destination: end,
       waypoints: waypts,
       optimizeWaypoints: false,
-      travelMode: google.maps.TravelMode.DRIVING
+      travelMode: this.TRAVEL_MODE_CAR
     }, (response, status) => {
-      if (status === google.maps.DirectionsStatus.OK) {
+      if (status === this.DIRECTION_STATUS_OK) {
         this.directionsDisplay.setDirections(response);
       } else {
         this.showSnackbar('Directions request failed. Try again.');

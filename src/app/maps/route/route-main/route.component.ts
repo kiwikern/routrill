@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DistanceEntry, DistanceMatrix } from '../../../route-algorithms/distance-matrix';
 import { Observable } from 'rxjs/Observable';
-import { RouteService } from '../services/route.service';
+import { RouteService } from '../../services/route.service';
 import { ObservableMedia } from '@angular/flex-layout';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { DestinationService } from '../../destinations/destination.service';
+import { DestinationService } from '../../services/destination.service';
 
 /**
  * Calculate routes with all algorithms.

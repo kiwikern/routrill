@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Place } from '../../../route-algorithms/place.interface';
+import { Inject, Injectable } from '@angular/core';
+import { Place } from '../../route-algorithms/place.interface';
 import { bindCallback } from 'rxjs/observable/bindCallback';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import ElevationResult = google.maps.ElevationResult;
+import { GOOGLE } from '../maps.module';
 
 /**
  * Service for querying the Google Elevation API.
@@ -13,7 +13,7 @@ export class ElevationService {
 
   private readonly elevationService;
 
-  constructor() {
+  constructor(@Inject(GOOGLE) google) {
     this.elevationService = new google.maps.ElevationService();
   }
 
@@ -27,7 +27,7 @@ export class ElevationService {
     const getElevations: any = bindCallback(this.elevationService.getElevationForLocations.bind(this.elevationService), res => res);
     return getElevations({locations: destinations.map(d => d.location)})
       .pipe(
-        map((results: ElevationResult[]) => {
+        map((results: any[]) => {
           results.forEach((result, i) => destinations[i].elevation = results[i].elevation);
           return destinations;
         })
