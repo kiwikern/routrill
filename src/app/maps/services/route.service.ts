@@ -84,7 +84,7 @@ export class RouteService {
    */
   private recreateBruteWorker() {
     this.bruteforceWorker.terminate();
-    this.bruteforceWorker = new Worker('route-algorithms/bruteforce-worker.js');
+    this.bruteforceWorker = new Worker('app/route-algorithms/bruteforce-worker.js');
     this.bruteforceWorker.onmessage = message => this.ngZone.run(() => this.bruteforceResult$.next(message.data));
   }
 }
