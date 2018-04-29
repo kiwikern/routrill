@@ -21,7 +21,7 @@
 
 <div *ngIf="!roundTrip$" class="no-algorithm-selected">
   <mat-icon class="huge">local_shipping</mat-icon>
-  <span>Choose one of the heuristics to calculate a round trip.</span>
+  <span>Choose one of the algorithms to calculate a round trip.</span>
 </div>
 
 <tsp-route-result *ngIf="roundTrip$" [roundTrip]="roundTrip$ | async" [destinations]="destinations"></tsp-route-result>
