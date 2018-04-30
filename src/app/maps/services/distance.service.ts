@@ -38,6 +38,7 @@ export class DistanceService implements Resolve<DistanceMatrix> {
     const destinations = this.destinationService.getDestinationNames();
     if (!this.hasEnoughDestinations(destinations)) {
       this.router.navigate(['destinations']);
+      return null;
     }
     return this.getDistance(destinations).pipe(
       catchError(error => this.showError(error))
